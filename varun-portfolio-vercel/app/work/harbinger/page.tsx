@@ -1,10 +1,12 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- Product evidence must keep its original screenshot pixels. */
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import styles from "../../concepts/concepts.module.css";
+import { useActiveSection } from "../useActiveSection";
 
-type CaseIconName = "arrow" | "check" | "data" | "file" | "home" | "truck";
+type CaseIconName = "arrow" | "check" | "data" | "file" | "folder" | "home" | "truck";
 
 const sections = [
   ["overview", "Overview"],
@@ -14,6 +16,8 @@ const sections = [
   ["handoff", "Handoff and UI QA"],
   ["reflection", "Outcome and reflection"],
 ] as const;
+
+const sectionIds = sections.map(([id]) => id);
 
 const constraints = [
   "Existing approved workflows could not be changed without stakeholder agreement.",
@@ -39,6 +43,7 @@ function CaseIcon({ name }: { name: CaseIconName }) {
   if (name === "check") return <svg {...props}><rect x="4" y="3" width="16" height="18" rx="2" /><path d="m8 12 2.5 2.5L16 9" /></svg>;
   if (name === "data") return <svg {...props}><path d="M5 6c0-2 14-2 14 0s-14 2-14 0Z" /><path d="M5 6v6c0 2 14 2 14 0V6M5 12v6c0 2 14 2 14 0v-6" /></svg>;
   if (name === "file") return <svg {...props}><path d="M6 3h8l4 4v14H6z" /><path d="M14 3v5h5M9 12h6M9 16h6" /></svg>;
+  if (name === "folder") return <svg {...props}><path d="M3 6h7l2 2h9v10H3z" /></svg>;
   if (name === "home") return <svg {...props}><path d="m4 11 8-7 8 7v9h-6v-6h-4v6H4z" /></svg>;
   return <svg {...props}><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" /><circle cx="7" cy="18" r="2" /><circle cx="18" cy="18" r="2" /></svg>;
 }
@@ -58,17 +63,30 @@ function EvidenceFrame({
   note: string;
   images: EvidenceItem[];
 }) {
+  const layoutClass =
+    images.length === 1
+      ? styles.caseEvidenceSingle
+      : images.length === 3
+        ? styles.caseEvidenceFeatured
+        : styles.caseEvidenceGrid;
+
   return (
     <figure className={styles.caseEvidence}>
       <header>
-        <span>Screen evidence</span>
+        <span>Product evidence</span>
         <b>{title}</b>
       </header>
-      <div className={images.length === 1 ? styles.caseEvidenceSingle : styles.caseEvidenceGrid}>
+      <div className={layoutClass}>
         {images.map((image) => (
-          <a href={image.src} target="_blank" rel="noreferrer" key={image.src}>
-            <img src={image.src} alt={image.alt} />
-            <span>{image.label}</span>
+          <a
+            href={image.src}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${image.label}. Open full-size image in a new tab.`}
+            key={image.src}
+          >
+            <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
+            <span>{image.label}<small>Open full screen</small></span>
           </a>
         ))}
       </div>
@@ -79,37 +97,59 @@ function EvidenceFrame({
 
 export default function HarbingerCaseStudy() {
   const prefersReducedMotion = useReducedMotion();
+  const { activeSection, selectSection } = useActiveSection(sectionIds, "overview");
 
   return (
     <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage}`}>
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
         <div className={styles.studioTabs}>
-          <Link href="/">Portfolio <span>×</span></Link>
-          <span className={styles.studioTabActive}>Harbinger Motors <button type="button" onClick={() => window.location.assign("/")} aria-label="Close project and return to portfolio">×</button></span>
+          <Link href="/">Portfolio</Link>
+          <span className={styles.studioTabActive} aria-current="page">Harbinger Motors <button type="button" onClick={() => window.location.assign("/")} aria-label="Close project and return to portfolio">×</button></span>
           <Link className={styles.caseAddTab} href="/concepts" aria-label="View earlier design concepts">+</Link>
         </div>
         <div className={styles.caseToolbarActions}>
-          <span>Case study</span>
-          <Link href="/">Back to portfolio</Link>
+          <span className={styles.caseViewActive}>Case study</span>
+          <Link href="/work/harbinger/documentation">UX documentation</Link>
         </div>
       </header>
+
+      <nav className={styles.caseMobileSectionNav} aria-label="Harbinger case study sections">
+        <label htmlFor="harbinger-section">Section</label>
+        <select id="harbinger-section" value={activeSection} onChange={(event) => selectSection(event.target.value as (typeof sectionIds)[number])}>
+          {sections.map(([id, label]) => <option key={id} value={id}>{label}</option>)}
+        </select>
+      </nav>
 
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="Case study navigation">
           <nav className={styles.studioPrimaryNav}>
             <Link href="/"><CaseIcon name="home" /><span>Portfolio</span></Link>
-            <a className={styles.studioPrimaryActive} href="#overview"><CaseIcon name="file" /><span>Case study</span></a>
           </nav>
           <div className={styles.studioProjectTree}>
             <p>Harbinger Motors</p>
+            <a className={`${styles.caseViewBranch} ${styles.caseViewBranchActive}`} href="#overview">
+              <CaseIcon name="file" /><span>Case study</span><b>⌄</b>
+            </a>
             <div className={styles.caseSectionLinks}>
               {sections.map(([id, label], index) => (
-                <a className={index === 0 ? styles.studioTreeActive : ""} key={id} href={`#${id}`}>
+                <a
+                  className={activeSection === id ? styles.studioTreeActive : ""}
+                  key={id}
+                  href={`#${id}`}
+                  aria-current={activeSection === id ? "location" : undefined}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    selectSection(id);
+                  }}
+                >
                   <span>{String(index + 1).padStart(2, "0")}</span>{label}
                 </a>
               ))}
             </div>
+            <Link className={styles.caseViewBranch} href="/work/harbinger/documentation">
+              <CaseIcon name="folder" /><span>UX documentation</span><b>›</b>
+            </Link>
             <p className={styles.casePortalLabel}>Product areas</p>
             <div className={styles.casePortalList}>
               <span><CaseIcon name="data" />HBR Portal</span>
@@ -118,7 +158,7 @@ export default function HarbingerCaseStudy() {
           </div>
         </aside>
 
-        <section className={styles.caseStudyCanvas} aria-label="Harbinger Motors case study">
+        <section className={styles.caseStudyCanvas} aria-label="Harbinger Motors case study" data-case-scroll>
           <article className={styles.caseStudyDocument}>
             <section className={styles.caseStudyHero} id="overview">
               <div className={styles.caseStudyKicker}><span>Harbinger Motors</span><b>2025 to 2026</b></div>
@@ -137,17 +177,15 @@ export default function HarbingerCaseStudy() {
                 <i><CaseIcon name="arrow" /></i>
                 <div><span>Dealer Portal</span><b>Transfer vehicles<br />Complete delivery</b></div>
               </div>
-              <EvidenceFrame
-                title="Harbinger product overview"
-                note="The public case study uses representative information and removes confidential customer data."
-                images={[
-                  {
-                    src: "/case-study-assets/overview.png",
-                    alt: "Harbinger Motors case study overview with product configuration and dealer workflow screens",
-                    label: "Connected product and vehicle workflows",
-                  },
-                ]}
-              />
+              <p className={styles.caseEvidenceDisclosure}>The product screens use representative information and remove confidential customer data.</p>
+              <div className={styles.caseDocumentationCallout}>
+                <div>
+                  <span>Deeper system evidence</span>
+                  <h2>See how the roles, rules, workflows and states connect.</h2>
+                  <p>The case study is designed for a quick review. The UX documentation opens the product model, permission logic, information architecture, cross-role workflows, edge cases and delivery notes behind the screens.</p>
+                </div>
+                <Link href="/work/harbinger/documentation">Open UX documentation <CaseIcon name="arrow" /></Link>
+              </div>
             </section>
 
             <section className={styles.caseStudySection}>
@@ -195,11 +233,6 @@ export default function HarbingerCaseStudy() {
                 title="Product definition and Build Your Own"
                 note="The configuration flow keeps dependency rules visible and shows how package selections affect downstream options."
                 images={[
-                  {
-                    src: "/case-study-assets/configuration-composite.png",
-                    alt: "Product configuration and quotation case study composition",
-                    label: "Configuration to quotation",
-                  },
                   {
                     src: "/case-study-assets/configuration-fedex.png",
                     alt: "Build Your Own options screen showing FedEx package dependencies",
@@ -298,11 +331,6 @@ export default function HarbingerCaseStudy() {
                 note="The checklist supports failed submission, dealer reopening and a final review. Warranty registration requires a Passed PDI."
                 images={[
                   {
-                    src: "/case-study-assets/pdi-composite.png",
-                    alt: "JSON-driven PDI checklist case study composition",
-                    label: "Eight-step PDI structure",
-                  },
-                  {
                     src: "/case-study-assets/pdi-failed-item.png",
                     alt: "PDI checklist failed item with comment and configured media upload",
                     label: "Failed item and evidence",
@@ -361,6 +389,7 @@ export default function HarbingerCaseStudy() {
               <div><dt>Status</dt><dd>Featured case study</dd></div>
             </dl>
             <a className={styles.studioInspectorAction} href="#overview">Back to overview</a>
+            <Link className={styles.studioInspectorSecondary} href="/work/harbinger/documentation">Open UX documentation</Link>
             <Link className={styles.studioInspectorSecondary} href="/">Portfolio canvas</Link>
           </div>
         </aside>
@@ -369,7 +398,7 @@ export default function HarbingerCaseStudy() {
       <footer className={styles.studioStatusbar}>
         <span><i /> Case study document</span>
         <span>Harbinger Motors</span>
-        <span>6 sections</span>
+        <span>6 sections + documentation</span>
         <Link href="/">Return to portfolio</Link>
       </footer>
     </main>

@@ -1,8 +1,10 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- Product evidence must keep its original screenshot pixels. */
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import styles from "../../concepts/concepts.module.css";
+import { useActiveSection } from "../useActiveSection";
 
 const chapters = [
   ["overview", "Overview"],
@@ -10,8 +12,10 @@ const chapters = [
   ["operations", "Event operations"],
   ["employer", "Employer workflow"],
   ["offline", "Offline check-in"],
-  ["reflection", "Outcome & reflection"],
+  ["reflection", "Outcome and reflection"],
 ] as const;
+
+const chapterIds = chapters.map(([id]) => id);
 
 const roles = [
   ["Candidate", "Mobile", "Profile, jobs and interview access"],
@@ -37,8 +41,14 @@ function Evidence({
       <header><span>Product evidence</span><b>{title}</b></header>
       <div>
         {images.map((image) => (
-          <a href={image.src} target="_blank" rel="noreferrer" key={image.src}>
-            <img src={image.src} alt={image.alt} />
+          <a
+            href={image.src}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${image.label}. Open full-size image in a new tab.`}
+            key={image.src}
+          >
+            <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
             <span>{image.label}</span>
           </a>
         ))}
@@ -50,6 +60,7 @@ function Evidence({
 
 export default function AadivaraCaseStudy() {
   const reducedMotion = useReducedMotion();
+  const { activeSection, selectSection } = useActiveSection(chapterIds, "overview");
   const reveal = {
     initial: reducedMotion ? false : { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -61,12 +72,19 @@ export default function AadivaraCaseStudy() {
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
         <div className={styles.studioTabs}>
-          <Link href="/">Portfolio <span>×</span></Link>
-          <Link href="/work/harbinger">Harbinger Motors <span>×</span></Link>
-          <span className={styles.studioTabActive}>Aadivara <button type="button" onClick={() => window.location.assign("/")} aria-label="Close Aadivara case study">×</button></span>
+          <Link href="/">Portfolio</Link>
+          <Link href="/work/harbinger">Harbinger Motors</Link>
+          <span className={styles.studioTabActive} aria-current="page">Aadivara <button type="button" onClick={() => window.location.assign("/")} aria-label="Close Aadivara case study">×</button></span>
         </div>
         <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Back to portfolio</Link></div>
       </header>
+
+      <nav className={styles.caseMobileSectionNav} aria-label="Aadivara sections">
+        <label htmlFor="aadivara-section">Section</label>
+        <select id="aadivara-section" value={activeSection} onChange={(event) => selectSection(event.target.value as (typeof chapterIds)[number])}>
+          {chapters.map(([id, label]) => <option key={id} value={id}>{label}</option>)}
+        </select>
+      </nav>
 
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="Aadivara case study navigation">
@@ -78,7 +96,16 @@ export default function AadivaraCaseStudy() {
             <p>Aadivara</p>
             <div className={styles.caseSectionLinks}>
               {chapters.map(([id, label], index) => (
-                <a className={index === 0 ? styles.studioTreeActive : ""} href={`#${id}`} key={id}>
+                <a
+                  className={activeSection === id ? styles.studioTreeActive : ""}
+                  href={`#${id}`}
+                  aria-current={activeSection === id ? "location" : undefined}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    selectSection(id);
+                  }}
+                  key={id}
+                >
                   <span>{String(index + 1).padStart(2, "0")}</span>{label}
                 </a>
               ))}
@@ -92,7 +119,7 @@ export default function AadivaraCaseStudy() {
           </div>
         </aside>
 
-        <section className={styles.caseStudyCanvas} aria-label="Aadivara case study">
+        <section className={styles.caseStudyCanvas} aria-label="Aadivara case study" data-case-scroll>
           <article className={styles.caseStudyDocument}>
             <section className={`${styles.caseStudyHero} ${styles.aadHero}`} id="overview">
               <div className={styles.caseStudyKicker}><span>Aadivara</span><b>Evolving product</b></div>

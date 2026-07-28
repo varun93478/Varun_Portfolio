@@ -1,8 +1,10 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- Product evidence must keep its original screenshot pixels. */
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import styles from "../../concepts/concepts.module.css";
+import { useActiveSection } from "../useActiveSection";
 
 const chapters = [
   ["overview", "Overview"],
@@ -14,6 +16,8 @@ const chapters = [
   ["patterns", "Shared patterns"],
   ["reflection", "Reflection"],
 ] as const;
+
+const chapterIds = chapters.map(([id]) => id);
 
 type EvidenceItem = {
   src: string;
@@ -48,9 +52,10 @@ function Evidence({
             target="_blank"
             rel="noreferrer"
             data-format={image.format ?? "web"}
+            aria-label={`${image.label}. Open full-size image in a new tab.`}
             key={image.src}
           >
-            <img src={image.src} alt={image.alt} />
+            <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
             <span>{image.label}</span>
           </a>
         ))}
@@ -69,6 +74,7 @@ const visitorRoles = [
 
 export default function HcmCafeCaseStudy() {
   const reducedMotion = useReducedMotion();
+  const { activeSection, selectSection } = useActiveSection(chapterIds, "overview");
   const reveal = {
     initial: reducedMotion ? false : { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -80,15 +86,22 @@ export default function HcmCafeCaseStudy() {
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
         <div className={styles.studioTabs}>
-          <Link href="/">Portfolio <span>×</span></Link>
-          <Link href="/work/harbinger">Harbinger Motors <span>×</span></Link>
-          <Link href="/work/aadivara">Aadivara <span>×</span></Link>
-          <Link href="/work/inventfunds">InventFunds <span>×</span></Link>
-          <Link href="/work/property-care">Property Care <span>×</span></Link>
-          <span className={styles.studioTabActive}>HCM Café <button type="button" onClick={() => window.location.assign("/")} aria-label="Close HCM Café case study">×</button></span>
+          <Link href="/">Portfolio</Link>
+          <Link href="/work/harbinger">Harbinger Motors</Link>
+          <Link href="/work/aadivara">Aadivara</Link>
+          <Link href="/work/inventfunds">InventFunds</Link>
+          <Link href="/work/property-care">Property Care</Link>
+          <span className={styles.studioTabActive} aria-current="page">HCM Café <button type="button" onClick={() => window.location.assign("/")} aria-label="Close HCM Café case study">×</button></span>
         </div>
         <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Back to portfolio</Link></div>
       </header>
+
+      <nav className={styles.caseMobileSectionNav} aria-label="HCM Café sections">
+        <label htmlFor="hcm-cafe-section">Section</label>
+        <select id="hcm-cafe-section" value={activeSection} onChange={(event) => selectSection(event.target.value as (typeof chapterIds)[number])}>
+          {chapters.map(([id, label]) => <option key={id} value={id}>{label}</option>)}
+        </select>
+      </nav>
 
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="HCM Café case study navigation">
@@ -100,7 +113,16 @@ export default function HcmCafeCaseStudy() {
             <p>HCM Café</p>
             <div className={styles.caseSectionLinks}>
               {chapters.map(([id, label], index) => (
-                <a className={index === 0 ? styles.studioTreeActive : ""} href={`#${id}`} key={id}>
+                <a
+                  className={activeSection === id ? styles.studioTreeActive : ""}
+                  href={`#${id}`}
+                  aria-current={activeSection === id ? "location" : undefined}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    selectSection(id);
+                  }}
+                  key={id}
+                >
                   <span>{String(index + 1).padStart(2, "0")}</span>{label}
                 </a>
               ))}
@@ -114,7 +136,7 @@ export default function HcmCafeCaseStudy() {
           </div>
         </aside>
 
-        <section className={styles.caseStudyCanvas} aria-label="HCM Café Workplace Operations case study">
+        <section className={styles.caseStudyCanvas} aria-label="HCM Café Workplace Operations case study" data-case-scroll>
           <article className={styles.caseStudyDocument}>
             <section className={`${styles.caseStudyHero} ${styles.hcmHero}`} id="overview">
               <div className={styles.caseStudyKicker}><span>HCM Café</span><b>Workplace operations</b></div>
@@ -127,9 +149,9 @@ export default function HcmCafeCaseStudy() {
                 <div><dt>Evidence</dt><dd>Product design files and workflow screens</dd></div>
               </dl>
               <div className={styles.hcmHeroComposition}>
-                <img src="/hcm-assets/hr-employee-dashboard.jpg" alt="HCM Café employee dashboard with attendance and leave information" />
-                <img src="/hcm-assets/vms-company-dashboard.png" alt="HCM Café Visitor Management company admin dashboard" />
-                <img src="/hcm-assets/vms-host-dashboard-mobile.png" alt="HCM Café Visitor Management host mobile dashboard" />
+                <img src="/hcm-assets/hr-employee-dashboard.jpg" alt="HCM Café employee dashboard with attendance and leave information" loading="eager" decoding="async" />
+                <img src="/hcm-assets/vms-company-dashboard.png" alt="HCM Café Visitor Management company admin dashboard" loading="eager" decoding="async" />
+                <img src="/hcm-assets/vms-host-dashboard-mobile.png" alt="HCM Café Visitor Management host mobile dashboard" loading="eager" decoding="async" />
                 <div><span>Two workstreams</span><b>HR operations + Visitor operations</b></div>
               </div>
             </section>

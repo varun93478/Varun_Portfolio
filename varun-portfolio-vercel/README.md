@@ -1,18 +1,8 @@
 # Varun — Complex Systems Product Designer
 
-Portfolio website for Varun J, built with Next.js, React, TypeScript and Motion.
-
-## Included case studies
-
-- Harbinger Motors
-- Aadivara
-- InventFunds
-- Property Care
-- HCM Café Workplace Operations
+Portfolio website built with Next.js.
 
 ## Run locally
-
-Requirements: Node.js 22 and npm.
 
 ```bash
 npm install
@@ -21,31 +11,29 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## Verify the production build
+## Deploy to Vercel
 
-```bash
-npm run lint
-npm run build
-npm start
-```
+1. Upload the contents of this folder to a GitHub repository.
+2. Import the repository in Vercel.
+3. Keep the detected framework as **Next.js**.
+4. Leave the build command, output directory and install command at their defaults.
+5. Deploy.
 
-## Deploy with GitHub and Vercel
-
-1. Create a new empty GitHub repository.
-2. Upload the contents of this folder to the repository root.
-3. In Vercel, select **Add New → Project**.
-4. Import the GitHub repository.
-5. Keep **Framework Preset: Next.js**.
-6. Keep the root directory as `./`.
-7. Select **Deploy**.
-
-No environment variables, database or external service configuration is required.
+If this folder is uploaded as a nested directory, set Vercel's **Root Directory** to `varun-portfolio-vercel-updated`. Uploading the contents directly to the repository root is simpler.
 
 ## Main routes
 
 - `/`
 - `/work/harbinger`
+- `/work/harbinger/documentation`
 - `/work/aadivara`
 - `/work/inventfunds`
 - `/work/property-care`
 - `/work/hcm-cafe`
+
+## Production checks
+
+```bash
+npm run lint
+npm run build
+```

@@ -1,18 +1,17 @@
 {
-  "name": "varun-system-architect",
+  "name": "varun-portfolio",
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "22.x"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint . --ignore-pattern .next"
   },
   "dependencies": {
-    "geist": "^1.5.1",
     "motion": "^12.42.2",
     "next": "16.2.6",
     "react": "19.2.6",
@@ -29,5 +28,5 @@
     "typescript": "5.9.3"
   },
   "type": "module",
-  "displayName": "Varun — System Architect"
+  "displayName": "Varun — Complex Systems Product Designer"
 }

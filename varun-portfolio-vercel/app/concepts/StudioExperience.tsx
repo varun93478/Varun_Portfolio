@@ -41,6 +41,7 @@ const projects: Record<ProjectKey, {
     id: string;
     label: string;
     icon: IconName;
+    href?: string;
   }[];
 }> = {
   harbinger: {
@@ -58,6 +59,7 @@ const projects: Record<ProjectKey, {
       { id: "pdi", label: "PDI checklist", icon: "check" },
       { id: "handoff", label: "Handoff and UI QA", icon: "layers" },
       { id: "reflection", label: "Outcome and reflection", icon: "process" },
+      { id: "documentation", label: "UX documentation", icon: "folder", href: "/work/harbinger/documentation" },
     ],
   },
   aadivara: {
@@ -381,21 +383,21 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
         <div className={styles.studioTabs}>
-          <span className={styles.studioTabActive}>Portfolio <button type="button" onClick={() => selectPage("work")} aria-label="Return to portfolio overview">×</button></span>
-          <Link href="/work/harbinger">Harbinger Motors <span>×</span></Link>
-          <Link href="/work/aadivara">Aadivara <span>×</span></Link>
-          <Link href="/work/inventfunds">InventFunds <span>×</span></Link>
-          <Link href="/work/property-care">Property Care <span>×</span></Link>
-          <Link href="/work/hcm-cafe">HCM Café <span>×</span></Link>
+          <span className={styles.studioTabActive} aria-current="page">Portfolio <button type="button" onClick={() => selectPage("work")} aria-label="Return to portfolio overview">×</button></span>
+          <Link href="/work/harbinger">Harbinger Motors</Link>
+          <Link href="/work/aadivara">Aadivara</Link>
+          <Link href="/work/inventfunds">InventFunds</Link>
+          <Link href="/work/property-care">Property Care</Link>
+          <Link href="/work/hcm-cafe">HCM Café</Link>
           <button type="button" onClick={() => selectPage("contact")} aria-label="Open contact page">+</button>
         </div>
         <div className={styles.studioTools}>
-          <button type="button" onClick={() => setZoom((current) => Math.max(70, current - 8))} aria-label="Zoom out"><WorkspaceIcon name="zoomOut" /></button>
-          <button type="button" onClick={() => setZoom((current) => Math.min(115, current + 8))} aria-label="Zoom in"><WorkspaceIcon name="zoomIn" /></button>
+          <button type="button" disabled={zoom <= 70} onClick={() => setZoom((current) => Math.max(70, current - 8))} aria-label="Zoom out"><WorkspaceIcon name="zoomOut" /></button>
+          <button type="button" disabled={zoom >= 115} onClick={() => setZoom((current) => Math.min(115, current + 8))} aria-label="Zoom in"><WorkspaceIcon name="zoomIn" /></button>
           <button className={styles.studioZoomValue} type="button" onClick={resetCanvas} aria-label="Reset canvas">{zoom}%</button>
           <i />
           <button type="button" onClick={() => setPresentation(true)} aria-label="Open presentation mode"><WorkspaceIcon name="play" /></button>
-          <button type="button" onClick={() => setNoteOpen((current) => !current)} aria-expanded={noteOpen} aria-label="View design note"><WorkspaceIcon name="comment" /></button>
+          <button type="button" onClick={() => setNoteOpen((current) => !current)} aria-expanded={noteOpen} aria-pressed={noteOpen} aria-label="View design note"><WorkspaceIcon name="comment" /></button>
           <button className={styles.studioPresentButton} type="button" onClick={() => setPresentation(true)}>Present</button>
         </div>
         {noteOpen && (
@@ -410,10 +412,10 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
       <div className={styles.studioWorkspace}>
         <aside className={styles.studioLeft} aria-label="Portfolio pages and projects">
           <nav className={styles.studioPrimaryNav}>
-            <button className={activePage === "work" ? styles.studioPrimaryActive : ""} type="button" onClick={() => selectPage("work")}><WorkspaceIcon name="grid" /><span>Work</span></button>
-            <button className={activePage === "process" ? styles.studioPrimaryActive : ""} type="button" onClick={() => selectPage("process")}><WorkspaceIcon name="process" /><span>Process</span></button>
-            <button className={activePage === "about" ? styles.studioPrimaryActive : ""} type="button" onClick={() => selectPage("about")}><WorkspaceIcon name="user" /><span>About</span></button>
-            <button className={activePage === "contact" ? styles.studioPrimaryActive : ""} type="button" onClick={() => selectPage("contact")}><WorkspaceIcon name="mail" /><span>Contact</span></button>
+            <button className={activePage === "work" ? styles.studioPrimaryActive : ""} type="button" aria-pressed={activePage === "work"} onClick={() => selectPage("work")}><WorkspaceIcon name="grid" /><span>Work</span></button>
+            <button className={activePage === "process" ? styles.studioPrimaryActive : ""} type="button" aria-pressed={activePage === "process"} onClick={() => selectPage("process")}><WorkspaceIcon name="process" /><span>Process</span></button>
+            <button className={activePage === "about" ? styles.studioPrimaryActive : ""} type="button" aria-pressed={activePage === "about"} onClick={() => selectPage("about")}><WorkspaceIcon name="user" /><span>About</span></button>
+            <button className={activePage === "contact" ? styles.studioPrimaryActive : ""} type="button" aria-pressed={activePage === "contact"} onClick={() => selectPage("contact")}><WorkspaceIcon name="mail" /><span>Contact</span></button>
           </nav>
 
           <div className={styles.studioProjectTree}>
@@ -426,10 +428,11 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
               return (
                 <div className={styles.studioTreeGroup} key={key}>
                   <button
-                    className={styles.studioTreeProject}
+                    className={`${styles.studioTreeProject} ${selectedProject === key ? styles.studioTreeProjectSelected : ""}`}
                     type="button"
                     onClick={() => toggleProject(key)}
                     aria-expanded={expanded}
+                    aria-pressed={selectedProject === key}
                     aria-controls={controlsId}
                   >
                     <span>{expanded ? "⌄" : "›"}</span>
@@ -441,7 +444,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
                       {project.sections.map((section) => (
                         <Link
                           className={selectedProject === key && section.id === "overview" ? styles.studioTreeActive : ""}
-                          href={`${project.href}#${section.id}`}
+                          href={section.href ?? `${project.href}#${section.id}`}
                           key={section.id}
                         >
                           <WorkspaceIcon name={section.icon} />
@@ -468,6 +471,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
               key={page}
               className={activePage === page ? styles.studioMobileActive : ""}
               type="button"
+              aria-pressed={activePage === page}
               onClick={() => selectPage(page)}
             >
               {workspacePages[page].title.replace("Selected ", "")}
