@@ -3,6 +3,8 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { PortfolioLinks } from "../../concepts/PortfolioLinks";
+import { WorkspaceTabs } from "../../concepts/WorkspaceTabs";
 import styles from "../../concepts/concepts.module.css";
 import { useActiveSection } from "../useActiveSection";
 
@@ -12,6 +14,7 @@ const chapters = [
   ["configuration", "HR configuration"],
   ["attendance", "Attendance and leave"],
   ["visitors", "Visitor lifecycle"],
+  ["flow-architecture", "VMS flow architecture"],
   ["front-desk", "Front desk operations"],
   ["patterns", "Shared patterns"],
   ["reflection", "Reflection"],
@@ -66,6 +69,7 @@ function Evidence({
 }
 
 const visitorRoles = [
+  ["Visitor", "Participate", "Confirms details, presents the pass and completes the visit"],
   ["Host", "Invite", "Creates the visit and shares the visitor pass"],
   ["Company Admin", "Review", "Manages visitors, employees and communication records"],
   ["Security", "Verify", "Scans the pass or finds the visitor manually"],
@@ -85,15 +89,8 @@ export default function HcmCafeCaseStudy() {
     <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.hcmPage}`}>
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <div className={styles.studioTabs}>
-          <Link href="/">Portfolio</Link>
-          <Link href="/work/harbinger">Harbinger Motors</Link>
-          <Link href="/work/aadivara">Aadivara</Link>
-          <Link href="/work/inventfunds">InventFunds</Link>
-          <Link href="/work/property-care">Property Care</Link>
-          <span className={styles.studioTabActive} aria-current="page">HCM Café <button type="button" onClick={() => window.location.assign("/")} aria-label="Close HCM Café case study">×</button></span>
-        </div>
-        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Back to portfolio</Link></div>
+        <WorkspaceTabs />
+        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Portfolio</Link><PortfolioLinks /></div>
       </header>
 
       <nav className={styles.caseMobileSectionNav} aria-label="HCM Café sections">
@@ -139,9 +136,9 @@ export default function HcmCafeCaseStudy() {
         <section className={styles.caseStudyCanvas} aria-label="HCM Café Workplace Operations case study" data-case-scroll>
           <article className={styles.caseStudyDocument}>
             <section className={`${styles.caseStudyHero} ${styles.hcmHero}`} id="overview">
-              <div className={styles.caseStudyKicker}><span>HCM Café</span><b>Workplace operations</b></div>
+              <div className={styles.caseStudyKicker}><span>HCM Café</span><b>Product case study</b></div>
               <h1>Designing clear operational workspaces for employees, admins, hosts and front-desk teams.</h1>
-              <p className={styles.caseStudyLead}>HCM Café covers two workplace products. The HR platform supports configurable dashboards, attendance and leave. The Visitor Management System coordinates invitations, arrival, check-in and check-out across four roles.</p>
+              <p className={styles.caseStudyLead}>HCM Café covers two workplace products. The HR platform supports configurable dashboards, attendance and leave. The Visitor Management System coordinates invitations, arrival, check-in and check-out across five roles.</p>
               <dl className={styles.caseStudyMeta}>
                 <div><dt>Role</dt><dd>UI/UX Designer</dd></div>
                 <div><dt>Contribution</dt><dd>Web and mobile workflows, dashboards, forms and states</dd></div>
@@ -212,7 +209,7 @@ export default function HcmCafeCaseStudy() {
             </motion.section>
 
             <motion.section className={`${styles.caseStudySection} ${styles.hcmVmsSection}`} id="visitors" {...reveal}>
-              <div className={styles.caseSectionHeading}><span>04</span><div><p>Visitor management</p><h2>Coordinate one visitor lifecycle across four roles.</h2></div></div>
+              <div className={styles.caseSectionHeading}><span>04</span><div><p>Visitor management</p><h2>Coordinate one visitor lifecycle across five roles.</h2></div></div>
               <p className={styles.caseSectionIntro}>The visitor record changes owner as the visit progresses. The Host creates the invitation. Admin users manage company-level records. Security verifies arrival and completes check-in. Super Admin users review platform activity.</p>
               <div className={styles.hcmRoleMap}>
                 {visitorRoles.map(([role, action, detail]) => (
@@ -243,8 +240,43 @@ export default function HcmCafeCaseStudy() {
               />
             </motion.section>
 
+            <motion.section className={`${styles.caseStudySection} ${styles.hcmVmsSection}`} id="flow-architecture" {...reveal}>
+              <div className={styles.caseSectionHeading}><span>05</span><div><p>VMS flow architecture</p><h2>Show where ownership changes during a visit.</h2></div></div>
+              <p className={styles.caseSectionIntro}>I combined the original Visitor, Host and Admin flow maps into one system view. The revised architecture adds the missing Security and Front Desk hand-off, separates the standard path from fallbacks, and keeps unresolved policy decisions visible.</p>
+
+              <div className={styles.vmsArchitecture} role="img" aria-label="Visitor Management System flow from visit request through approval, invitation, arrival, verification, check-in, host meeting, check-out and visit log update.">
+                <header>
+                  <span>Visit lifecycle</span>
+                  <b>Five roles, one shared visit record</b>
+                </header>
+                <div className={styles.vmsFlowRoles} aria-label="Role ownership">
+                  <span data-role="visitor">Visitor</span>
+                  <span data-role="host">Host</span>
+                  <span data-role="security">Security / Front Desk</span>
+                  <span data-role="admin">Administration</span>
+                </div>
+                <ol className={styles.vmsLifecycle}>
+                  <li data-role="host"><span>01</span><b>Create visit</b><p>Host invitation or visitor request</p></li>
+                  <li data-role="host"><span>02</span><b>Review</b><p>Approve or reject when approval is required</p></li>
+                  <li data-role="visitor"><span>03</span><b>Confirm</b><p>Visitor receives QR or OTP and confirms details</p></li>
+                  <li data-role="security"><span>04</span><b>Verify arrival</b><p>Scan the pass or search for the visit record</p></li>
+                  <li data-role="security"><span>05</span><b>Check in</b><p>Verify identity, record details and issue a badge</p></li>
+                  <li data-role="host"><span>06</span><b>Meet visitor</b><p>Host receives the arrival alert</p></li>
+                  <li data-role="security"><span>07</span><b>Check out</b><p>Complete the visit or review an open visit</p></li>
+                  <li data-role="admin"><span>08</span><b>Update log</b><p>Keep the completed visit available for review</p></li>
+                </ol>
+              </div>
+
+              <div className={styles.vmsExceptionGrid}>
+                <article><span>Missing or invalid pass</span><b>Search and verify manually</b><p>Security can continue by phone, email or host instead of stopping the check-in.</p></article>
+                <article><span>Walk-in visitor</span><b>Capture details and confirm entry</b><p>The front desk records the visit, then checks whether the host can approve entry.</p></article>
+                <article><span>Host unavailable</span><b>Use the company fallback policy</b><p>This remains an open question until the organisation confirms who can approve the visitor.</p></article>
+                <article><span>Open visit</span><b>Flag and close manually</b><p>Security can review visits that were not checked out and close the record with context.</p></article>
+              </div>
+            </motion.section>
+
             <motion.section className={`${styles.caseStudySection} ${styles.hcmVmsSection}`} id="front-desk" {...reveal}>
-              <div className={styles.caseSectionHeading}><span>05</span><div><p>Front desk operations</p><h2>Support QR speed without making the workflow depend on QR alone.</h2></div></div>
+              <div className={styles.caseSectionHeading}><span>06</span><div><p>Front desk operations</p><h2>Support QR speed without making the workflow depend on QR alone.</h2></div></div>
               <div className={styles.caseTwoColumns}>
                 <p>Security can scan a visitor pass for a fast lookup. A numeric code and manual visitor search remain available when the pass cannot be scanned or the visitor arrives without it.</p>
                 <p>Before check-in, the flow captures accompanying guests and carried assets. Check-out closes the visit and preserves the record for history, reports and operational review.</p>
@@ -281,7 +313,7 @@ export default function HcmCafeCaseStudy() {
             </motion.section>
 
             <motion.section className={styles.caseStudySection} id="patterns" {...reveal}>
-              <div className={styles.caseSectionHeading}><span>06</span><div><p>Shared visual patterns</p><h2>Use the same interaction language while keeping each product recognisable.</h2></div></div>
+              <div className={styles.caseSectionHeading}><span>07</span><div><p>Shared visual patterns</p><h2>Use the same interaction language while keeping each product recognisable.</h2></div></div>
               <div className={styles.hcmPatternGrid}>
                 <article><span>01</span><h3>Role-based dashboards</h3><p>Cards and widgets surface the modules and daily actions relevant to the signed-in role.</p></article>
                 <article><span>02</span><h3>Operational status</h3><p>Counts, labels and record states help users understand what needs attention.</p></article>
@@ -292,7 +324,7 @@ export default function HcmCafeCaseStudy() {
             </motion.section>
 
             <motion.section className={`${styles.caseStudySection} ${styles.hcmReflection}`} id="reflection" {...reveal}>
-              <div className={styles.caseSectionHeading}><span>07</span><div><p>Reflection</p><h2>The strongest design decision is making ownership visible at every operational hand-off.</h2></div></div>
+              <div className={styles.caseSectionHeading}><span>08</span><div><p>Reflection</p><h2>The strongest design decision is making ownership visible at every operational hand-off.</h2></div></div>
               <div className={styles.hcmReflectionGrid}>
                 <div><span>What the work demonstrates</span><h3>Role-aware enterprise product design</h3><p>The designs cover configuration, dashboards, exceptions, approvals, invitations, front-desk operations, communication tracking and mobile task flows.</p></div>
                 <div><span>What I would validate next</span><h3>Exceptions and real-world front-desk pressure</h3><p>I would test attendance corrections, leave decisions, failed QR scans, walk-in visitors, multiple guests and asset reconciliation with the people handling those tasks.</p></div>

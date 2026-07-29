@@ -3,6 +3,8 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { PortfolioLinks } from "../../concepts/PortfolioLinks";
+import { WorkspaceTabs } from "../../concepts/WorkspaceTabs";
 import styles from "../../concepts/concepts.module.css";
 import { useActiveSection } from "../useActiveSection";
 
@@ -83,14 +85,8 @@ export default function PropertyCareCaseStudy() {
     <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.pcPage}`}>
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <div className={styles.studioTabs}>
-          <Link href="/">Portfolio</Link>
-          <Link href="/work/harbinger">Harbinger Motors</Link>
-          <Link href="/work/aadivara">Aadivara</Link>
-          <Link href="/work/inventfunds">InventFunds</Link>
-          <span className={styles.studioTabActive} aria-current="page">Property Care <button type="button" onClick={() => window.location.assign("/")} aria-label="Close Property Care case study">×</button></span>
-        </div>
-        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Back to portfolio</Link></div>
+        <WorkspaceTabs />
+        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Portfolio</Link><PortfolioLinks /></div>
       </header>
 
       <nav className={styles.caseMobileSectionNav} aria-label="Property Care sections">
@@ -136,7 +132,7 @@ export default function PropertyCareCaseStudy() {
         <section className={styles.caseStudyCanvas} aria-label="Property Care case study" data-case-scroll>
           <article className={styles.caseStudyDocument}>
             <section className={`${styles.caseStudyHero} ${styles.pcHero}`} id="overview">
-              <div className={styles.caseStudyKicker}><span>Property Care</span><b>Web and mobile product</b></div>
+              <div className={styles.caseStudyKicker}><span>Property Care</span><b>Product case study</b></div>
               <h1>Connecting property discovery with the work required to publish and manage it.</h1>
               <p className={styles.caseStudyLead}>Property Care supports customers looking for properties, owners posting them, franchise teams managing activity and admins reviewing accounts. The Phase 2 design covered the workflow before and after a property appears in search.</p>
               <dl className={styles.caseStudyMeta}>

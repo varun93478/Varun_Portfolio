@@ -3,6 +3,8 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { PortfolioLinks } from "../../concepts/PortfolioLinks";
+import { WorkspaceTabs } from "../../concepts/WorkspaceTabs";
 import styles from "../../concepts/concepts.module.css";
 import { useActiveSection } from "../useActiveSection";
 
@@ -80,13 +82,8 @@ export default function InventFundsCaseStudy() {
     <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.invPage}`}>
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <div className={styles.studioTabs}>
-          <Link href="/">Portfolio</Link>
-          <Link href="/work/harbinger">Harbinger Motors</Link>
-          <Link href="/work/aadivara">Aadivara</Link>
-          <span className={styles.studioTabActive} aria-current="page">InventFunds <button type="button" onClick={() => window.location.assign("/")} aria-label="Close InventFunds case study">×</button></span>
-        </div>
-        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Back to portfolio</Link></div>
+        <WorkspaceTabs />
+        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Portfolio</Link><PortfolioLinks /></div>
       </header>
 
       <nav className={styles.caseMobileSectionNav} aria-label="InventFunds sections">
@@ -132,7 +129,7 @@ export default function InventFundsCaseStudy() {
         <section className={styles.caseStudyCanvas} aria-label="InventFunds case study" data-case-scroll>
           <article className={styles.caseStudyDocument}>
             <section className={`${styles.caseStudyHero} ${styles.invHero}`} id="overview">
-              <div className={styles.caseStudyKicker}><span>InventFunds</span><b>Cross-platform product</b></div>
+              <div className={styles.caseStudyKicker}><span>InventFunds</span><b>Product case study</b></div>
               <h1>Connecting people who build ideas, fund them and help deliver the work.</h1>
               <p className={styles.caseStudyLead}>InventFunds brings Founder, Funder and Fixer workflows into one product. The design had to support project creation, discovery, evaluation, collaboration and NDA management across web and mobile.</p>
               <dl className={styles.caseStudyMeta}>

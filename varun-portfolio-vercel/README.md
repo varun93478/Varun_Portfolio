@@ -1,6 +1,29 @@
-# Varun — Complex Systems Product Designer
+# Varun J Portfolio V2
 
-Portfolio website built with Next.js.
+This package contains the complete V2 portfolio, ready for GitHub and Vercel.
+
+## Included
+
+- Five product case studies
+- Harbinger UX documentation
+- Browser-style project tabs
+- VMS flow architecture
+- About page with portfolio photos
+- Contact options for email, WhatsApp and LinkedIn
+- Downloadable résumé
+- Custom VJ favicon
+- Responsive and keyboard-accessible interaction states
+
+## Deploy with GitHub and Vercel
+
+1. Extract the ZIP.
+2. Upload everything inside `Varun-Portfolio-V2` to the root of your GitHub repository.
+3. Connect the repository to Vercel.
+4. Keep the framework preset as `Next.js`.
+5. Leave the build command and output directory on their default settings.
+6. Deploy.
+
+The application files are already at the package root. Do not place them inside another folder before uploading.
 
 ## Run locally
 
@@ -10,30 +33,3 @@ npm run dev
 ```
 
 Open `http://localhost:3000`.
-
-## Deploy to Vercel
-
-1. Upload the contents of this folder to a GitHub repository.
-2. Import the repository in Vercel.
-3. Keep the detected framework as **Next.js**.
-4. Leave the build command, output directory and install command at their defaults.
-5. Deploy.
-
-If this folder is uploaded as a nested directory, set Vercel's **Root Directory** to `varun-portfolio-vercel-updated`. Uploading the contents directly to the repository root is simpler.
-
-## Main routes
-
-- `/`
-- `/work/harbinger`
-- `/work/harbinger/documentation`
-- `/work/aadivara`
-- `/work/inventfunds`
-- `/work/property-care`
-- `/work/hcm-cafe`
-
-## Production checks
-
-```bash
-npm run lint
-npm run build
-```

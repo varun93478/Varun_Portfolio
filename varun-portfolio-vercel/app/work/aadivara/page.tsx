@@ -3,6 +3,8 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { PortfolioLinks } from "../../concepts/PortfolioLinks";
+import { WorkspaceTabs } from "../../concepts/WorkspaceTabs";
 import styles from "../../concepts/concepts.module.css";
 import { useActiveSection } from "../useActiveSection";
 
@@ -71,12 +73,8 @@ export default function AadivaraCaseStudy() {
     <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.aadPage}`}>
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <div className={styles.studioTabs}>
-          <Link href="/">Portfolio</Link>
-          <Link href="/work/harbinger">Harbinger Motors</Link>
-          <span className={styles.studioTabActive} aria-current="page">Aadivara <button type="button" onClick={() => window.location.assign("/")} aria-label="Close Aadivara case study">×</button></span>
-        </div>
-        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Back to portfolio</Link></div>
+        <WorkspaceTabs />
+        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Portfolio</Link><PortfolioLinks /></div>
       </header>
 
       <nav className={styles.caseMobileSectionNav} aria-label="Aadivara sections">
@@ -122,7 +120,7 @@ export default function AadivaraCaseStudy() {
         <section className={styles.caseStudyCanvas} aria-label="Aadivara case study" data-case-scroll>
           <article className={styles.caseStudyDocument}>
             <section className={`${styles.caseStudyHero} ${styles.aadHero}`} id="overview">
-              <div className={styles.caseStudyKicker}><span>Aadivara</span><b>Evolving product</b></div>
+              <div className={styles.caseStudyKicker}><span>Aadivara</span><b>Product case study</b></div>
               <h1>Connecting accessible candidate journeys with event-day operations.</h1>
               <p className={styles.caseStudyLead}>Aadivara supports employment events for people with disabilities. The product connects candidates, administrators, employers, partners and volunteers across mobile, web and offline-capable workflows.</p>
               <dl className={styles.caseStudyMeta}>

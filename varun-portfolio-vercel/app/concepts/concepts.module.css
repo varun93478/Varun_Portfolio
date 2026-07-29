@@ -35,15 +35,16 @@
 .workspaceSplash>button:hover,.workspaceSplash>button:focus-visible{border-color:var(--studio-blue);color:var(--studio-blue)}
 @keyframes workspaceLoad{from{scale:.02 1}to{scale:1 1}}
 .studioToolbar{height:54px;display:grid;grid-template-columns:252px minmax(0,1fr) auto;border-bottom:1px solid var(--studio-line);background:rgba(250,250,248,.98);position:relative;z-index:20}
-.studioBrand{display:flex;align-items:center;padding:0 24px;border-right:1px solid var(--studio-line);font-size:20px;font-weight:720;letter-spacing:-.04em}
-.studioTabs{display:flex;align-items:stretch;overflow:hidden}
-.studioTabs>a,.studioTabs>span{min-width:150px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;gap:22px;border-right:1px solid var(--studio-line);color:#55575b;font-size:13px;white-space:nowrap}
-.studioTabs>span{background:#fff;color:#202124}
-.studioTabs>a:hover,.studioTabs>a:focus-visible{background:#ecece8;color:#202124}
-.studioTabs span button{width:28px;height:28px;border:0;border-radius:4px;background:transparent;color:#77797d;font-size:17px;padding:0;cursor:pointer}
-.studioTabs span button:hover,.studioTabs span button:focus-visible{background:#ecece8;color:#202124}
-.studioTabs>button{width:48px;border:0;border-right:1px solid var(--studio-line);background:transparent;font-size:20px;color:#66686c;cursor:pointer}
-.studioTabs>button:hover,.studioTabs>button:focus-visible{background:#ecece8;color:#202124}
+.studioBrand{display:flex;align-items:center;gap:10px;padding:0 24px;border-right:1px solid var(--studio-line);font-size:20px;font-weight:720;letter-spacing:-.04em}
+.studioBrand:before{content:"";width:24px;height:24px;flex:0 0 24px;background:url("/favicon.svg") center/contain no-repeat}
+.studioTabs{display:flex;align-items:stretch;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}
+.studioTabItem{min-width:150px;display:flex;align-items:stretch;border-right:1px solid var(--studio-line);color:#55575b;font-size:13px;white-space:nowrap;background:#f7f7f4}
+.studioTabItem>a{min-width:0;flex:1;display:flex;align-items:center;padding:0 18px;color:inherit}
+.studioTabItem:hover{background:#ecece8;color:#202124}
+.studioTabItem:has(>a:focus-visible){background:#ecece8;color:#202124}
+.studioTabActive{background:#fff;color:#202124;box-shadow:inset 0 -2px var(--studio-blue)}
+.studioTabItem>button{width:32px;height:32px;align-self:center;margin-right:7px;border:0;border-radius:4px;background:transparent;color:#77797d;font-size:17px;padding:0;cursor:pointer}
+.studioTabItem>button:hover,.studioTabItem>button:focus-visible{background:#deded9;color:#202124}
 .studioTools{display:flex;align-items:center;padding:0 14px;border-left:1px solid var(--studio-line);gap:4px}
 .studioTools>button{width:36px;height:36px;border:0;background:transparent;display:grid;place-items:center;color:#34363a;border-radius:5px;cursor:pointer}
 .studioTools>button:hover,.studioTools>button:focus-visible{background:#ececea}
@@ -53,6 +54,9 @@
 .studioTools>i{height:28px;width:1px;background:var(--studio-line);margin:0 7px}
 .studioTools .studioPresentButton{width:auto;padding:0 22px;margin-left:8px;background:var(--studio-blue);color:#fff;font-size:12px}
 .studioTools .studioPresentButton:hover,.studioTools .studioPresentButton:focus-visible{background:#2446cc}
+.studioUtilityLinks{display:flex;align-items:center;gap:2px;margin-left:5px}
+.studioUtilityLinks a{min-height:34px;padding:0 10px;display:flex;align-items:center;border-radius:4px;color:#56585c;font-size:10px}
+.studioUtilityLinks a:hover,.studioUtilityLinks a:focus-visible{background:#ececea;color:#202124}
 .studioWorkspace{height:calc(100vh - 82px);min-height:638px;display:grid;grid-template-columns:252px minmax(560px,1fr) 284px}
 .studioLeft{border-right:1px solid var(--studio-line);background:var(--studio-chrome);display:flex;flex-direction:column;min-height:0}
 .studioPrimaryNav{padding:22px 16px 18px;border-bottom:1px solid var(--studio-line)}
@@ -132,6 +136,9 @@
 .studioInspectorAction{width:100%;min-height:44px;margin-top:24px;border:0;border-radius:4px;background:var(--studio-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer}
 .studioInspectorAction:disabled{background:#e1e1dc;color:#898b8f;cursor:not-allowed}
 .studioInspectorSecondary{width:100%;height:42px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;color:var(--studio-blue);font-size:11px;cursor:pointer}
+.studioInspectorGuidance{margin-top:24px;padding:15px;border:1px solid var(--studio-line);border-radius:5px;background:#f6f6f3}
+.studioInspectorGuidance b{font-size:11px}
+.studioInspectorGuidance p{margin:7px 0 0;color:#6b6d71;font-size:10px;line-height:1.5}
 .studioStatusbar{height:28px;border-top:1px solid var(--studio-line);background:var(--studio-chrome);display:flex;align-items:center;gap:24px;padding:0 14px;color:#6b6d71;font-size:9px;position:relative;z-index:20}
 .studioStatusbar>span:first-child{color:#3b3d41}.studioStatusbar>span:first-child i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#54a884;margin-right:7px}
 .studioStatusbar button{margin-left:auto;border:0;background:transparent;display:flex;align-items:center;gap:6px;color:#67696d;font-size:9px;cursor:pointer}
@@ -158,8 +165,16 @@
 .studioProcessFooter{display:flex;align-items:center;margin-top:30px;color:#4f5155;font-size:10px}
 .studioProcessFooter i{height:1px;flex:1;margin:0 10px;background:#aeb0b3}
 .studioAboutFrame{min-height:610px}
-.studioAboutGrid{display:grid;grid-template-columns:230px 1fr;gap:45px;margin-top:40px}
-.studioPortraitPlaceholder{min-height:430px;display:flex;align-items:flex-end;padding:18px;border:1px solid #cfd0ca;background-color:#f3f3f0;background-image:radial-gradient(circle,#c9cac5 1px,transparent 1px);background-size:15px 15px;color:#77797c;font-size:9px;line-height:1.5;text-transform:uppercase;letter-spacing:.08em}
+.studioAboutGrid{display:grid;grid-template-columns:280px 1fr;gap:38px;margin-top:32px}
+.studioPortraitGallery{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:330px 92px;gap:8px}
+.studioPortraitGallery figure{position:relative;min-width:0;margin:0;overflow:hidden;border:1px solid #cfd0ca;border-radius:4px;background:#eeefeb}
+.studioPortraitGallery figure:first-child{grid-column:1/-1}
+.studioPortraitGallery img{object-fit:cover;transition:transform .35s ease,filter .35s ease}
+.studioPortraitGallery figure:hover img{transform:scale(1.025)}
+.studioPortraitMain img{object-position:center 24%}
+.studioPortraitGallery figure:nth-child(2) img{object-position:center 29%}
+.studioPortraitGallery figure:nth-child(3) img{object-position:center 35%}
+.studioPortraitGallery figcaption{position:absolute;right:10px;bottom:10px;left:10px;padding:8px 9px;border:1px solid rgba(255,255,255,.28);border-radius:3px;background:rgba(20,24,28,.68);backdrop-filter:blur(8px);color:#fff;font-size:8px;letter-spacing:.07em;text-transform:uppercase}
 .studioAboutGrid h1{margin:0;font-size:35px;line-height:1.08;letter-spacing:-.05em}
 .studioAboutGrid>div:last-child>p:not(.studioDocumentLabel){margin:18px 0 0;color:#55575b;font-size:12px;line-height:1.65}
 .studioSkillList{display:flex;flex-wrap:wrap;gap:7px;margin-top:28px}
@@ -168,7 +183,18 @@
 .studioContactContent{max-width:610px;padding:58px 0 0}
 .studioContactContent h1{margin:0;font-size:62px;line-height:.96;letter-spacing:-.065em}
 .studioContactContent>p:not(.studioDocumentLabel){max-width:520px;margin:24px 0 0;color:#55575b;font-size:14px;line-height:1.6}
-.studioContactContent>a{width:max-content;min-width:230px;min-height:46px;margin-top:34px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:45px;border-radius:4px;background:var(--studio-blue);color:#fff;font-size:11px}
+.studioContactActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:34px}
+.studioContactActions>a{min-height:68px;padding:10px 12px;display:grid;grid-template-columns:34px minmax(0,1fr) 18px;align-items:center;gap:11px;border:1px solid #c8c9c4;border-radius:5px;background:#fff;color:#34363a}
+.studioContactIcon{width:34px;height:34px;display:grid;place-items:center;border:1px solid #d6d7d2;border-radius:4px;background:#f5f5f2;color:#5c5e62;font-size:10px;font-weight:700}
+.studioContactCopy{min-width:0;display:grid;gap:4px}
+.studioContactCopy b{font-size:11px;font-weight:650}
+.studioContactCopy small{overflow:hidden;color:#77797c;font-size:9px;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}
+.studioContactArrow{color:#7b7d81;font-size:13px;transition:transform .18s ease,color .18s ease}
+.studioContactActions>a:hover{border-color:#8c9ce8;background:#f8f9ff;box-shadow:0 4px 14px rgba(49,85,231,.08)}
+.studioContactActions>a:hover .studioContactIcon{border-color:#aeb9ee;background:#eef1ff;color:#2446cf}
+.studioContactActions>a:hover .studioContactArrow{color:var(--studio-blue);transform:translate(2px,-2px)}
+.studioContactActions>a:active{transform:translateY(1px);background:#f0f2fb;box-shadow:none}
+.studioContactActions>a:focus-visible{outline:2px solid var(--studio-blue);outline-offset:3px;border-color:var(--studio-blue);box-shadow:none}
 .studioPresentation .studioToolbar,.studioPresentation .studioLeft,.studioPresentation .studioInspector,.studioPresentation .studioStatusbar{display:none}
 .studioPresentation .studioWorkspace{height:100vh;min-height:100vh;display:block}
 .studioPresentation .studioCanvas{height:100vh}
@@ -182,7 +208,7 @@
 .caseToolbarActions>a:hover,.caseToolbarActions>a:focus-visible{background:#ecece8;color:#202124}
 .caseToolbarActions .caseViewActive{background:var(--studio-blue);color:#fff}
 .caseAddTab{width:48px!important;min-width:48px!important;justify-content:center!important;padding:0!important;font-size:20px!important}
-.caseWorkspace{grid-template-columns:252px minmax(640px,1fr) 284px}
+.caseWorkspace{grid-template-columns:252px minmax(640px,1fr)}
 .caseSectionLinks{display:grid;gap:2px}
 .caseSectionLinks a{min-height:38px;padding:0 9px;display:grid;grid-template-columns:28px 1fr;align-items:center;border-radius:5px;color:#4d4f53;font-size:11px}
 .caseSectionLinks a>span{color:#87898d;font-size:9px}
@@ -298,7 +324,7 @@
 
 /* Harbinger UX documentation */
 .documentationPage{--doc-blue:#3155e7;--doc-ink:#222428;--doc-muted:#64666b;--doc-line:#d4d5d0;--doc-soft:#f7f7f4}
-.documentationPage .studioTabs>span{min-width:252px}
+.documentationPage .studioTabItem{min-width:150px}
 .caseSectionLinks button{min-height:38px;padding:0 9px;display:grid;grid-template-columns:28px 1fr;align-items:center;border:0;border-radius:5px;background:transparent;color:#4d4f53;font-size:11px;text-align:left;cursor:pointer}
 .caseSectionLinks button>span{color:#87898d;font-size:9px}
 .caseSectionLinks button:hover,.caseSectionLinks button:focus-visible{background:#ecece8;color:#202124}
@@ -476,7 +502,7 @@
   .studioProcessFooter{flex-wrap:wrap;gap:8px}
   .studioProcessFooter i{min-width:20px}
   .studioAboutGrid{grid-template-columns:1fr;gap:28px}
-  .studioPortraitPlaceholder{min-height:260px}
+  .studioPortraitGallery{grid-template-rows:min(62vw,460px) min(24vw,160px)}
   .studioAboutGrid h1{font-size:clamp(34px,9vw,50px)}
   .studioContactContent{padding-top:35px}
   .studioContactContent h1{font-size:clamp(48px,14vw,72px)}
@@ -536,6 +562,13 @@
   .caseStudyCanvas{scroll-behavior:auto}
 }
 
+@media(max-width:900px){
+  .studioTools .studioPresentButton{display:none}
+  .studioUtilityLinks{margin:0}
+  .studioUtilityLinks a{padding:0 8px}
+  .caseToolbarActions>a{padding:0 9px}
+}
+
 @media(max-width:560px){
   .caseStudyHero,.caseStudySection{padding:40px 20px}
   .caseStudyKicker b{display:none}
@@ -551,6 +584,16 @@
   .caseEvidence a img,.caseEvidenceSingle a img,.caseEvidenceFeatured>a:first-child img{height:auto;max-height:none}
   .caseEvidence a span small{float:none;display:block;margin-top:4px}
   .caseBackAction{width:100%;justify-content:space-between}
+}
+
+@media(max-width:520px){
+  .studioContactActions{grid-template-columns:1fr}
+  .studioContactCopy small{white-space:normal}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .studioPortraitGallery img,.studioContactArrow{transition:none}
+  .studioPortraitGallery figure:hover img{transform:none}
 }
 .aadPage {
   --aad-accent: #5b9f87;
@@ -1470,7 +1513,7 @@
 
 .hcmRoleMap {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1px;
   margin-top: 40px;
   border: 1px solid #ddd3e7;
@@ -1562,6 +1605,146 @@
   font-size: 9px;
   font-style: normal;
   text-transform: uppercase;
+}
+
+.vmsArchitecture {
+  margin: 42px 0 0 71px;
+  overflow: hidden;
+  border: 1px solid #d9cce5;
+  background: #fff;
+  box-shadow: 0 18px 45px rgba(56, 32, 74, .08);
+}
+
+.vmsArchitecture > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #ded3e8;
+  background: #2b173c;
+  color: #fff;
+}
+
+.vmsArchitecture > header span {
+  color: #d7a8ff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.vmsArchitecture > header b {
+  font-size: 12px;
+}
+
+.vmsFlowRoles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e5dcec;
+  background: #faf7fc;
+}
+
+.vmsFlowRoles span {
+  padding: 7px 10px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.vmsArchitecture [data-role="visitor"] { color: #137461; }
+.vmsArchitecture [data-role="host"] { color: #7b35d3; }
+.vmsArchitecture [data-role="security"] { color: #a26200; }
+.vmsArchitecture [data-role="admin"] { color: #3155e7; }
+
+.vmsLifecycle {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 34px 26px;
+  margin: 0;
+  padding: 28px 24px 30px;
+  list-style: none;
+  background-image: radial-gradient(circle, #ddd5e3 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.vmsLifecycle li {
+  position: relative;
+  min-height: 142px;
+  padding: 16px;
+  border: 1px solid #d9d5dc;
+  border-top: 3px solid currentColor;
+  background: rgba(255,255,255,.96);
+  color: #5f5964;
+}
+
+.vmsLifecycle li:not(:nth-child(4n))::after {
+  content: "→";
+  position: absolute;
+  right: -22px;
+  top: 54px;
+  color: #8f8795;
+  font-size: 16px;
+}
+
+.vmsLifecycle li > span {
+  color: currentColor;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.vmsLifecycle li b {
+  display: block;
+  margin-top: 19px;
+  color: #27242a;
+  font-size: 13px;
+}
+
+.vmsLifecycle li p {
+  margin: 7px 0 0;
+  color: #6e6871;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.vmsExceptionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 24px 0 0 71px;
+  border: 1px solid #dfd5e7;
+  background: #dfd5e7;
+}
+
+.vmsExceptionGrid article {
+  min-height: 160px;
+  padding: 21px;
+  background: #fff;
+}
+
+.vmsExceptionGrid span {
+  color: #8b5b00;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.vmsExceptionGrid b {
+  display: block;
+  margin-top: 26px;
+  color: #2e2a31;
+  font-size: 14px;
+}
+
+.vmsExceptionGrid p {
+  margin: 8px 0 0;
+  color: #706a75;
+  font-size: 11px;
+  line-height: 1.55;
 }
 
 .hcmPatternGrid {
@@ -1666,8 +1849,10 @@
   .hcmFallback,
   .hcmPatternGrid,
   .hcmBoundary,
-  .hcmReflectionGrid { margin-left: 54px; }
-  .hcmRoleMap { grid-template-columns: repeat(2, 1fr); }
+  .hcmReflectionGrid,
+  .vmsArchitecture,
+  .vmsExceptionGrid { margin-left: 54px; }
+  .hcmRoleMap { grid-template-columns: repeat(3, 1fr); }
   .hcmConfigRail,
   .hcmVisitorRail,
   .hcmFallback { grid-template-columns: 1fr; }
@@ -1709,7 +1894,18 @@
   .hcmFallback,
   .hcmPatternGrid,
   .hcmBoundary,
-  .hcmReflectionGrid { margin-left: 0; }
+  .hcmReflectionGrid,
+  .vmsArchitecture,
+  .vmsExceptionGrid { margin-left: 0; }
+  .vmsLifecycle { grid-template-columns: 1fr; }
+  .vmsLifecycle li:not(:nth-child(4n))::after {
+    content: "↓";
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: -27px;
+  }
+  .vmsExceptionGrid { grid-template-columns: 1fr; }
   .hcmWorkstreams > i { text-align: center; }
   .hcmEvidence img,
   .hcmEvidenceMobile img { height: auto; max-height: none; }

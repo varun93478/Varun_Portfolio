@@ -1,9 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useMotionValue, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PreviewSwitcher } from "./ConceptExperience";
+import { PortfolioLinks } from "./PortfolioLinks";
+import { WorkspaceTabs } from "./WorkspaceTabs";
 import styles from "./concepts.module.css";
 
 type ProjectKey = "harbinger" | "aadivara" | "inventfunds" | "propertycare" | "hcmcafe";
@@ -130,6 +133,7 @@ const projects: Record<ProjectKey, {
       { id: "configuration", label: "HR configuration", icon: "sliders" },
       { id: "attendance", label: "Attendance and leave", icon: "check" },
       { id: "visitors", label: "Visitor lifecycle", icon: "access" },
+      { id: "flow-architecture", label: "VMS flow architecture", icon: "process" },
       { id: "front-desk", label: "Front desk operations", icon: "workplace" },
       { id: "patterns", label: "Shared patterns", icon: "layers" },
       { id: "reflection", label: "Reflection", icon: "process" },
@@ -263,6 +267,23 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
     return () => window.clearTimeout(timer);
   }, [closeSplash, prefersReducedMotion]);
 
+  useEffect(() => {
+    const selectHashPage = () => {
+      const page = window.location.hash.slice(1);
+      if (page === "work" || page === "process" || page === "about" || page === "contact") {
+        setActivePage(page);
+        setNoteOpen(false);
+        canvasX.set(0);
+        canvasY.set(0);
+        setZoom(92);
+      }
+    };
+
+    selectHashPage();
+    window.addEventListener("hashchange", selectHashPage);
+    return () => window.removeEventListener("hashchange", selectHashPage);
+  }, [canvasX, canvasY]);
+
   const selectPage = useCallback((page: WorkspacePage) => {
     setActivePage(page);
     setNoteOpen(false);
@@ -382,15 +403,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
 
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <div className={styles.studioTabs}>
-          <span className={styles.studioTabActive} aria-current="page">Portfolio <button type="button" onClick={() => selectPage("work")} aria-label="Return to portfolio overview">×</button></span>
-          <Link href="/work/harbinger">Harbinger Motors</Link>
-          <Link href="/work/aadivara">Aadivara</Link>
-          <Link href="/work/inventfunds">InventFunds</Link>
-          <Link href="/work/property-care">Property Care</Link>
-          <Link href="/work/hcm-cafe">HCM Café</Link>
-          <button type="button" onClick={() => selectPage("contact")} aria-label="Open contact page">+</button>
-        </div>
+        <WorkspaceTabs onPortfolioSelect={() => selectPage("work")} />
         <div className={styles.studioTools}>
           <button type="button" disabled={zoom <= 70} onClick={() => setZoom((current) => Math.max(70, current - 8))} aria-label="Zoom out"><WorkspaceIcon name="zoomOut" /></button>
           <button type="button" disabled={zoom >= 115} onClick={() => setZoom((current) => Math.min(115, current + 8))} aria-label="Zoom in"><WorkspaceIcon name="zoomIn" /></button>
@@ -398,6 +411,9 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
           <i />
           <button type="button" onClick={() => setPresentation(true)} aria-label="Open presentation mode"><WorkspaceIcon name="play" /></button>
           <button type="button" onClick={() => setNoteOpen((current) => !current)} aria-expanded={noteOpen} aria-pressed={noteOpen} aria-label="View design note"><WorkspaceIcon name="comment" /></button>
+          <div className={styles.studioUtilityLinks}>
+            <PortfolioLinks />
+          </div>
           <button className={styles.studioPresentButton} type="button" onClick={() => setPresentation(true)}>Present</button>
         </div>
         {noteOpen && (
@@ -493,6 +509,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
             setZoom((current) => Math.max(70, Math.min(115, current - Math.sign(event.deltaY) * 5)));
           }}
         >
+          <span id="contact" aria-hidden="true" />
           <motion.div
             className={styles.studioCanvasInner}
             style={{
@@ -595,7 +612,37 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
                 <SelectionHandles />
                 <div className={styles.studioDocumentHeader}><b>About</b><span>Varun J · Bengaluru, India</span></div>
                 <div className={styles.studioAboutGrid}>
-                  <div className={styles.studioPortraitPlaceholder}><span>Portrait<br />to be added</span></div>
+                  <div className={styles.studioPortraitGallery}>
+                    <figure className={styles.studioPortraitMain}>
+                      <Image
+                        src="/varun-office.webp"
+                        alt="Varun in a product design workspace"
+                        fill
+                        priority
+                        unoptimized
+                        sizes="(max-width: 900px) 100vw, 280px"
+                      />
+                      <figcaption>Senior UI/UX Designer · Bengaluru</figcaption>
+                    </figure>
+                    <figure>
+                      <Image
+                        src="/varun-riverside.webp"
+                        alt="Varun outdoors beside a river"
+                        fill
+                        unoptimized
+                        sizes="(max-width: 900px) 50vw, 136px"
+                      />
+                    </figure>
+                    <figure>
+                      <Image
+                        src="/varun-manali.webp"
+                        alt="Varun travelling in Manali"
+                        fill
+                        unoptimized
+                        sizes="(max-width: 900px) 50vw, 136px"
+                      />
+                    </figure>
+                  </div>
                   <div>
                     <p className={styles.studioDocumentLabel}>Senior UI/UX Designer</p>
                     <h1>I enjoy making complex enterprise products easier to understand and use.</h1>
@@ -619,7 +666,28 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
                   <p className={styles.studioDocumentLabel}>Start a conversation</p>
                   <h1>Working on a complex product?</h1>
                   <p>I am interested in product design roles and conversations around enterprise workflows, data-heavy products and business-critical systems.</p>
-                  <a href="https://www.linkedin.com/in/varunj96/" target="_blank" rel="noreferrer">Connect on LinkedIn <span>↗</span></a>
+                  <div className={styles.studioContactActions}>
+                    <a href="mailto:varunj93478@gmail.com">
+                      <span className={styles.studioContactIcon} aria-hidden="true">✉</span>
+                      <span className={styles.studioContactCopy}><b>Email</b><small>Roles and project enquiries</small></span>
+                      <span className={styles.studioContactArrow} aria-hidden="true">↗</span>
+                    </a>
+                    <a href="https://wa.me/917760560455" target="_blank" rel="noreferrer">
+                      <span className={styles.studioContactIcon} aria-hidden="true">W</span>
+                      <span className={styles.studioContactCopy}><b>WhatsApp</b><small>Start a quick conversation</small></span>
+                      <span className={styles.studioContactArrow} aria-hidden="true">↗</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/varunj96/" target="_blank" rel="noreferrer">
+                      <span className={styles.studioContactIcon} aria-hidden="true">in</span>
+                      <span className={styles.studioContactCopy}><b>LinkedIn</b><small>View profile and connect</small></span>
+                      <span className={styles.studioContactArrow} aria-hidden="true">↗</span>
+                    </a>
+                    <a href="/VarunJ_Resume.pdf" download="Varun-J-Resume.pdf">
+                      <span className={styles.studioContactIcon} aria-hidden="true">CV</span>
+                      <span className={styles.studioContactCopy}><b>Résumé</b><small>Download the latest PDF</small></span>
+                      <span className={styles.studioContactArrow} aria-hidden="true">↓</span>
+                    </a>
+                  </div>
                 </div>
               </motion.article>
             )}
@@ -657,7 +725,10 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
                     <div><dt>Status</dt><dd>{activePageData.status}</dd></div>
                   </dl>
                   {activePage === "contact" ? (
-                    <a className={styles.studioInspectorAction} href="https://www.linkedin.com/in/varunj96/" target="_blank" rel="noreferrer">Open LinkedIn</a>
+                    <div className={styles.studioInspectorGuidance}>
+                      <b>No preferred channel</b>
+                      <p>Choose email, WhatsApp or LinkedIn based on how you would like to connect.</p>
+                    </div>
                   ) : (
                     <button className={styles.studioInspectorAction} type="button" onClick={() => selectPage("work")}>View selected work</button>
                   )}

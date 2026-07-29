@@ -3,6 +3,8 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { PortfolioLinks } from "../../concepts/PortfolioLinks";
+import { WorkspaceTabs } from "../../concepts/WorkspaceTabs";
 import styles from "../../concepts/concepts.module.css";
 import { useActiveSection } from "../useActiveSection";
 
@@ -103,14 +105,11 @@ export default function HarbingerCaseStudy() {
     <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage}`}>
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <div className={styles.studioTabs}>
-          <Link href="/">Portfolio</Link>
-          <span className={styles.studioTabActive} aria-current="page">Harbinger Motors <button type="button" onClick={() => window.location.assign("/")} aria-label="Close project and return to portfolio">×</button></span>
-          <Link className={styles.caseAddTab} href="/concepts" aria-label="View earlier design concepts">+</Link>
-        </div>
+        <WorkspaceTabs />
         <div className={styles.caseToolbarActions}>
           <span className={styles.caseViewActive}>Case study</span>
           <Link href="/work/harbinger/documentation">UX documentation</Link>
+          <PortfolioLinks />
         </div>
       </header>
 
@@ -161,14 +160,14 @@ export default function HarbingerCaseStudy() {
         <section className={styles.caseStudyCanvas} aria-label="Harbinger Motors case study" data-case-scroll>
           <article className={styles.caseStudyDocument}>
             <section className={styles.caseStudyHero} id="overview">
-              <div className={styles.caseStudyKicker}><span>Harbinger Motors</span><b>2025 to 2026</b></div>
+              <div className={styles.caseStudyKicker}><span>Harbinger Motors</span><b>Product case study</b></div>
               <h1>Designing across vehicle configuration, operations and dealer workflows.</h1>
               <p className={styles.caseStudyLead}>Harbinger is an enterprise product with two connected portals. The HBR Portal supports product and vehicle operations. The Dealer Portal supports dealer delivery, service, warranty and PDI workflows.</p>
               <dl className={styles.caseStudyMeta}>
                 <div><dt>Role</dt><dd>Senior UI/UX Designer</dd></div>
                 <div><dt>Scope</dt><dd>Product UX, UI and handoff</dd></div>
                 <div><dt>Platform</dt><dd>Enterprise web application</dd></div>
-                <div><dt>Team</dt><dd>Product, business and engineering</dd></div>
+                <div><dt>Timeline</dt><dd>2025 to 2026</dd></div>
               </dl>
               <div className={styles.caseSystemMap}>
                 <div><span>HBR Portal</span><b>Configure products<br />Track vehicles</b></div>
@@ -379,20 +378,6 @@ export default function HarbingerCaseStudy() {
           </article>
         </section>
 
-        <aside className={`${styles.studioInspector} ${styles.caseInspector}`}>
-          <div>
-            <header><h2>Harbinger Motors</h2><CaseIcon name="truck" /></header>
-            <dl>
-              <div><dt>Role</dt><dd>Senior UI/UX Designer</dd></div>
-              <div><dt>Scope</dt><dd>HBR Portal + Dealer Portal</dd></div>
-              <div><dt>Focus</dt><dd>Configuration, VIN operations and PDI</dd></div>
-              <div><dt>Status</dt><dd>Featured case study</dd></div>
-            </dl>
-            <a className={styles.studioInspectorAction} href="#overview">Back to overview</a>
-            <Link className={styles.studioInspectorSecondary} href="/work/harbinger/documentation">Open UX documentation</Link>
-            <Link className={styles.studioInspectorSecondary} href="/">Portfolio canvas</Link>
-          </div>
-        </aside>
       </div>
 
       <footer className={styles.studioStatusbar}>

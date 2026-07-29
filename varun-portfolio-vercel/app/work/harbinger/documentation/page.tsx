@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { PortfolioLinks } from "../../../concepts/PortfolioLinks";
+import { WorkspaceTabs } from "../../../concepts/WorkspaceTabs";
 import styles from "../../../concepts/concepts.module.css";
 import { useActiveSection } from "../../useActiveSection";
 
@@ -90,13 +92,11 @@ export default function HarbingerDocumentation() {
     <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.documentationPage}`}>
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <div className={styles.studioTabs}>
-          <Link href="/">Portfolio</Link>
-          <span className={styles.studioTabActive} aria-current="page">Harbinger · UX documentation <button type="button" onClick={() => window.location.assign("/work/harbinger")} aria-label="Close UX documentation and return to the Harbinger case study">×</button></span>
-        </div>
+        <WorkspaceTabs />
         <div className={styles.caseToolbarActions}>
           <Link href="/work/harbinger">Case study</Link>
           <span className={styles.caseViewActive}>UX documentation</span>
+          <PortfolioLinks />
         </div>
       </header>
 
@@ -321,19 +321,6 @@ export default function HarbingerDocumentation() {
           </article>
         </section>
 
-        <aside className={`${styles.studioInspector} ${styles.caseInspector} ${styles.documentationInspector}`}>
-          <div>
-            <header><h2>{documents.find(([id]) => id === activeDocument)?.[1]}</h2><DocIcon name="file" /></header>
-            <dl>
-              <div><dt>Project</dt><dd>Harbinger Motors</dd></div>
-              <div><dt>View</dt><dd>UX documentation</dd></div>
-              <div><dt>Evidence</dt><dd>Confirmed, interpreted, recommended and open questions</dd></div>
-              <div><dt>Purpose</dt><dd>System understanding and design rationale</dd></div>
-            </dl>
-            <button className={styles.studioInspectorAction} type="button" onClick={() => selectDocument(activeDocument)}>Open selected section</button>
-            <Link className={styles.studioInspectorSecondary} href="/work/harbinger">Open case study</Link>
-          </div>
-        </aside>
       </div>
 
       <footer className={styles.studioStatusbar}>
