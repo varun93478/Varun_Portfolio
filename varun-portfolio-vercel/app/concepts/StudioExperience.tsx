@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useMotionValue, useReducedMotion } from "motio
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PreviewSwitcher } from "./ConceptExperience";
 import { PortfolioLinks } from "./PortfolioLinks";
+import { SystemOrbit3D } from "./SystemOrbit3D";
 import { WorkspaceTabs } from "./WorkspaceTabs";
 import styles from "./concepts.module.css";
 
@@ -225,22 +226,26 @@ function SelectionHandles() {
   );
 }
 
-function EditorialSystemHero({ onQuickScan }: { onQuickScan: () => void }) {
+function EditorialSystemHero({ accent, onQuickScan }: { accent: string; onQuickScan: () => void }) {
   return (
     <div className={styles.studioEditorialHero}>
-      <div className={styles.studioEditorialCopy}>
-        <span className={styles.studioEditorialRole}>Complex Systems Product Designer</span>
-        <h1>
-          <span>I make complex enterprise</span>
-          <span>products easier to understand</span>
-          <span>and operate.</span>
-        </h1>
+      <div className={styles.studioEditorialTop}>
+        <div className={styles.studioEditorialCopy}>
+          <span className={styles.studioEditorialRole}>Complex Systems Product Designer</span>
+          <h1>
+            <span>I make complex enterprise</span>
+            <span>products easier to understand</span>
+            <span>and operate.</span>
+          </h1>
+        </div>
+
+        <SystemOrbit3D accent={accent} />
       </div>
 
       <div className={styles.studioEditorialLower}>
         <div className={styles.studioEditorialIntro}>
           <p>
-            I simplify connected workflows, roles, business rules and data-heavy interfaces into clear product experiences.
+            I map the roles, rules, data and decisions behind enterprise products—then turn that complexity into workflows teams can trust.
           </p>
         </div>
 
@@ -251,9 +256,9 @@ function EditorialSystemHero({ onQuickScan }: { onQuickScan: () => void }) {
       </div>
 
       <div className={styles.studioEditorialFocus} aria-label="Product design focus">
-        <span>Enterprise workflows</span>
-        <span>Roles and business rules</span>
-        <span>Data-heavy products</span>
+        <span><b>01</b> Role logic</span>
+        <span><b>02</b> Workflow clarity</span>
+        <span><b>03</b> Operational states</span>
       </div>
     </div>
   );
@@ -332,7 +337,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
       return () => window.clearTimeout(storedSessionTimer);
     }
 
-    const timer = window.setTimeout(closeSplash, prefersReducedMotion ? 450 : 1800);
+    const timer = window.setTimeout(closeSplash, prefersReducedMotion ? 0 : 720);
     return () => window.clearTimeout(timer);
   }, [closeSplash, prefersReducedMotion]);
 
@@ -451,9 +456,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
         {splashVisible && (
           <motion.section
             className={styles.workspaceSplash}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Opening Varun's design workspace"
+            aria-hidden="true"
             initial={prefersReducedMotion ? false : { opacity: 1 }}
             exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 1.015 }}
             transition={{ duration: prefersReducedMotion ? 0.12 : 0.35, ease: "easeOut" }}
@@ -475,7 +478,6 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
               <h1>Complex Systems<br />Product Designer</h1>
               <div className={styles.workspaceSplashProgress} aria-hidden="true"><span /></div>
             </div>
-            <button type="button" onClick={closeSplash}>Skip</button>
           </motion.section>
         )}
       </AnimatePresence>
@@ -678,6 +680,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
                     </nav>
                   </div>
                   <EditorialSystemHero
+                    accent={activeAccent}
                     onQuickScan={() => {
                       selectProject("harbinger");
                       document.getElementById("project-overview")?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });

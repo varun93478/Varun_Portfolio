@@ -6,6 +6,16 @@ import { motion, useReducedMotion } from "motion/react";
 import { PortfolioLinks } from "../../../concepts/PortfolioLinks";
 import { WorkspaceTabs } from "../../../concepts/WorkspaceTabs";
 import styles from "../../../concepts/concepts.module.css";
+import {
+  AnnotatedScreen,
+  ArtifactDisclosure,
+  CaseStorySpine,
+  ChapterResolution,
+  FlowComparison,
+  InformationArchitecture,
+  StateCoverageMatrix,
+  WireframeStrip,
+} from "../../case-study-story";
 import { useActiveSection } from "../../useActiveSection";
 
 type IconName = "arrow" | "data" | "file" | "folder" | "home" | "truck";
@@ -88,24 +98,6 @@ function EvidenceFrame({
       </div>
       <figcaption>{note}</figcaption>
     </figure>
-  );
-}
-
-function StoryMetrics({
-  items,
-}: {
-  items: Array<{ value: string; label: string; note: string }>;
-}) {
-  return (
-    <div className={styles.caseV2Metrics} aria-label="Measured project outcomes">
-      {items.map((item) => (
-        <article key={item.label}>
-          <strong>{item.value}</strong>
-          <b>{item.label}</b>
-          <p>{item.note}</p>
-        </article>
-      ))}
-    </div>
   );
 }
 
@@ -261,8 +253,9 @@ export default function HarbingerV2CaseStudy() {
 
                 <div className={styles.caseV2HeroStatement}>
                   <div className={styles.caseV2HeroCopy}>
-                    <h1>Preventing errors across vehicle configuration, delivery and inspection.</h1>
-                    <p className={styles.caseStudyLead}>I redesigned three connected workflows to improve accuracy, clarify ownership and make changing forms easier to maintain.</p>
+                    <p className={styles.caseV2Hook}>One vehicle · Three connected workflows · Hidden operational risk</p>
+                    <h1>The interface looked simple. The system underneath was not.</h1>
+                    <p className={styles.caseStudyLead}>A configuration choice could invalidate a quotation. A delivery status could hide who acted next. A field change could trigger another UI rebuild. I redesigned the system so those dependencies became visible before they became operational problems.</p>
                     <div className={styles.caseV2HeroActions}>
                       <a href="#configuration" onClick={(event) => { event.preventDefault(); selectSection("configuration"); }}>Explore the decisions <Icon name="arrow" /></a>
                       <Link href="/work/harbinger/documentation">View UX documentation <Icon name="arrow" /></Link>
@@ -270,9 +263,9 @@ export default function HarbingerV2CaseStudy() {
                   </div>
 
                   <aside className={styles.caseV2HeroFocus} aria-label="Case study focus">
-                    <span>Case study focus</span>
-                    <strong>03</strong>
-                    <p>connected product problems across one operational system</p>
+                    <span>Investigation structure</span>
+                    <strong>05</strong>
+                    <p>stages from problem evidence to an honest validation boundary</p>
                   </aside>
                 </div>
               </div>
@@ -284,23 +277,31 @@ export default function HarbingerV2CaseStudy() {
                 <div><dt>Timeline</dt><dd>2025 to 2026</dd></div>
               </dl>
 
+              <CaseStorySpine stages={[
+                { label: "Problem", description: "Find where operational understanding breaks." },
+                { label: "Evidence", description: "Map roles, rules, data and failure states." },
+                { label: "Decision", description: "Compare options and choose the clearest model." },
+                { label: "Solution", description: "Turn the model into visible interface behavior." },
+                { label: "Outcome", description: "Document what improved and what still needs proof." },
+              ]} />
+
               <div className={styles.caseV2HeroStory}>
                 <div className={styles.caseV2HeroSpine} aria-label="Case study story">
-                  <article><span>Before</span><i>!</i><p>Siloed tools and hidden rules led to errors, delays and repeated work.</p></article>
-                  <article><span>Decision</span><i>◇</i><p>Surface dependencies, clarify ownership and standardize changing forms.</p></article>
-                  <article><span>Outcome</span><i>✓</i><p>Fewer errors, clearer hand-offs and faster PDI updates.</p></article>
+                  <article><span>What failed</span><i>!</i><p>Rules, ownership and changing requirements were hidden behind otherwise familiar screens.</p></article>
+                  <article><span>What changed</span><i>◇</i><p>Dependencies became guidance, hand-offs became explicit and form rules moved into configuration.</p></article>
+                  <article><span>What is defensible</span><i>✓</i><p>The delivered design covers the critical logic and states. Formal outcome measurement remains future work.</p></article>
                 </div>
 
                 <nav className={styles.caseV2HeroProblems} aria-label="Three product problems">
                   <p>Three connected product problems</p>
                   <a href="#configuration" onClick={(event) => { event.preventDefault(); selectSection("configuration"); }}>
-                    <span>01</span><div><b>Configuration dependencies</b><strong>68%</strong><small>fewer invalid configurations</small></div>
+                    <span>01</span><div><b>Configuration dependencies</b><strong>Prevent</strong><small>invalid combinations before quotation</small></div>
                   </a>
                   <a href="#ownership" onClick={(event) => { event.preventDefault(); selectSection("ownership"); }}>
-                    <span>02</span><div><b>Delivery ownership</b><strong>52%</strong><small>fewer unclear hand-offs</small></div>
+                    <span>02</span><div><b>Delivery ownership</b><strong>Clarify</strong><small>the next responsible dealer and action</small></div>
                   </a>
                   <a href="#pdi" onClick={(event) => { event.preventDefault(); selectSection("pdi"); }}>
-                    <span>03</span><div><b>PDI maintainability</b><strong>3–4 hrs</strong><small>for common field changes</small></div>
+                    <span>03</span><div><b>PDI maintainability</b><strong>Separate</strong><small>form behavior from screen implementation</small></div>
                   </a>
                 </nav>
               </div>
@@ -338,6 +339,34 @@ export default function HarbingerV2CaseStudy() {
                 annotation="The flow made it clear that validation could not wait until quotation. Guidance had to begin inside Build Your Own."
               />
 
+              <ArtifactDisclosure
+                kind="User flow + low-fidelity wireframes"
+                title="How the dependency became visible before quotation"
+                summary="Open the reconstructed process evidence behind the final configuration behavior."
+              >
+                <FlowComparison
+                  before={["Choose chassis", "Choose GVWR", "Choose wheelbase", "Build an invalid combination", "Discover the conflict during quotation"]}
+                  after={["Choose chassis", "See valid GVWR choices", "Understand disabled wheelbases", "Revalidate downstream options", "Continue with a quotation-ready setup"]}
+                />
+                <WireframeStrip frames={[
+                  {
+                    title: "Hide unavailable",
+                    note: "Visually quiet, but removes product-range context.",
+                    blocks: ["heading", "copy", "field", "field", "action"],
+                  },
+                  {
+                    title: "Disable + explain",
+                    note: "Keeps choices visible and explains the dependency.",
+                    blocks: ["heading", "copy", "field", "status", "field", "action"],
+                  },
+                  {
+                    title: "Selection summary",
+                    note: "Makes downstream consequences reviewable before quotation.",
+                    blocks: ["heading", "status", "copy", "copy", "action"],
+                  },
+                ]} />
+              </ArtifactDisclosure>
+
               <StoryFrame
                 problem="An invalid early choice could create an impossible model code, incorrect pricing or a quotation that could not move into a valid Sales Order."
                 constraint="The business rules had to remain intact. I could change how the options were presented, not which combinations Harbinger supported."
@@ -367,12 +396,6 @@ export default function HarbingerV2CaseStudy() {
                 <div><span>Trade-off</span><p>The interface carries more explanatory states than a hide-only approach. The additional context reduced trial and error.</p></div>
               </div>
 
-              <StoryMetrics items={[
-                { value: "68%", label: "Fewer invalid configurations", note: "Measured across configuration review scenarios." },
-                { value: "34%", label: "Faster completion", note: "From first selection to quotation-ready setup." },
-                { value: "41%", label: "Fewer quotation corrections", note: "Errors linked to incompatible product selections." },
-              ]} />
-
               <EvidenceFrame
                 title="Dependency-aware Build Your Own flow"
                 note="The selected package changes the available options while the configuration summary keeps the consequences visible."
@@ -381,6 +404,24 @@ export default function HarbingerV2CaseStudy() {
                   alt: "Build Your Own screen showing FedEx package dependencies",
                   label: "FedEx package dependencies",
                 }]}
+              />
+
+              <AnnotatedScreen
+                src="/case-study-assets/configuration-fedex.png"
+                alt="Annotated Build Your Own screen showing configuration hierarchy and affordances"
+                title="The final screen explains both availability and consequence"
+                annotations={[
+                  { number: "01", title: "Sequence", detail: "Earlier choices establish the rules for every option that follows.", x: "19%", y: "31%" },
+                  { number: "02", title: "Affordance", detail: "Unavailable options remain visible but clearly disabled, preserving product context.", x: "50%", y: "47%" },
+                  { number: "03", title: "Hierarchy", detail: "The configuration summary keeps model and price consequences visible before continuation.", x: "83%", y: "28%" },
+                ]}
+              />
+
+              <ChapterResolution
+                decision="Keep incompatible choices visible, disable them and explain which earlier selection created the restriction."
+                tradeoff="The screen carries more explanatory states than a hide-only interface."
+                behavior="Users can correct the dependency before creating a quotation or Sales Order."
+                validation="Scenario walkthroughs covered rule changes and revalidation; production error-rate measurement was not available."
               />
             </motion.section>
 
@@ -409,6 +450,25 @@ export default function HarbingerV2CaseStudy() {
                 description="The role-labelled flow exposed the hand-off from the Requesting Dealer to the Supplying Dealer and back again."
                 annotation="The ownership changes twice. That is why the final list needs both current status and a clear next action."
               />
+
+              <ArtifactDisclosure
+                kind="Information architecture + role flow"
+                title="One delivery record, two dealers and changing ownership"
+                summary="Open the reconstructed role and permission model used to separate progress from responsibility."
+              >
+                <InformationArchitecture
+                  title="Delivery information organized around ownership"
+                  groups={[
+                    { role: "Requesting Dealer", owns: "Request and receipt", access: ["Raise request", "Track transfer", "Confirm arrival", "Complete PDI and retail delivery"] },
+                    { role: "Supplying Dealer", owns: "Acceptance and dispatch", access: ["Review request", "Accept or reject", "Prepare vehicle", "Mark vehicle in transit"] },
+                    { role: "Shared vehicle data", owns: "VIN and delivery history", access: ["Existing VIN only", "One transfer record", "Stage history", "Warranty dependency"] },
+                  ]}
+                />
+                <FlowComparison
+                  before={["Read combined status", "Open request", "Inspect history", "Infer responsible dealer", "Work out the next action"]}
+                  after={["Scan current status", "See completed stage", "See responsible dealer", "Read next action", "Open only when action is required"]}
+                />
+              </ArtifactDisclosure>
 
               <StoryFrame
                 problem="A status such as In transit explained what was happening, but it did not explain who owned the next step or what action was expected."
@@ -441,12 +501,6 @@ export default function HarbingerV2CaseStudy() {
                 <div><span>Trade-off</span><p>The table needs more columns. The added information prevents users from opening each request just to understand what they need to do.</p></div>
               </div>
 
-              <StoryMetrics items={[
-                { value: "52%", label: "Fewer unclear hand-offs", note: "Requests where ownership required clarification." },
-                { value: "31%", label: "Fewer overdue actions", note: "Dealer actions completed after the expected stage." },
-                { value: "27%", label: "Faster request review", note: "Time needed to identify status and next action." },
-              ]} />
-
               <EvidenceFrame
                 title="Delivery list and request timeline"
                 note="The list supports quick triage. The detail view explains completed stages, current ownership and what happens next."
@@ -462,6 +516,13 @@ export default function HarbingerV2CaseStudy() {
                     label: "Cross-dealer delivery timeline",
                   },
                 ]}
+              />
+
+              <ChapterResolution
+                decision="Separate status, completed stage, responsible dealer and next action instead of compressing them into one label."
+                tradeoff="The list needs more columns, so density is intentionally higher."
+                behavior="Each dealer can identify whether the request is waiting on them before opening the record."
+                validation="Both dealer perspectives were walked through across the approved stages; task-time and hand-off metrics were not collected."
               />
             </motion.section>
 
@@ -490,6 +551,40 @@ export default function HarbingerV2CaseStudy() {
                 description="The architecture connects changing requirements to a reusable renderer and the approved Dealer Portal components."
                 annotation="The scalable decision was not only the stepper. It was separating the form rules from the screen implementation."
               />
+
+              <ArtifactDisclosure
+                kind="Wireframes + component variants"
+                title="Designing the checklist and every state around it"
+                summary="Open the reconstructed exploration of task grouping, affordances and edge-state coverage."
+              >
+                <WireframeStrip frames={[
+                  {
+                    title: "Single checklist",
+                    note: "Complete but difficult to scan, recover and review.",
+                    blocks: ["heading", "field", "field", "field", "field", "action"],
+                  },
+                  {
+                    title: "Task-based steps",
+                    note: "Groups inspection work around recognizable vehicle areas.",
+                    blocks: ["heading", "status", "field", "field", "action"],
+                  },
+                  {
+                    title: "Final review",
+                    note: "Makes failed evidence and sign-off visible before submission.",
+                    blocks: ["heading", "status", "copy", "copy", "action"],
+                  },
+                ]} />
+                <StateCoverageMatrix items={[
+                  { state: "Default", cue: "Inspection item ready", purpose: "Shows the expected check and available response." },
+                  { state: "Loading", cue: "Draft retrieval in progress", purpose: "Prevents duplicate input while saved answers load.", tone: "progress" },
+                  { state: "Empty", cue: "No inspection started", purpose: "Explains how to begin and what evidence may be required." },
+                  { state: "Error", cue: "Draft or upload failed", purpose: "Preserves entered work and offers a clear recovery action.", tone: "warning" },
+                  { state: "Passed", cue: "Requirement satisfied", purpose: "Moves the item toward final review.", tone: "positive" },
+                  { state: "Failed", cue: "Comment and evidence required", purpose: "Makes the consequence and required recovery explicit.", tone: "warning" },
+                  { state: "Disabled", cue: "Submission unavailable", purpose: "Explains which incomplete requirement blocks sign-off.", tone: "restricted" },
+                  { state: "Restricted", cue: "Role cannot approve", purpose: "Separates inspection access from final dealer sign-off.", tone: "restricted" },
+                ]} />
+              </ArtifactDisclosure>
 
               <StoryFrame
                 problem="A long checklist increased scanning and validation effort. Hardcoded fields also meant that a common requirement change had to move through design, development and regression checks."
@@ -522,12 +617,6 @@ export default function HarbingerV2CaseStudy() {
                 <div><span>Trade-off</span><p>The renderer needs clear governance. Unsupported component behaviour still requires a custom renderer and regression checks.</p></div>
               </div>
 
-              <StoryMetrics items={[
-                { value: "29%", label: "Faster PDI completion", note: "From checklist start to final review." },
-                { value: "3–4 hrs", label: "Field-change turnaround", note: "Reduced from two to three working days." },
-                { value: "43%", label: "Fewer form-change defects", note: "Issues caused by labels, validation and required-state updates." },
-              ]} />
-
               <EvidenceFrame
                 title="Configured PDI states"
                 note="Failed items require supporting information. The final review keeps the complete result visible before dealer sign-off."
@@ -548,6 +637,13 @@ export default function HarbingerV2CaseStudy() {
                     label: "Completed PDI",
                   },
                 ]}
+              />
+
+              <ChapterResolution
+                decision="Use eight task-based steps and a reusable renderer whose labels, validation, options and order come from JSON configuration."
+                tradeoff="The renderer needs governance, and unsupported behavior still requires custom implementation."
+                behavior="Technicians review one inspection area at a time, failed items require evidence and the complete result remains visible before sign-off."
+                validation="Form, role and failed-item scenarios were reviewed; completion-time and maintenance-effort improvements were not formally measured."
               />
             </motion.section>
 
@@ -580,14 +676,19 @@ export default function HarbingerV2CaseStudy() {
             <section className={`${styles.caseStudySection} ${styles.caseReflection}`} id="outcomes">
               <div className={styles.caseSectionHeading}>
                 <span>05</span>
-                <div><p>Project outcomes</p><h2>Three decisions improved accuracy, ownership and maintainability.</h2></div>
+                <div><p>Project outcomes</p><h2>The delivered design made critical system behavior visible.</h2></div>
               </div>
 
               <div className={styles.caseV2OutcomeTable}>
-                <div className={styles.caseV2OutcomeHeader}><span>Product problem</span><span>Design response</span><span>Outcome</span></div>
-                <div><b>Invalid configurations</b><p>Dependency-aware options and revalidation</p><strong>68% fewer invalid combinations</strong></div>
-                <div><b>Unclear delivery ownership</b><p>Status, stage, owner and next action</p><strong>52% fewer unclear hand-offs</strong></div>
-                <div><b>Changing PDI requirements</b><p>Eight steps and JSON-driven forms</p><strong>Field changes reduced to 3–4 hours</strong></div>
+                <div className={styles.caseV2OutcomeHeader}><span>Product problem</span><span>Design response</span><span>Defensible outcome</span></div>
+                <div><b>Invalid configurations</b><p>Dependency-aware options and revalidation</p><strong>Invalid paths are blocked before quotation while the reason remains visible.</strong></div>
+                <div><b>Unclear delivery ownership</b><p>Status, stage, owner and next action</p><strong>Each dealer can see responsibility without inferring it from progress alone.</strong></div>
+                <div><b>Changing PDI requirements</b><p>Eight steps and JSON-driven forms</p><strong>Common form behavior is separated from the screen structure and can be governed centrally.</strong></div>
+              </div>
+
+              <div className={styles.caseOutcomeBoundary}>
+                <b>Validation boundary</b>
+                <p>Formal usability benchmarks, production error rates and maintenance-effort measurements were not available. This case study documents delivered interaction coverage, reviewed business rules and one confirmed implementation correction without inventing business impact.</p>
               </div>
 
               <div className={styles.caseV2Closing}>
@@ -613,7 +714,7 @@ export default function HarbingerV2CaseStudy() {
       <footer className={styles.studioStatusbar}>
         <span><i /> Product case study</span>
         <span>Harbinger Motors</span>
-        <span>3 decisions · 9 KPIs · 1 QA correction</span>
+        <span>3 decisions · 5-stage narrative · 1 confirmed QA correction</span>
         <Link href="/">Return to portfolio</Link>
       </footer>
     </main>

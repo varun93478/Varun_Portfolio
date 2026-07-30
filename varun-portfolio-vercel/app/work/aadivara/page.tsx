@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { PortfolioLinks } from "../../concepts/PortfolioLinks";
 import { WorkspaceTabs } from "../../concepts/WorkspaceTabs";
 import styles from "../../concepts/concepts.module.css";
+import { ArtifactDisclosure, FlowComparison, StateCoverageMatrix } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
 
 const chapters = [
@@ -189,6 +190,23 @@ export default function AadivaraCaseStudy() {
                 <div><span>03</span><b>Print guidance</b><p>Generate a 58 mm or 80 mm slip.</p></div>
                 <div><span>04</span><b>Sync safely</b><p>Automatic retry with visible status.</p></div>
               </div>
+              <ArtifactDisclosure
+                kind="Service flow + recovery states"
+                title="Designing check-in for unreliable connectivity"
+                summary="See how the primary, fallback and recovery paths support event-day continuity."
+              >
+                <FlowComparison
+                  before={["Attempt QR scan", "Lose connectivity", "Stop check-in", "Wait or use an external workaround"]}
+                  after={["Scan QR or search manually", "Confirm locally", "Print event guidance", "Queue the update", "Sync with visible recovery status"]}
+                />
+                <StateCoverageMatrix items={[
+                  { state: "Online", cue: "Synced", purpose: "Confirms the record is available to event operations.", tone: "positive" },
+                  { state: "Offline", cue: "Saved on device", purpose: "Lets the volunteer continue without losing the check-in.", tone: "warning" },
+                  { state: "Pending", cue: "Waiting to sync", purpose: "Makes unfinished system work visible.", tone: "progress" },
+                  { state: "Conflict", cue: "Review required", purpose: "Prevents a local update from silently overwriting a newer record.", tone: "warning" },
+                  { state: "Recovered", cue: "Sync complete", purpose: "Closes the loop when connectivity returns.", tone: "positive" },
+                ]} />
+              </ArtifactDisclosure>
               <Evidence title="Volunteer offline flow" note="Real design board showing the offline-capable volunteer journey and printed-slip workflow." images={[
                 { src: "/aadivara-assets/volunteer-flow.png", alt: "Aadivara volunteer offline check-in flow", label: "Offline check-in and slip printing" },
               ]} />

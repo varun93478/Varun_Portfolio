@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { PortfolioLinks } from "../../concepts/PortfolioLinks";
 import { WorkspaceTabs } from "../../concepts/WorkspaceTabs";
 import styles from "../../concepts/concepts.module.css";
+import { ArtifactDisclosure, WireframeStrip } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
 
 const chapters = [
@@ -143,7 +144,7 @@ export default function PropertyCareCaseStudy() {
               </dl>
               <div className={styles.pcHeroComposition}>
                 <img src="/property-care-assets/property-list.png" alt="Property Care map and property listing interface" loading="eager" decoding="async" />
-                <img src="/property-care-assets/property-posted-mobile.png" alt="Property Care mobile property posted confirmation" loading="eager" decoding="async" />
+                <img src="/property-care-assets/property-posted-mobile.png" alt="Property Care mobile property posted confirmation" loading="lazy" decoding="async" />
                 <div><span>Connected workflow</span><b>Onboard → Publish → Discover → Enquire</b></div>
               </div>
             </section>
@@ -202,6 +203,17 @@ export default function PropertyCareCaseStudy() {
                 <div><span>Reason</span><p>Property type, location, specifications, amenities and media require different kinds of input.</p></div>
                 <div><span>Trade-off</span><p>The flow takes more steps, but each step is easier to review and correct.</p></div>
               </div>
+              <ArtifactDisclosure
+                kind="Wireframe exploration"
+                title="Grouping the form around how people describe a property"
+                summary="Compare the information-density options behind the eight-step structure."
+              >
+                <WireframeStrip frames={[
+                  { title: "One long form", note: "Fast to expose, difficult to scan and recover.", blocks: ["heading", "field", "field", "field", "field", "action"] },
+                  { title: "Database groups", note: "Matches the schema but not the user’s mental model.", blocks: ["heading", "status", "field", "field", "copy", "action"] },
+                  { title: "Task-based steps", note: "Groups type, location, specifications, amenities and media around recognizable decisions.", blocks: ["heading", "status", "copy", "field", "action"] },
+                ]} />
+              </ArtifactDisclosure>
               <Evidence
                 title="Property posting flow"
                 note="Real screens from the eight-step property posting flow. Full-size images open in a separate tab."

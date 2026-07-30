@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { PortfolioLinks } from "../../concepts/PortfolioLinks";
 import { WorkspaceTabs } from "../../concepts/WorkspaceTabs";
 import styles from "../../concepts/concepts.module.css";
+import { ArtifactDisclosure, StateCoverageMatrix } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
 
 const chapters = [
@@ -245,6 +246,20 @@ export default function InventFundsCaseStudy() {
                 <div><span>Reference</span><b>Global NDA template</b></div>
                 <div><span>Recovery</span><b>Empty, loading and error states</b></div>
               </div>
+              <ArtifactDisclosure
+                kind="Trust-state architecture"
+                title="The NDA component is a workflow, not a document card"
+                summary="Review the state model that controls access, action and recovery."
+              >
+                <StateCoverageMatrix items={[
+                  { state: "Empty", cue: "No NDA exists", purpose: "Explains who can create the agreement and what happens next." },
+                  { state: "Draft", cue: "Not shared", purpose: "Keeps incomplete legal context out of the collaboration flow.", tone: "progress" },
+                  { state: "Review", cue: "Action required", purpose: "Shows who must read or sign before access changes.", tone: "warning" },
+                  { state: "Active", cue: "Access governed", purpose: "Identifies the agreement currently protecting the project.", tone: "positive" },
+                  { state: "Expired", cue: "Past agreement", purpose: "Keeps historical context without implying current access.", tone: "restricted" },
+                  { state: "Error", cue: "Document unavailable", purpose: "Protects sensitive access and provides a recovery action.", tone: "warning" },
+                ]} />
+              </ArtifactDisclosure>
               <Evidence
                 title="NDA and collaboration communication"
                 note="Real web and mobile screens. The case study focuses on visibility and state design rather than legal document content."

@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { PortfolioLinks } from "../../concepts/PortfolioLinks";
 import { WorkspaceTabs } from "../../concepts/WorkspaceTabs";
 import styles from "../../concepts/concepts.module.css";
+import { ArtifactDisclosure, InformationArchitecture } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
 
 const chapters = [
@@ -147,8 +148,8 @@ export default function HcmCafeCaseStudy() {
               </dl>
               <div className={styles.hcmHeroComposition}>
                 <img src="/hcm-assets/hr-employee-dashboard.jpg" alt="HCM Café employee dashboard with attendance and leave information" loading="eager" decoding="async" />
-                <img src="/hcm-assets/vms-company-dashboard.png" alt="HCM Café Visitor Management company admin dashboard" loading="eager" decoding="async" />
-                <img src="/hcm-assets/vms-host-dashboard-mobile.png" alt="HCM Café Visitor Management host mobile dashboard" loading="eager" decoding="async" />
+                <img src="/hcm-assets/vms-company-dashboard.png" alt="HCM Café Visitor Management company admin dashboard" loading="lazy" decoding="async" />
+                <img src="/hcm-assets/vms-host-dashboard-mobile.png" alt="HCM Café Visitor Management host mobile dashboard" loading="lazy" decoding="async" />
                 <div><span>Two workstreams</span><b>HR operations + Visitor operations</b></div>
               </div>
             </section>
@@ -273,6 +274,21 @@ export default function HcmCafeCaseStudy() {
                 <article><span>Host unavailable</span><b>Use the company fallback policy</b><p>This remains an open question until the organisation confirms who can approve the visitor.</p></article>
                 <article><span>Open visit</span><b>Flag and close manually</b><p>Security can review visits that were not checked out and close the record with context.</p></article>
               </div>
+              <ArtifactDisclosure
+                kind="Role and permission architecture"
+                title="Five roles coordinate through one visit record"
+                summary="Inspect how creation, approval, verification and administration ownership are separated."
+              >
+                <InformationArchitecture
+                  title="Visitor lifecycle ownership"
+                  groups={[
+                    { role: "Visitor", owns: "Identity and arrival", access: ["Confirm details", "Receive pass", "Present QR or OTP"] },
+                    { role: "Host", owns: "Invitation and approval", access: ["Create visit", "Approve request", "Receive arrival alert"] },
+                    { role: "Security / Front Desk", owns: "Entry and exit", access: ["Verify visitor", "Record guests and assets", "Check in and check out"] },
+                    { role: "Administration", owns: "Policy and history", access: ["Configure companies", "Review visit logs", "Track communication usage"] },
+                  ]}
+                />
+              </ArtifactDisclosure>
             </motion.section>
 
             <motion.section className={`${styles.caseStudySection} ${styles.hcmVmsSection}`} id="front-desk" {...reveal}>

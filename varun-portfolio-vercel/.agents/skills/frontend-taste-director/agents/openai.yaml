@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Taste Director"
+  short_description: "Direct and audit distinctive frontend design"
+  default_prompt: "Use $frontend-taste-director to design, implement, and polish this interface with strong visual taste."
