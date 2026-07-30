@@ -15,11 +15,12 @@ const documents = [
   ["rules", "Business rules"],
   ["decisions", "Design decisions"],
   ["json-forms", "JSON-driven forms"],
+  ["measurement", "KPI measurement"],
   ["delivery", "Delivery and reflection"],
 ] as const;
 
 type DocumentId = (typeof documents)[number][0];
-type EvidenceType = "Confirmed" | "Interpreted" | "Recommended" | "Open question";
+type EvidenceType = "Confirmed requirement" | "Reconstructed context" | "Recommended improvement" | "Needs validation";
 
 const documentIds = documents.map(([id]) => id);
 
@@ -69,7 +70,7 @@ function DocIcon({ name }: { name: "arrow" | "file" | "folder" | "home" | "truck
   return <svg {...props}><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" /><circle cx="7" cy="18" r="2" /><circle cx="18" cy="18" r="2" /></svg>;
 }
 
-function EvidenceLabel({ children, type = "Confirmed" }: { children: React.ReactNode; type?: EvidenceType }) {
+function EvidenceLabel({ children, type = "Confirmed requirement" }: { children: React.ReactNode; type?: EvidenceType }) {
   return <div className={styles.docEvidenceLabel} data-evidence={type}><span>{type}</span><p>{children}</p></div>;
 }
 
@@ -135,11 +136,11 @@ export default function HarbingerDocumentation() {
             </div>
             <p className={styles.casePortalLabel}>Evidence labels</p>
             <div className={styles.docLegend}>
-              <span title="Verified in requirements, screens or implementation"><i className={styles.docKnown} />Confirmed</span>
-              <span title="Reasonable reading of the available evidence"><i className={styles.docInferred} />Interpreted</span>
-              <span title="A suggested improvement, not the current product"><i className={styles.docProposed} />Recommended</span>
-              <span title="Requires stakeholder or engineering confirmation"><i className={styles.docValidate} />Open question</span>
-              <small>These labels show what was verified and what still needs review.</small>
+              <span title="Verified in requirements, screens or implementation"><i className={styles.docKnown} />Confirmed requirement</span>
+              <span title="Reconstructed from the available project evidence"><i className={styles.docInferred} />Reconstructed context</span>
+              <span title="A suggested improvement beyond the current product"><i className={styles.docProposed} />Recommended improvement</span>
+              <span title="Requires stakeholder or engineering confirmation"><i className={styles.docValidate} />Needs validation</span>
+              <small>The labels separate project evidence from reconstructed and recommended work.</small>
             </div>
           </div>
         </aside>
@@ -150,11 +151,17 @@ export default function HarbingerDocumentation() {
               <div className={styles.caseStudyKicker}><span>Harbinger Motors</span><b>UX documentation</b></div>
               <p className={styles.documentationEyebrow}>A deeper view of the system behind the screens</p>
               <h1>Roles, rules, workflows and product decisions.</h1>
-              <p>This documentation was created after parts of the project had already moved into high-fidelity UI. I revisited the work to make the product logic clearer, separate confirmed information from interpretations and improve future design and handoff decisions.</p>
+              <p>This documentation was created after parts of the project had already moved into high-fidelity UI. I revisited the work to clarify the product logic, record confirmed requirements, reconstruct missing context and improve future design and handoff decisions.</p>
+              <nav className={styles.docStoryLinks} aria-label="Harbinger problem-solving stories">
+                <span>Linked case-study decisions</span>
+                <Link href="/work/harbinger#configuration"><b>01</b> Configuration rules</Link>
+                <Link href="/work/harbinger#ownership"><b>02</b> Delivery ownership</Link>
+                <Link href="/work/harbinger#pdi"><b>03</b> PDI and JSON forms</Link>
+              </nav>
               <div className={styles.documentationSummary}>
                 <div><b>2</b><span>Enterprise portals</span></div>
                 <div><b>5</b><span>Primary role groups</span></div>
-                <div><b>9</b><span>Documentation areas</span></div>
+                <div><b>10</b><span>Documentation areas</span></div>
                 <div><b>1</b><span>Shared vehicle reference: VIN</span></div>
               </div>
             </header>
@@ -189,7 +196,7 @@ export default function HarbingerDocumentation() {
                   <div key={role}><b>{role}</b><p>{responsibility}</p><span>{index === 0 || index === 4 ? "HBR / Dealer" : "Dealer"}</span></div>
                 ))}
               </div>
-              <EvidenceLabel type="Interpreted">The role map combines confirmed screen access with responsibilities interpreted from visible actions. Final permission boundaries still need stakeholder review.</EvidenceLabel>
+              <EvidenceLabel type="Reconstructed context">The role map combines confirmed screen access with responsibilities reconstructed from visible actions. Final permission boundaries still need stakeholder review.</EvidenceLabel>
               <DecisionBlock
                 decision="Describe roles through responsibilities and permitted actions instead of demographic personas."
                 reason="Enterprise behaviour is shaped mainly by operational ownership, access and the next required action."
@@ -244,7 +251,7 @@ export default function HarbingerDocumentation() {
                 <div><b>PDI required</b><span>Requesting dealer</span><p>Complete checklist</p><p>PDI passes</p></div>
                 <div><b>Ready for delivery</b><span>Requesting dealer</span><p>Deliver to customer</p><p>Retail delivery recorded</p></div>
               </div>
-              <EvidenceLabel type="Recommended">This normalized status and ownership model documents the intended workflow. Final system values need engineering and stakeholder confirmation.</EvidenceLabel>
+              <EvidenceLabel type="Recommended improvement">This normalized status and ownership model documents the intended workflow. Final system values need engineering and stakeholder confirmation.</EvidenceLabel>
               <DecisionBlock
                 decision="Define every status with an owner, next action and exit condition."
                 reason="This reduces labels that describe a state but leave the operational team unsure what to do."
@@ -259,7 +266,7 @@ export default function HarbingerDocumentation() {
                 <article><h3>Core rules</h3>{rules.map((rule, index) => <div key={rule}><span>{String(index + 1).padStart(2, "0")}</span><p>{rule}</p></div>)}</article>
                 <article><h3>Important edge cases</h3>{edgeCases.map((item, index) => <div key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></div>)}</article>
               </div>
-              <EvidenceLabel type="Open question">These edge cases are a design and implementation checklist. Priority, system behaviour and exception ownership require product review.</EvidenceLabel>
+              <EvidenceLabel type="Needs validation">These edge cases are a design and implementation checklist. Priority, system behaviour and exception ownership require product review.</EvidenceLabel>
               <DecisionBlock
                 decision="Document rules next to the workflow and include failure paths before developer handoff."
                 reason="A successful happy path does not explain how the interface should behave when data or dependencies change."
@@ -271,9 +278,9 @@ export default function HarbingerDocumentation() {
             <section className={styles.documentationSection} id="decisions">
               <div className={styles.documentationHeading}><span>07</span><div><p>Design development</p><h2>Three decisions made the operational work easier to follow.</h2></div></div>
               <div className={styles.docDecisionCards}>
-                <article><span>01</span><h3>Dependency-based configuration</h3><p>Reveal only valid downstream options after chassis, GVWR, wheelbase and battery selections.</p><b>Reduces invalid combinations</b></article>
-                <article><span>02</span><h3>Eight-step PDI</h3><p>Group inspection items by task so technicians can complete one clear section at a time.</p><b>Reduces visual overload</b></article>
-                <article><span>03</span><h3>Status plus next action</h3><p>Keep lifecycle status separate from the action and person responsible for moving the record forward.</p><b>Clarifies operational ownership</b></article>
+                <article><span>01</span><h3>Dependency-based configuration</h3><p>Keep unavailable downstream options visible, disable them and explain which earlier selection caused the restriction.</p><b>Reduces invalid combinations</b><Link href="/work/harbinger#configuration">Open decision story <DocIcon name="arrow" /></Link></article>
+                <article><span>02</span><h3>Status plus next action</h3><p>Keep lifecycle status separate from the current stage, responsible dealer and next required action.</p><b>Clarifies operational ownership</b><Link href="/work/harbinger#ownership">Open decision story <DocIcon name="arrow" /></Link></article>
+                <article><span>03</span><h3>Eight-step PDI</h3><p>Group inspection items by task and keep a final review before dealer sign-off.</p><b>Reduces visual overload</b><Link href="/work/harbinger#pdi">Open decision story <DocIcon name="arrow" /></Link></article>
               </div>
               <EvidenceLabel>These decisions are visible in the Product Configuration, New Delivery and Vehicle PDI screens.</EvidenceLabel>
               <DecisionBlock
@@ -287,11 +294,11 @@ export default function HarbingerDocumentation() {
             <section className={styles.documentationSection} id="json-forms">
               <div className={styles.documentationHeading}><span>08</span><div><p>Scalable forms</p><h2>Changing requirements needed a form structure that could change with them.</h2></div></div>
               <div className={styles.docJsonFlow}>
-                <article><span>Schema defines</span><div><p>Label</p><p>Field type</p><p>Required state</p><p>Validation</p><p>Options</p><p>Order</p><p>Conditional visibility</p></div></article>
+                <article><span>JSON Schema + UI schema</span><div><p>Data type</p><p>Required state</p><p>Validation</p><p>Label</p><p>Options</p><p>Order</p><p>Conditional visibility</p><p>Renderer options</p></div></article>
                 <i><DocIcon name="arrow" /></i>
-                <article><span>Reusable renderer</span><div className={styles.docRenderer}><b>Field group</b><p>Input behaviour</p><p>Validation message</p><p>Conditional state</p></div></article>
+                <article><span>Reusable renderer</span><div className={styles.docRenderer}><b>Control mapping</b><p>Approved input component</p><p>Validation message</p><p>Required and disabled state</p><p>Conditional behaviour</p></div></article>
                 <i><DocIcon name="arrow" /></i>
-                <article><span>Product forms</span><div><p>PDI checklist</p><p>Inspection details</p><p>Configurable forms</p><p>Future modules</p></div></article>
+                <article><span>Rendered product forms</span><div><p>PDI checklist</p><p>Inspection details</p><p>Pass or fail states</p><p>Evidence upload</p><p>Final review</p></div></article>
               </div>
               <EvidenceLabel>The team introduced JSON-driven forms because field requirements frequently changed during the project.</EvidenceLabel>
               <DecisionBlock
@@ -300,17 +307,38 @@ export default function HarbingerDocumentation() {
                 constraint="The UI work still depended on engineering integration and the supported form component set."
                 tradeoff="Configuration reduces repeated changes, but complex custom interactions may still need dedicated components."
               />
+              <div className={styles.docJsonGovernance}>
+                <article><span>Supported through configuration</span><p>Labels, required states, validation rules, options, order, default values and conditional visibility.</p></article>
+                <article><span>Requires a custom renderer</span><p>New interaction patterns, complex uploads or behaviour that the existing component set does not support.</p></article>
+                <article><span>Recommended governance</span><p>Version schemas, test affected workflows and keep renderer support documented before a configuration is published.</p></article>
+              </div>
+            </section>
+
+            <section className={styles.documentationSection} id="measurement">
+              <div className={styles.documentationHeading}><span>09</span><div><p>KPI measurement plan</p><h2>Each design decision has a measurable operational result.</h2></div></div>
+              <div className={styles.docMetricTable}>
+                <header><span>Decision</span><span>Primary KPI</span><span>Calculation</span><span>Data needed</span></header>
+                <div><b>Configuration rules</b><p>Invalid configuration rate</p><p>Invalid reviews ÷ completed configurations</p><p>Selections, validation errors and quotation status</p></div>
+                <div><b>Delivery ownership</b><p>Unclear hand-off rate</p><p>Requests needing ownership clarification ÷ total requests</p><p>Status, owner, next action and support events</p></div>
+                <div><b>PDI and JSON forms</b><p>Field-change turnaround</p><p>Release time minus approved requirement time</p><p>Requirement, schema change, QA and release timestamps</p></div>
+              </div>
+              <div className={styles.docMetricCards}>
+                <article><span>Configuration</span><b>Completion time</b><p>First valid selection to quotation-ready setup.</p></article>
+                <article><span>Delivery</span><b>Overdue actions</b><p>Requests that remain beyond the expected time for the current owner.</p></article>
+                <article><span>PDI</span><b>Form-change defects</b><p>Defects caused by updates to labels, validations, required states or options.</p></article>
+              </div>
+              <EvidenceLabel type="Recommended improvement">Track a baseline before release and compare the same event definitions after release. Keep KPI ownership with product and engineering so the measurement remains consistent.</EvidenceLabel>
             </section>
 
             <section className={`${styles.documentationSection} ${styles.documentationReflection}`} id="delivery">
-              <div className={styles.documentationHeading}><span>09</span><div><p>Validation and delivery</p><h2>The documentation now supports design, handoff and future requirements.</h2></div></div>
+              <div className={styles.documentationHeading}><span>10</span><div><p>Validation and delivery</p><h2>The documentation now supports design, handoff and future requirements.</h2></div></div>
               <div className={styles.docDeliveryRail}>
                 {["Requirement intake", "Product understanding", "Flow and rules", "High-fidelity UI", "Developer handoff", "UI QA", "Documentation"].map((item, index) => <div key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></div>)}
               </div>
               <div className={styles.docReflectionGrid}>
                 <article><span>What shipped</span><p>Vehicle Transfer and Service Center UI reached the shared test environment.</p></article>
                 <article><span>What improved</span><p>Roles, status ownership, dependencies, business rules and edge cases became easier to review together.</p></article>
-                <article><span>What remains open</span><p>Formal usability testing, measured impact and some technical integration details were not available.</p></article>
+                <article><span>What to measure next</span><p>Configuration errors, hand-off clarity, overdue actions, PDI completion and form-change effort.</p></article>
               </div>
               <blockquote>I would document the product model and lifecycle rules earlier. It would make design reviews, requirement changes and developer handoff clearer before high-fidelity work begins.</blockquote>
               <div className={styles.documentationActions}>
@@ -326,7 +354,7 @@ export default function HarbingerDocumentation() {
       <footer className={styles.studioStatusbar}>
         <span><i /> UX documentation</span>
         <span>Harbinger Motors</span>
-        <span>9 documents</span>
+        <span>10 documents</span>
         <Link href="/work/harbinger">Open case study</Link>
       </footer>
     </main>

@@ -18,7 +18,7 @@ const projectTabs: Record<ProjectTabId, { title: string; href: string; paths: st
   harbinger: {
     title: "Harbinger Motors",
     href: "/work/harbinger",
-    paths: ["/work/harbinger", "/work/harbinger/documentation"],
+    paths: ["/work/harbinger", "/work/harbinger/v2", "/work/harbinger/documentation"],
   },
   aadivara: {
     title: "Aadivara",

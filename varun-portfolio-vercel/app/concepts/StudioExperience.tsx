@@ -11,6 +11,7 @@ import styles from "./concepts.module.css";
 
 type ProjectKey = "harbinger" | "aadivara" | "inventfunds" | "propertycare" | "hcmcafe";
 type WorkspacePage = "work" | "process" | "about" | "contact";
+type ThemeMode = "system" | "light" | "dark" | "custom";
 type IconName =
   | "grid"
   | "process"
@@ -57,11 +58,11 @@ const projects: Record<ProjectKey, {
     href: "/work/harbinger",
     sections: [
       { id: "overview", label: "Overview", icon: "file" },
-      { id: "configuration", label: "Product configuration", icon: "sliders" },
-      { id: "operations", label: "Vehicle operations", icon: "truck" },
-      { id: "pdi", label: "PDI checklist", icon: "check" },
-      { id: "handoff", label: "Handoff and UI QA", icon: "layers" },
-      { id: "reflection", label: "Outcome and reflection", icon: "process" },
+      { id: "configuration", label: "Configuration rules", icon: "sliders" },
+      { id: "ownership", label: "Delivery ownership", icon: "truck" },
+      { id: "pdi", label: "PDI and JSON forms", icon: "check" },
+      { id: "validation", label: "Validation and UI QA", icon: "layers" },
+      { id: "outcomes", label: "Outcomes", icon: "process" },
       { id: "documentation", label: "UX documentation", icon: "folder", href: "/work/harbinger/documentation" },
     ],
   },
@@ -142,7 +143,8 @@ const projects: Record<ProjectKey, {
 };
 
 const projectKeys = Object.keys(projects) as ProjectKey[];
-
+const projectConnectorX = [92, 272, 452, 632, 812] as const;
+const customThemeColors = ["#3155e7", "#6f4ad8", "#0f8374", "#b15b31", "#a23d68"] as const;
 const workspacePages: Record<WorkspacePage, {
   title: string;
   description: string;
@@ -223,15 +225,36 @@ function SelectionHandles() {
   );
 }
 
-function SystemLens() {
+function EditorialSystemHero({ onQuickScan }: { onQuickScan: () => void }) {
   return (
-    <div className={styles.studioLens} aria-label="System lens">
-      <span className={styles.lensRoles}><WorkspaceIcon name="user" /><b>Roles</b></span>
-      <span className={styles.lensRules}><WorkspaceIcon name="sliders" /><b>Rules</b></span>
-      <span className={styles.lensData}><WorkspaceIcon name="layers" /><b>Data</b></span>
-      <span className={styles.lensDecisions}><WorkspaceIcon name="process" /><b>Decisions</b></span>
-      <i className={styles.lensLineHorizontal} />
-      <i className={styles.lensLineVertical} />
+    <div className={styles.studioEditorialHero}>
+      <div className={styles.studioEditorialCopy}>
+        <span className={styles.studioEditorialRole}>Complex Systems Product Designer</span>
+        <h1>
+          <span>I make complex enterprise</span>
+          <span>products easier to understand</span>
+          <span>and operate.</span>
+        </h1>
+      </div>
+
+      <div className={styles.studioEditorialLower}>
+        <div className={styles.studioEditorialIntro}>
+          <p>
+            I simplify connected workflows, roles, business rules and data-heavy interfaces into clear product experiences.
+          </p>
+        </div>
+
+        <div className={styles.studioEditorialActions}>
+          <Link href="/work/harbinger">Explore Harbinger <span aria-hidden="true">→</span></Link>
+          <button type="button" onClick={onQuickScan}>Quick scan</button>
+        </div>
+      </div>
+
+      <div className={styles.studioEditorialFocus} aria-label="Product design focus">
+        <span>Enterprise workflows</span>
+        <span>Roles and business rules</span>
+        <span>Data-heavy products</span>
+      </div>
     </div>
   );
 }
@@ -245,12 +268,58 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
   const [isPanning, setIsPanning] = useState(false);
   const [presentation, setPresentation] = useState(false);
   const [noteOpen, setNoteOpen] = useState(false);
+  const [themeOpen, setThemeOpen] = useState(false);
+  const [themeMode, setThemeMode] = useState<ThemeMode>("system");
+  const [systemDark, setSystemDark] = useState(false);
+  const [customAccent, setCustomAccent] = useState("#3155e7");
   const panOrigin = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
+  const themePanelRef = useRef<HTMLDivElement>(null);
   const canvasX = useMotionValue(0);
   const canvasY = useMotionValue(0);
   const prefersReducedMotion = useReducedMotion();
   const selected = projects[selectedProject];
   const activePageData = workspacePages[activePage];
+  const selectedProjectIndex = projectKeys.indexOf(selectedProject);
+  const darkTheme = themeMode === "dark" || (themeMode === "system" && systemDark);
+  const activeAccent = themeMode === "custom" ? customAccent : "#3155e7";
+  const accentInk = (() => {
+    const hex = activeAccent.replace("#", "");
+    const [red, green, blue] = [0, 2, 4].map((offset) => Number.parseInt(hex.slice(offset, offset + 2), 16));
+    return (red * 299 + green * 587 + blue * 114) / 1000 > 150 ? "#151619" : "#ffffff";
+  })();
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const updateSystemTheme = () => setSystemDark(media.matches);
+    const storedMode = window.localStorage.getItem("varun-portfolio-theme");
+    const storedAccent = window.localStorage.getItem("varun-portfolio-accent");
+    const initialThemeFrame = window.requestAnimationFrame(() => {
+      updateSystemTheme();
+      if (storedMode === "system" || storedMode === "light" || storedMode === "dark" || storedMode === "custom") {
+        setThemeMode(storedMode);
+      }
+      if (/^#[0-9a-f]{6}$/i.test(storedAccent ?? "")) setCustomAccent(storedAccent!);
+    });
+    media.addEventListener("change", updateSystemTheme);
+    return () => {
+      window.cancelAnimationFrame(initialThemeFrame);
+      media.removeEventListener("change", updateSystemTheme);
+    };
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("varun-portfolio-theme", themeMode);
+    window.localStorage.setItem("varun-portfolio-accent", customAccent);
+  }, [customAccent, themeMode]);
+
+  useEffect(() => {
+    if (!themeOpen) return;
+    const closeOnOutsideClick = (event: PointerEvent) => {
+      if (!themePanelRef.current?.contains(event.target as Node)) setThemeOpen(false);
+    };
+    window.addEventListener("pointerdown", closeOnOutsideClick);
+    return () => window.removeEventListener("pointerdown", closeOnOutsideClick);
+  }, [themeOpen]);
 
   const closeSplash = useCallback(() => {
     window.sessionStorage.setItem("varun-workspace-opened", "true");
@@ -341,7 +410,11 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
       if (key === "+" || key === "=") setZoom((current) => Math.min(115, current + 8));
       if (key === "-" || key === "_") setZoom((current) => Math.max(70, current - 8));
       if (event.key === "Enter") openSelectedProject();
-      if (event.key === "Escape") setPresentation(false);
+      if (event.key === "Escape") {
+        setPresentation(false);
+        setThemeOpen(false);
+        setNoteOpen(false);
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -367,7 +440,13 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
   };
 
   return (
-    <main className={`${styles.previewPage} ${styles.studioPage} ${presentation ? styles.studioPresentation : ""}`}>
+    <main
+      className={`${styles.previewPage} ${styles.studioPage} ${darkTheme ? styles.studioDark : ""} ${themeMode === "custom" ? styles.studioCustom : ""} ${presentation ? styles.studioPresentation : ""}`}
+      style={{
+        "--studio-blue": activeAccent,
+        "--studio-accent-ink": accentInk,
+      } as React.CSSProperties}
+    >
       <AnimatePresence>
         {splashVisible && (
           <motion.section
@@ -411,6 +490,71 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
           <i />
           <button type="button" onClick={() => setPresentation(true)} aria-label="Open presentation mode"><WorkspaceIcon name="play" /></button>
           <button type="button" onClick={() => setNoteOpen((current) => !current)} aria-expanded={noteOpen} aria-pressed={noteOpen} aria-label="View design note"><WorkspaceIcon name="comment" /></button>
+          <div className={styles.studioThemeControl} ref={themePanelRef}>
+            <button
+              type="button"
+              onClick={() => {
+                setThemeOpen((current) => !current);
+                setNoteOpen(false);
+              }}
+              aria-expanded={themeOpen}
+              aria-haspopup="dialog"
+              aria-label="Change portfolio appearance"
+            >
+              <span style={{ background: activeAccent }} />
+              <WorkspaceIcon name="sliders" />
+            </button>
+            {themeOpen && (
+              <aside className={styles.studioThemePanel} role="dialog" aria-label="Portfolio appearance">
+                <header>
+                  <div><b>Appearance</b><span>Saved on this device</span></div>
+                  <button type="button" onClick={() => setThemeOpen(false)} aria-label="Close appearance settings">×</button>
+                </header>
+                <div className={styles.studioThemeModes} aria-label="Theme mode">
+                  {(["system", "light", "dark", "custom"] as ThemeMode[]).map((mode) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      className={themeMode === mode ? styles.studioThemeActive : ""}
+                      aria-pressed={themeMode === mode}
+                      onClick={() => setThemeMode(mode)}
+                    >
+                      <i aria-hidden="true" />
+                      {mode[0].toUpperCase() + mode.slice(1)}
+                    </button>
+                  ))}
+                </div>
+                {themeMode === "custom" && (
+                  <div className={styles.studioThemeCustom}>
+                    <span>Accent colour</span>
+                    <div>
+                      {customThemeColors.map((color) => (
+                        <button
+                          key={color}
+                          type="button"
+                          className={customAccent === color ? styles.studioColorActive : ""}
+                          style={{ "--swatch": color } as React.CSSProperties}
+                          onClick={() => setCustomAccent(color)}
+                          aria-label={`Use ${color} as the accent colour`}
+                          aria-pressed={customAccent === color}
+                        />
+                      ))}
+                      <label title="Choose a custom accent colour">
+                        <input
+                          type="color"
+                          value={customAccent}
+                          onChange={(event) => setCustomAccent(event.target.value)}
+                          aria-label="Choose a custom accent colour"
+                        />
+                        +
+                      </label>
+                    </div>
+                    <small>The accent updates selections, buttons and focus states. Text contrast adjusts automatically.</small>
+                  </div>
+                )}
+              </aside>
+            )}
+          </div>
           <div className={styles.studioUtilityLinks}>
             <PortfolioLinks />
           </div>
@@ -533,23 +677,31 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
                       <button type="button" onClick={() => selectPage("contact")}>Contact</button>
                     </nav>
                   </div>
-                  <div className={styles.studioHeroContent}>
-                    <div>
-                      <h1>I design clear, scalable experiences for complex enterprise products.</h1>
-                      <p>My work focuses on workflows, roles, permissions, data-heavy interfaces and business-critical systems.</p>
-                      <div className={styles.studioHeroActions}>
-                        <Link href="/work/harbinger">Open Harbinger case study</Link>
-                        <button type="button" onClick={() => setPresentation(true)}>Quick scan</button>
-                      </div>
-                      <span className={styles.studioRole}><WorkspaceIcon name="user" />Complex Systems Product Designer</span>
-                    </div>
-                    <SystemLens />
-                  </div>
+                  <EditorialSystemHero
+                    onQuickScan={() => {
+                      selectProject("harbinger");
+                      document.getElementById("project-overview")?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
+                    }}
+                  />
                 </article>
 
-                <button className={styles.studioCommentPin} type="button" onClick={() => setNoteOpen(true)} aria-label="Open design note"><b>1</b></button>
-                <span className={styles.studioMeasure} aria-hidden="true"><i /><b>32</b><i /></span>
-                <span className={styles.studioConnector} aria-hidden="true" />
+                <svg className={styles.studioSelectionMap} viewBox="0 0 900 690" aria-hidden="true">
+                  <motion.path
+                    key={selectedProject}
+                    d={`M 450 468 V 485 H ${projectConnectorX[selectedProjectIndex]} V 502`}
+                    initial={prefersReducedMotion ? false : { pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{ duration: 0.42, ease: "easeOut" }}
+                  />
+                  <motion.circle
+                    cx={projectConnectorX[selectedProjectIndex]}
+                    cy="502"
+                    r="3.5"
+                    initial={prefersReducedMotion ? false : { scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.25 }}
+                  />
+                </svg>
 
                 {projectKeys.map((key, index) => {
                   const project = projects[key];
@@ -557,6 +709,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
                   return (
                     <motion.button
                       key={key}
+                      id={index === 0 ? "project-overview" : undefined}
                       type="button"
                       className={`${styles.studioProjectFrame} ${styles[`studioProject${index + 1}`]} ${isSelected ? styles.studioProjectSelected : ""}`}
                       style={{ "--project-accent": project.accent } as React.CSSProperties}
@@ -567,6 +720,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
                     >
                       {isSelected && <SelectionHandles />}
                       <span className={styles.studioProjectIcon}><WorkspaceIcon name={project.icon} /></span>
+                      <small>{String(index + 1).padStart(2, "0")}</small>
                       <b>{project.title}</b>
                       <p>{project.subtitle}</p>
                       <i />
