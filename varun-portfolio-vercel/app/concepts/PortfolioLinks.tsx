@@ -1,6 +1,9 @@
+import { AppearanceControl } from "../appearance/AppearanceControl";
+
 export function PortfolioLinks() {
   return (
     <>
+      <AppearanceControl compact />
       <a href="/VarunJ_Resume.pdf" download="Varun-J-Resume.pdf">
         Résumé
       </a>

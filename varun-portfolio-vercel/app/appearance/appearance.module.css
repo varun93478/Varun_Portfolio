@@ -1,0 +1,29 @@
+.appearance{position:relative;display:flex;align-items:center;color:inherit}
+.appearance>summary{min-width:44px;min-height:44px;padding:0 10px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:9px;color:inherit;cursor:pointer;list-style:none}
+.appearance>summary::-webkit-details-marker{display:none}
+.appearance>summary:hover,.appearance>summary:focus-visible,.appearance[open]>summary{background:color-mix(in srgb,currentColor 10%,transparent)}
+.appearance>summary:focus-visible{outline:2px solid var(--portfolio-accent,#3155e7);outline-offset:2px}
+.appearanceIcon{position:relative;width:21px;height:18px;display:block}
+.appearanceIcon:before,.appearanceIcon:after{content:"";position:absolute;left:1px;right:1px;height:1.5px;background:currentColor}
+.appearanceIcon:before{top:5px}.appearanceIcon:after{bottom:5px}
+.appearanceIcon i{position:absolute;width:5px;height:5px;border:1.5px solid currentColor;border-radius:50%;background:inherit}
+.appearanceIcon i:first-child{top:3px;left:5px}.appearanceIcon i:last-child{right:4px;bottom:3px}
+.appearanceLabel{font-size:11px;font-weight:600}
+.compact .appearanceLabel{display:none}
+.panel{position:absolute;z-index:120;top:50px;right:0;width:min(330px,calc(100vw - 24px));padding:17px;border:1px solid color-mix(in srgb,currentColor 18%,transparent);border-radius:16px;background:rgba(245,247,250,.97);color:#151a22;box-shadow:0 24px 70px rgba(3,8,18,.28);backdrop-filter:blur(24px) saturate(1.25)}
+.panel header{display:flex;justify-content:space-between;align-items:start}.panel header div{display:grid;gap:4px}.panel header strong{font-size:14px}.panel header span,.panel>p{color:#596270;font-size:11px}.panel>p{margin:14px 0 0;line-height:1.45}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:16px}
+.modes button{min-height:68px;padding:8px 3px;border:1px solid #ccd1d8;border-radius:10px;background:#eef1f5;color:#4d5663;display:grid;place-items:center;gap:6px;font-size:10px;font-weight:650;cursor:pointer}
+.modes button:hover,.modes button:focus-visible{border-color:#7e8997;background:#fff;color:#151a22}.modes button:focus-visible{outline:2px solid var(--portfolio-accent,#3155e7);outline-offset:2px}
+.modes button[aria-pressed="true"]{border-color:var(--portfolio-accent,#3155e7);background:color-mix(in srgb,var(--portfolio-accent,#3155e7) 12%,#fff);color:#111722;box-shadow:inset 0 0 0 1px var(--portfolio-accent,#3155e7)}
+.modes i{width:28px;height:18px;border:1px solid currentColor;border-radius:4px;background:linear-gradient(90deg,#1a2029 34%,#f5f6f8 34%)}
+.modes i[data-mode="light"]{background:#fff}.modes i[data-mode="dark"]{background:#1a2029}.modes i[data-mode="custom"]{background:linear-gradient(135deg,#3155e7 0 33%,#087d71 33% 66%,#a44f2f 66%)}
+.accents{margin-top:15px;padding-top:14px;border-top:1px solid #d8dce2}.accents>span{display:block;color:#596270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}.accents>div{display:flex;gap:11px;margin-top:12px}
+.accents button{width:30px;height:30px;border:3px solid #fff;border-radius:50%;background:var(--swatch);box-shadow:0 0 0 1px #aeb5bf;cursor:pointer}.accents button[aria-pressed="true"]{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--swatch)}.accents button:focus-visible{outline:2px solid #111722;outline-offset:4px}
+:global(html[data-portfolio-theme="dark"]) .panel{border-color:#3a424e;background:rgba(22,27,34,.98);color:#f4f6f8}.appearance[open]>summary{color:inherit}
+:global(html[data-portfolio-theme="dark"]) .panel header span,:global(html[data-portfolio-theme="dark"]) .panel>p,:global(html[data-portfolio-theme="dark"]) .accents>span{color:#aeb7c4}
+:global(html[data-portfolio-theme="dark"]) .modes button{border-color:#3c4552;background:#252c35;color:#c5ccd6}
+:global(html[data-portfolio-theme="dark"]) .modes button:hover,:global(html[data-portfolio-theme="dark"]) .modes button:focus-visible{border-color:#687483;background:#303844;color:#fff}
+:global(html[data-portfolio-theme="dark"]) .modes button[aria-pressed="true"]{border-color:var(--portfolio-accent,#6f8fff);background:color-mix(in srgb,var(--portfolio-accent,#3155e7) 28%,#1b2129);color:#fff}
+:global(html[data-portfolio-theme="dark"]) .accents{border-color:#3a424e}
+@media(max-width:600px){.panel{position:fixed;top:64px;right:12px;left:12px;width:auto}.appearanceLabel{display:none}}

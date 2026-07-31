@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { AppearanceControl } from "../appearance/AppearanceControl";
 import { DesktopSystemMap } from "./DesktopSystemMap";
 import { PaintApp } from "./PaintApp";
 import { SnakeGame } from "./SnakeGame";
@@ -369,6 +370,7 @@ export function VarunOS() {
               <button type="button" className={styles.osBrand} onClick={() => { setActiveApp(null); setLauncherOpen(false); }} aria-label="Show Varun OS desktop"><span>VJ</span><b>Varun OS</b></button>
               <div className={styles.breadcrumb}><span>Desktop</span>{activeApp && <><i>/</i><b>{desktopTitle}</b></>}</div>
               <div className={styles.systemReady}><i /> System ready</div>
+              <AppearanceControl compact />
               <LiveTime />
             </header>
 
