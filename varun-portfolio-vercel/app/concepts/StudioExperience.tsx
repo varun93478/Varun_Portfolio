@@ -13,7 +13,7 @@ import styles from "./concepts.module.css";
 type ProjectKey = "harbinger" | "aadivara" | "inventfunds" | "propertycare" | "hcmcafe";
 type WorkspacePage = "work" | "process" | "about" | "contact";
 type ThemeMode = "system" | "light" | "dark" | "custom";
-type IconName =
+export type IconName =
   | "grid"
   | "process"
   | "user"
@@ -189,7 +189,7 @@ const processSteps = [
   ["04", "Support the build", "Document intent, work with developers, review the implementation and run QA."],
 ];
 
-function WorkspaceIcon({ name, size = 18 }: { name: IconName; size?: number }) {
+export function WorkspaceIcon({ name, size = 18 }: { name: IconName; size?: number }) {
   const shared = {
     width: size,
     height: size,
@@ -272,8 +272,16 @@ function EditorialSystemHero({ accent, onQuickScan }: { accent: string; onQuickS
   );
 }
 
-export function StudioConcept({ comparisonMode = true }: { comparisonMode?: boolean }) {
-  const [splashVisible, setSplashVisible] = useState(true);
+export function StudioConcept({
+  comparisonMode = true,
+  showSplash = true,
+  onExit,
+}: {
+  comparisonMode?: boolean;
+  showSplash?: boolean;
+  onExit?: () => void;
+}) {
+  const [splashVisible, setSplashVisible] = useState(showSplash);
   const [activePage, setActivePage] = useState<WorkspacePage>("work");
   const [selectedProject, setSelectedProject] = useState<ProjectKey>("harbinger");
   const [expandedProjects, setExpandedProjects] = useState<Set<ProjectKey>>(() => new Set(["harbinger"]));
@@ -355,6 +363,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
   }, []);
 
   useEffect(() => {
+    if (!showSplash) return;
     if (window.sessionStorage.getItem("varun-workspace-opened") === "true") {
       const storedSessionTimer = window.setTimeout(() => setSplashVisible(false), 0);
       return () => window.clearTimeout(storedSessionTimer);
@@ -362,7 +371,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
 
     const timer = window.setTimeout(closeSplash, prefersReducedMotion ? 0 : 720);
     return () => window.clearTimeout(timer);
-  }, [closeSplash, prefersReducedMotion]);
+  }, [closeSplash, prefersReducedMotion, showSplash]);
 
   useEffect(() => {
     const selectHashPage = () => {
@@ -518,6 +527,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
 
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
+        {onExit && <button className={styles.studioOsHome} type="button" onClick={onExit}>Varun OS</button>}
         <WorkspaceTabs onPortfolioSelect={() => selectPage("work")} />
         <div className={styles.studioTools}>
           <button type="button" disabled={zoom <= 70} onClick={() => setZoom((current) => Math.max(70, current - 8))} aria-label="Zoom out"><WorkspaceIcon name="zoomOut" /></button>

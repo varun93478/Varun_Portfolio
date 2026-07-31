@@ -235,6 +235,8 @@
 .studioStatusbar>span:first-child{color:#3b3d41}.studioStatusbar>span:first-child i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#54a884;margin-right:7px}
 .studioStatusbar button{margin-left:auto;border:0;background:transparent;display:flex;align-items:center;gap:6px;color:#5f6166;font-size:10.5px;cursor:pointer}
 .studioDark .studioToolbar{background:rgba(25,26,28,.98)}
+.studioOsHome{height:30px;padding:0 10px;border:1px solid var(--studio-line);border-radius:4px;background:var(--studio-surface);color:var(--studio-muted);font-size:11px;cursor:pointer;white-space:nowrap}
+.studioOsHome:hover,.studioOsHome:focus-visible{border-color:var(--studio-blue);color:var(--studio-blue)}
 .studioDark .studioTools>button{color:#d5d6d2}
 .studioDark .studioTools>button:hover,.studioDark .studioTools>button:focus-visible{background:var(--studio-hover)}
 .studioDark .studioTools>button[aria-pressed="true"]{background:color-mix(in srgb,var(--studio-blue) 20%,var(--studio-surface));color:color-mix(in srgb,var(--studio-blue) 65%,white)}

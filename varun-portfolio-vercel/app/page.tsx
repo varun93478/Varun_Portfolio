@@ -1,5 +1,5 @@
-import { StudioConcept } from "./concepts/StudioExperience";
+import { VarunOS } from "./varun-os/VarunOS";
 
 export default function Home() {
-  return <StudioConcept comparisonMode={false} />;
+  return <VarunOS />;
 }

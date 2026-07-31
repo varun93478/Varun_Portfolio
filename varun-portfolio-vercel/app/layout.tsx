@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://varunjdesigns.vercel.app"),
   title: {
-    default: "Varun J — Complex Systems Product Designer",
+    default: "Varun OS — Enterprise Product Designer",
     template: "%s — Varun J",
   },
   description: "Portfolio of Varun, a product designer simplifying enterprise workflows, data-heavy products and business-critical platforms.",
@@ -23,16 +23,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    siteName: "Varun J — Product Design Portfolio",
-    title: "Varun J — Complex Systems Product Designer",
-    description: "Enterprise workflows, roles, rules and data turned into clear product experiences.",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Varun J, Complex Systems Product Designer" }],
+    siteName: "Varun OS — Product Design Portfolio",
+    title: "Varun OS — Enterprise Product Designer",
+    description: "I design clarity into complex systems—turning enterprise roles, rules, data and decisions into workflows teams can trust.",
+    images: [{ url: "/og.png", width: 1734, height: 911, alt: "Varun OS — I design clarity into complex systems." }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Varun J — Complex Systems Product Designer",
-    description: "Enterprise workflows, roles, rules and data turned into clear product experiences.",
-    images: ["/opengraph-image"],
+    title: "Varun OS — Enterprise Product Designer",
+    description: "I design clarity into complex systems.",
+    images: ["/og.png"],
   },
   robots: {
     index: true,
