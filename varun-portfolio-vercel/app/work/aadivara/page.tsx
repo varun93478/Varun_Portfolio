@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { CaseFileHeader } from "../../concepts/CaseFileHeader";
+import { SystemIcon } from "../../components/SystemIcon";
 import styles from "../../concepts/concepts.module.css";
 import { ArtifactDisclosure, FlowComparison, StateCoverageMatrix } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
@@ -83,8 +84,8 @@ export default function AadivaraCaseStudy() {
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="Aadivara case study navigation">
           <nav className={styles.studioPrimaryNav}>
-            <Link href="/"><span>⌂</span><span>Desktop</span></Link>
-            <a className={styles.studioPrimaryActive} href="#overview"><span>▤</span><span>Case study</span></a>
+            <Link href="/"><SystemIcon name="home" /><span>Desktop</span></Link>
+            <a className={styles.studioPrimaryActive} href="#overview"><SystemIcon name="file" /><span>Case study</span></a>
           </nav>
           <div className={styles.studioProjectTree}>
             <p>Aadivara</p>
@@ -106,9 +107,9 @@ export default function AadivaraCaseStudy() {
             </div>
             <p className={styles.casePortalLabel}>Platforms</p>
             <div className={styles.casePortalList}>
-              <span>◉ Candidate mobile app</span>
-              <span>▣ Operations web portals</span>
-              <span>↻ Offline volunteer app</span>
+              <span><SystemIcon name="mobile" />Candidate mobile app</span>
+              <span><SystemIcon name="monitor" />Operations web portals</span>
+              <span><SystemIcon name="sync" />Offline volunteer app</span>
             </div>
           </div>
         </aside>
@@ -218,7 +219,7 @@ export default function AadivaraCaseStudy() {
                 <div><span>What I would improve next</span><h3>Validate accessibility and offline recovery in the field</h3><p>I would run screen-reader, keyboard and event-day usability testing, then measure completion, check-in time, sync failures and manual recovery.</p></div>
               </div>
               <div className={styles.caseOutcomeBoundary}><b>Outcome boundary</b><p>No adoption or efficiency metrics were available for this case study. The portfolio separates delivered design work from the improvements that should be measured next.</p></div>
-              <footer className={styles.aadNextProject}><span>Previous project</span><Link href="/work/harbinger">Harbinger Motors →</Link></footer>
+              <footer className={styles.aadNextProject}><span>Previous project</span><Link href="/work/harbinger">Harbinger Motors <SystemIcon name="arrow-right" size={14} /></Link></footer>
             </motion.section>
           </article>
         </section>

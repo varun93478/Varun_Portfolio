@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AppearanceControl } from "../appearance/AppearanceControl";
+import { SystemIcon, type SystemIconName } from "../components/SystemIcon";
 import { DesktopSystemMap } from "./DesktopSystemMap";
 import { PaintApp } from "./PaintApp";
 import { SnakeGame } from "./SnakeGame";
@@ -62,7 +63,7 @@ const projects = [
 
 const utilities: { id: UtilityId; title: string; subtitle: string; glyph: GlyphName }[] = [
   { id: "projects", title: "Projects", subtitle: "5 case studies", glyph: "folder" },
-  { id: "report", title: "System Report", subtitle: "About Varun", glyph: "report" },
+  { id: "report", title: "About Varun", subtitle: "Designer system report", glyph: "report" },
   { id: "notes", title: "Field Notes", subtitle: "Writing space", glyph: "notes" },
   { id: "paint", title: "Paint", subtitle: "Make a mark", glyph: "paint" },
   { id: "snake", title: "Dependency Snake", subtitle: "Play the system", glyph: "snake" },
@@ -70,19 +71,19 @@ const utilities: { id: UtilityId; title: string; subtitle: string; glyph: GlyphN
 ];
 
 function Glyph({ name }: { name: GlyphName }) {
-  const marks: Record<GlyphName, string> = {
-    home: "VJ",
-    projects: "PJ",
-    folder: "▱",
-    fig: "F",
-    report: "▥",
-    notes: "≡",
-    paint: "◒",
-    snake: "S",
-    contact: "@",
-    resume: "PDF",
+  const icons: Record<GlyphName, SystemIconName> = {
+    home: "launcher",
+    projects: "folder",
+    folder: "folder",
+    fig: "figma",
+    report: "report",
+    notes: "notes",
+    paint: "paint",
+    snake: "game",
+    contact: "contact",
+    resume: "resume",
   };
-  return <span className={`${styles.glyph} ${styles[`glyph_${name}`]}`} aria-hidden="true">{marks[name]}</span>;
+  return <span className={`${styles.glyph} ${styles[`glyph_${name}`]}`} aria-hidden="true"><SystemIcon name={icons[name]} size={17} /></span>;
 }
 
 function LiveTime() {
@@ -138,7 +139,7 @@ function BootScreen({ onComplete }: { onComplete: () => void }) {
         <div className={styles.bootStatus}><span>{phases[phase]}</span><b>{(phase + 1) * 25}%</b></div>
         <div className={styles.bootProgress}><motion.i animate={{ width: `${(phase + 1) * 25}%` }} /></div>
       </div>
-      <button type="button" className={styles.skipBoot} onClick={onComplete}>Skip intro <span>→</span></button>
+      <button type="button" className={styles.skipBoot} onClick={onComplete}>Skip intro <SystemIcon name="arrow-right" size={14} /></button>
     </motion.section>
   );
 }
@@ -197,7 +198,7 @@ function ProjectsApp() {
               <span className={styles.miniFile}><b>{project.code}</b><i>FIG</i></span>
               <strong>{project.title}.fig</strong>
               <small>{project.capability}</small>
-              <em>Open case study →</em>
+              <em>Open case study <SystemIcon name="arrow-right" size={13} /></em>
             </Link>
           ))}
         </div>
@@ -216,14 +217,14 @@ function ReportApp() {
   return (
     <div className={styles.report}>
       <header>
-        <div><p>SYSTEM REPORT / VARUN J</p><h2>Designer status:<br /><span>operational.</span></h2></div>
+        <div><p>ABOUT VARUN / DESIGNER SYSTEM REPORT</p><h2>Complex systems designer.<br /><span>Human-first operator.</span></h2></div>
         <dl><div><dt>Base</dt><dd>Bengaluru, India</dd></div><div><dt>Focus</dt><dd>Enterprise product UX</dd></div><div><dt>Availability</dt><dd><i /> Open to roles</dd></div></dl>
       </header>
       <section className={styles.reportGrid}>
         <article className={styles.reportStatement}>
           <span>01 / OPERATING PRINCIPLE</span>
           <blockquote>“Make the system understandable before making it beautiful.”</blockquote>
-          <p>I work where roles, rules, data and decisions collide—then shape that complexity into workflows people can operate with confidence.</p>
+          <p>I’m Varun J, a Bengaluru-based UI/UX designer focused on enterprise products. I work where roles, rules, data and decisions collide—then shape that complexity into workflows people can operate with confidence.</p>
         </article>
         <article className={styles.reportCoverage}>
           <span>02 / PORTFOLIO EVIDENCE COVERAGE</span>
@@ -237,7 +238,7 @@ function ReportApp() {
         <article className={styles.reportAction}>
           <span>04 / NEXT ACTION</span>
           <h3>Need the concise version?</h3>
-          <div><a href="/VarunJ_Resume.pdf" target="_blank">Open résumé <i>↗</i></a><a href="mailto:varunj93478@gmail.com">Email Varun <i>↗</i></a></div>
+          <div><a href="/VarunJ_Resume.pdf" target="_blank">Open résumé <SystemIcon name="external" size={14} /></a><a href="mailto:varunj93478@gmail.com">Email Varun <SystemIcon name="external" size={14} /></a></div>
         </article>
       </section>
     </div>
@@ -271,7 +272,7 @@ function ContactApp() {
     <div className={styles.contact}>
       <p><i /> AVAILABLE FOR PRODUCT DESIGN OPPORTUNITIES</p>
       <h2>Let’s make a difficult<br />product feel obvious.</h2>
-      <div>{links.map(([label, value, href]) => <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer"><span>{label}</span><b>{value}</b><i>↗</i></a>)}</div>
+      <div>{links.map(([label, value, href]) => <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer"><span>{label}</span><b>{value}</b><SystemIcon name="external" size={15} /></a>)}</div>
     </div>
   );
 }
@@ -315,8 +316,8 @@ function AppWindow({ app, onClose }: { app: UtilityId; onClose: () => void }) {
         <div><Glyph name={meta.glyph} /><b>{meta.title}</b><span>Desktop / {meta.title}</span></div>
         <p>{compact ? "VARUN OS" : "Drag window"}</p>
         <div className={styles.windowControls}>
-          <button type="button" onClick={() => setMaximized((value) => !value)} aria-label={maximized ? "Restore window" : "Maximize window"}><i /></button>
-          <button type="button" onClick={onClose} aria-label={`Close ${meta.title}`}>×</button>
+          <button type="button" onClick={() => setMaximized((value) => !value)} aria-label={maximized ? "Restore window" : "Maximize window"}><SystemIcon name="maximize" size={15} /></button>
+          <button type="button" onClick={onClose} aria-label={`Close ${meta.title}`}><SystemIcon name="close" size={17} /></button>
         </div>
       </header>
       <div className={styles.appBody}><AppContent app={app} /></div>
@@ -379,8 +380,8 @@ export function VarunOS() {
               <h1>I design clarity<br />into complex systems.</h1>
               <p className={styles.heroLead}>Enterprise roles, rules, data and decisions—turned into workflows teams can trust.</p>
               <div className={styles.heroActions}>
-                <Link href="/work/harbinger">Open flagship case study <span>→</span></Link>
-                <button type="button" onClick={() => openApp("report")}>Run system report <span>↗</span></button>
+                <Link href="/work/harbinger">Open flagship case study <SystemIcon name="arrow-right" size={15} /></Link>
+                <button type="button" onClick={() => openApp("report")}>Open About Varun <SystemIcon name="external" size={15} /></button>
               </div>
               <dl><div><dt>01</dt><dd>Role logic</dd></div><div><dt>02</dt><dd>Workflow clarity</dd></div><div><dt>03</dt><dd>Operational states</dd></div></dl>
             </section>

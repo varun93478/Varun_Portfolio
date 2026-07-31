@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { CaseFileHeader } from "../../concepts/CaseFileHeader";
+import { SystemIcon } from "../../components/SystemIcon";
 import styles from "../../concepts/concepts.module.css";
 import { ArtifactDisclosure, StateCoverageMatrix } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
@@ -92,8 +93,8 @@ export default function InventFundsCaseStudy() {
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="InventFunds case study navigation">
           <nav className={styles.studioPrimaryNav}>
-            <Link href="/"><span>⌂</span><span>Desktop</span></Link>
-            <a className={styles.studioPrimaryActive} href="#overview"><span>▤</span><span>Case study</span></a>
+            <Link href="/"><SystemIcon name="home" /><span>Desktop</span></Link>
+            <a className={styles.studioPrimaryActive} href="#overview"><SystemIcon name="file" /><span>Case study</span></a>
           </nav>
           <div className={styles.studioProjectTree}>
             <p>InventFunds</p>
@@ -115,9 +116,9 @@ export default function InventFundsCaseStudy() {
             </div>
             <p className={styles.casePortalLabel}>Platforms</p>
             <div className={styles.casePortalList}>
-              <span>▣ Web product</span>
-              <span>◉ Mobile application</span>
-              <span>⌁ Angular + Ionic</span>
+              <span><SystemIcon name="monitor" />Web product</span>
+              <span><SystemIcon name="mobile" />Mobile application</span>
+              <span><SystemIcon name="code" />Angular + Ionic</span>
             </div>
           </div>
         </aside>
@@ -278,7 +279,7 @@ export default function InventFundsCaseStudy() {
                 <div><span>What I would improve next</span><h3>Validate the longest decisions with real users</h3><p>I would test Founder setup, Funder evaluation and Fixer onboarding separately, then measure where users pause, leave or need support.</p></div>
               </div>
               <div className={styles.caseOutcomeBoundary}><b>Outcome boundary</b><p>Formal usability results, adoption metrics and investment outcomes were not available. This case study documents the delivered design work and the next validation steps without inventing business impact.</p></div>
-              <footer className={styles.invNextProject}><span>Explore another project</span><Link href="/work/aadivara">Aadivara →</Link></footer>
+              <footer className={styles.invNextProject}><span>Explore another project</span><Link href="/work/aadivara">Aadivara <SystemIcon name="arrow-right" size={14} /></Link></footer>
             </motion.section>
           </article>
         </section>

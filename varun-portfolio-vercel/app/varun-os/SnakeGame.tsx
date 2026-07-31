@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { SystemIcon } from "../components/SystemIcon";
 import styles from "./varun-os.module.css";
 
 type Point = { x: number; y: number };
@@ -99,9 +100,9 @@ export function SnakeGame() {
             const isFood = food.x === x && food.y === y;
             return <i key={index} className={snakeIndex === 0 ? styles.snakeHead : snakeIndex > 0 ? styles.snakeBody : isFood ? styles.snakeFood : ""}>{isFood ? "C" : ""}</i>;
           })}
-          {status !== "running" && <button type="button" className={styles.gameOverlay} onClick={reset}><b>{status === "over" ? "Dependency collision" : "System paused"}</b><span>{status === "over" ? "Run simulation again" : "Start simulation"} →</span></button>}
+          {status !== "running" && <button type="button" className={styles.gameOverlay} onClick={reset}><b>{status === "over" ? "Dependency collision" : "System paused"}</b><span>{status === "over" ? "Run simulation again" : "Start simulation"} <SystemIcon name="arrow-right" size={13} /></span></button>}
         </div>
-        <aside><p>CONTROL SURFACE</p><div className={styles.dpad}><button type="button" onClick={() => steer("up")}>↑</button><button type="button" onClick={() => steer("left")}>←</button><button type="button" onClick={() => steer("down")}>↓</button><button type="button" onClick={() => steer("right")}>→</button></div><small>Arrow keys or WASD</small><dl><div><dt><i className={styles.clarityKey}>C</i></dt><dd>Clarity node<br /><span>+1 system insight</span></dd></div><div><dt><i className={styles.dependencyKey} /></dt><dd>Dependency chain<br /><span>Do not collide</span></dd></div></dl></aside>
+        <aside><p>CONTROL SURFACE</p><div className={styles.dpad}><button type="button" onClick={() => steer("up")} aria-label="Move up"><SystemIcon name="arrow-up" size={15} /></button><button type="button" onClick={() => steer("left")} aria-label="Move left"><SystemIcon name="arrow-left" size={15} /></button><button type="button" onClick={() => steer("down")} aria-label="Move down"><SystemIcon name="arrow-down" size={15} /></button><button type="button" onClick={() => steer("right")} aria-label="Move right"><SystemIcon name="arrow-right" size={15} /></button></div><small>Arrow keys or WASD</small><dl><div><dt><i className={styles.clarityKey}>C</i></dt><dd>Clarity node<br /><span>+1 system insight</span></dd></div><div><dt><i className={styles.dependencyKey} /></dt><dd>Dependency chain<br /><span>Do not collide</span></dd></div></dl></aside>
       </div>
     </div>
   );

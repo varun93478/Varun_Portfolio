@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { CaseFileHeader } from "../../../concepts/CaseFileHeader";
+import { SystemIcon, type SystemIconName } from "../../../components/SystemIcon";
 import styles from "../../../concepts/concepts.module.css";
 import { useActiveSection } from "../../useActiveSection";
 
@@ -50,23 +51,14 @@ const edgeCases = [
 ];
 
 function DocIcon({ name }: { name: "arrow" | "file" | "folder" | "home" | "truck" }) {
-  const props = {
-    width: 18,
-    height: 18,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.6,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-    "aria-hidden": true,
+  const aliases: Record<"arrow" | "file" | "folder" | "home" | "truck", SystemIconName> = {
+    arrow: "arrow-right",
+    file: "file",
+    folder: "folder",
+    home: "home",
+    truck: "truck",
   };
-
-  if (name === "arrow") return <svg {...props}><path d="M5 12h14M14 7l5 5-5 5" /></svg>;
-  if (name === "file") return <svg {...props}><path d="M6 3h8l4 4v14H6z" /><path d="M14 3v5h5M9 12h6M9 16h6" /></svg>;
-  if (name === "folder") return <svg {...props}><path d="M3 6h7l2 2h9v10H3z" /></svg>;
-  if (name === "home") return <svg {...props}><path d="m4 11 8-7 8 7v9h-6v-6h-4v6H4z" /></svg>;
-  return <svg {...props}><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" /><circle cx="7" cy="18" r="2" /><circle cx="18" cy="18" r="2" /></svg>;
+  return <SystemIcon name={aliases[name]} />;
 }
 
 function EvidenceLabel({ children, type = "Confirmed requirement" }: { children: React.ReactNode; type?: EvidenceType }) {
@@ -110,10 +102,10 @@ export default function HarbingerDocumentation() {
           <div className={styles.studioProjectTree}>
             <p>Harbinger Motors</p>
             <Link className={styles.caseViewBranch} href="/work/harbinger">
-              <DocIcon name="file" /><span>Case study</span><b>›</b>
+              <DocIcon name="file" /><span>Case study</span><b><SystemIcon name="chevron-right" size={14} /></b>
             </Link>
             <a className={`${styles.caseViewBranch} ${styles.caseViewBranchActive}`} href="#product-model">
-              <DocIcon name="folder" /><span>UX documentation</span><b>⌄</b>
+              <DocIcon name="folder" /><span>UX documentation</span><b><SystemIcon name="chevron-down" size={14} /></b>
             </a>
             <div className={styles.caseSectionLinks}>
               {documents.map(([id, label], index) => (

@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { CaseFileHeader } from "../../concepts/CaseFileHeader";
+import { SystemIcon } from "../../components/SystemIcon";
 import styles from "../../concepts/concepts.module.css";
 import { ArtifactDisclosure, InformationArchitecture } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
@@ -99,8 +100,8 @@ export default function HcmCafeCaseStudy() {
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="HCM Café case study navigation">
           <nav className={styles.studioPrimaryNav}>
-            <Link href="/"><span>⌂</span><span>Desktop</span></Link>
-            <a className={styles.studioPrimaryActive} href="#overview"><span>▤</span><span>Case study</span></a>
+            <Link href="/"><SystemIcon name="home" /><span>Desktop</span></Link>
+            <a className={styles.studioPrimaryActive} href="#overview"><SystemIcon name="file" /><span>Case study</span></a>
           </nav>
           <div className={styles.studioProjectTree}>
             <p>HCM Café</p>
@@ -122,9 +123,9 @@ export default function HcmCafeCaseStudy() {
             </div>
             <p className={styles.casePortalLabel}>Workstreams</p>
             <div className={styles.casePortalList}>
-              <span>▣ HR management</span>
-              <span>◈ Visitor management</span>
-              <span>◉ Web and mobile</span>
+              <span><SystemIcon name="building" />HR management</span>
+              <span><SystemIcon name="users" />Visitor management</span>
+              <span><SystemIcon name="responsive" />Web and mobile</span>
             </div>
           </div>
         </aside>
@@ -341,7 +342,7 @@ export default function HcmCafeCaseStudy() {
                 <div><span>What I would validate next</span><h3>Exceptions and real-world front-desk pressure</h3><p>I would test attendance corrections, leave decisions, failed QR scans, walk-in visitors, multiple guests and asset reconciliation with the people handling those tasks.</p></div>
               </div>
               <div className={styles.caseOutcomeBoundary}><b>Outcome boundary</b><p>Formal usability findings, product adoption and business metrics were not available for this case study. The documented outcome is the design coverage and the operational logic visible in the product files.</p></div>
-              <footer className={styles.pcNextProject}><span>Desktop</span><Link href="/">Return to Varun OS →</Link></footer>
+              <footer className={styles.pcNextProject}><span>Desktop</span><Link href="/">Return to Varun OS <SystemIcon name="arrow-right" size={14} /></Link></footer>
             </motion.section>
           </article>
         </section>
