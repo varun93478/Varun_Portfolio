@@ -95,6 +95,10 @@ export default function PropertyCareCaseStudy() {
 
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="Property Care case study navigation">
+          <div className={styles.casePanelHeading}>
+            <strong>Contents</strong>
+            <span>Property Care.fig</span>
+          </div>
           <nav className={styles.studioPrimaryNav}>
             <Link href="/"><SystemIcon name="home" /><span>Desktop</span></Link>
             <a className={styles.studioPrimaryActive} href="#overview"><SystemIcon name="file" /><span>Case study</span></a>

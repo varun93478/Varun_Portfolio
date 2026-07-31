@@ -92,6 +92,10 @@ export default function InventFundsCaseStudy() {
 
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="InventFunds case study navigation">
+          <div className={styles.casePanelHeading}>
+            <strong>Contents</strong>
+            <span>InventFunds.fig</span>
+          </div>
           <nav className={styles.studioPrimaryNav}>
             <Link href="/"><SystemIcon name="home" /><span>Desktop</span></Link>
             <a className={styles.studioPrimaryActive} href="#overview"><SystemIcon name="file" /><span>Case study</span></a>
