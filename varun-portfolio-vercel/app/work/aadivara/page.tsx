@@ -75,7 +75,7 @@ export default function AadivaraCaseStudy() {
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
         <WorkspaceTabs />
-        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Portfolio</Link><PortfolioLinks /></div>
+        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Desktop</Link><PortfolioLinks /></div>
       </header>
 
       <nav className={styles.caseMobileSectionNav} aria-label="Aadivara sections">
@@ -88,7 +88,7 @@ export default function AadivaraCaseStudy() {
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="Aadivara case study navigation">
           <nav className={styles.studioPrimaryNav}>
-            <Link href="/"><span>⌂</span><span>Portfolio</span></Link>
+            <Link href="/"><span>⌂</span><span>Desktop</span></Link>
             <a className={styles.studioPrimaryActive} href="#overview"><span>▤</span><span>Case study</span></a>
           </nav>
           <div className={styles.studioProjectTree}>

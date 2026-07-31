@@ -50,7 +50,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
+      <head>
+        <meta name="codex-preview" content="development" />
+      </head>
       <body>{children}</body>
     </html>
   );

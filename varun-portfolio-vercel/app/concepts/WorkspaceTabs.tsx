@@ -110,7 +110,7 @@ export function WorkspaceTabs({ onPortfolioSelect }: { onPortfolioSelect?: () =>
   };
 
   return (
-    <nav className={styles.studioTabs} aria-label="Open portfolio tabs" role="tablist">
+    <nav className={styles.studioTabs} aria-label="Open project files" role="tablist">
       <span className={`${styles.studioTabItem} ${pathname === "/" ? styles.studioTabActive : ""}`}>
         <Link
           href="/"
@@ -118,7 +118,7 @@ export function WorkspaceTabs({ onPortfolioSelect }: { onPortfolioSelect?: () =>
           aria-selected={pathname === "/"}
           onClick={onPortfolioSelect}
         >
-          Portfolio
+          Desktop
         </Link>
       </span>
 

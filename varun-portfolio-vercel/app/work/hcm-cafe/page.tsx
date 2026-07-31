@@ -91,7 +91,7 @@ export default function HcmCafeCaseStudy() {
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
         <WorkspaceTabs />
-        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Portfolio</Link><PortfolioLinks /></div>
+        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Desktop</Link><PortfolioLinks /></div>
       </header>
 
       <nav className={styles.caseMobileSectionNav} aria-label="HCM Café sections">
@@ -104,7 +104,7 @@ export default function HcmCafeCaseStudy() {
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="HCM Café case study navigation">
           <nav className={styles.studioPrimaryNav}>
-            <Link href="/"><span>⌂</span><span>Portfolio</span></Link>
+            <Link href="/"><span>⌂</span><span>Desktop</span></Link>
             <a className={styles.studioPrimaryActive} href="#overview"><span>▤</span><span>Case study</span></a>
           </nav>
           <div className={styles.studioProjectTree}>
@@ -346,7 +346,7 @@ export default function HcmCafeCaseStudy() {
                 <div><span>What I would validate next</span><h3>Exceptions and real-world front-desk pressure</h3><p>I would test attendance corrections, leave decisions, failed QR scans, walk-in visitors, multiple guests and asset reconciliation with the people handling those tasks.</p></div>
               </div>
               <div className={styles.caseOutcomeBoundary}><b>Outcome boundary</b><p>Formal usability findings, product adoption and business metrics were not available for this case study. The documented outcome is the design coverage and the operational logic visible in the product files.</p></div>
-              <footer className={styles.pcNextProject}><span>Portfolio</span><Link href="/">Return to all projects →</Link></footer>
+              <footer className={styles.pcNextProject}><span>Desktop</span><Link href="/">Return to Varun OS →</Link></footer>
             </motion.section>
           </article>
         </section>

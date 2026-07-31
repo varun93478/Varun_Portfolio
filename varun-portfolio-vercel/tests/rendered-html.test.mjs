@@ -7,8 +7,8 @@ const developmentPreviewMeta =
 
 const routes = new Map([
   ["/", "Complex Systems Product Designer"],
-  ["/work/harbinger", "Preventing errors across vehicle configuration"],
-  ["/work/harbinger/v2", "Preventing errors across vehicle configuration"],
+  ["/work/harbinger", "The interface looked simple"],
+  ["/work/harbinger/v2", "The interface looked simple"],
   ["/work/harbinger/documentation", "Roles, rules, workflows and product decisions"],
   ["/work/aadivara", "Connecting accessible candidate journeys"],
   ["/work/inventfunds", "Connecting people who build ideas"],

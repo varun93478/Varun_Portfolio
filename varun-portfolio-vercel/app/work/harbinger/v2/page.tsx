@@ -208,7 +208,7 @@ export default function HarbingerV2CaseStudy() {
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="Case study navigation">
           <nav className={styles.studioPrimaryNav}>
-            <Link href="/"><Icon name="home" /><span>Portfolio</span></Link>
+            <Link href="/"><Icon name="home" /><span>Desktop</span></Link>
           </nav>
           <div className={styles.studioProjectTree}>
             <p>Harbinger Motors</p>
@@ -704,7 +704,7 @@ export default function HarbingerV2CaseStudy() {
 
               <div className={styles.caseV2FinalActions}>
                 <Link href="/work/harbinger/documentation">Explore detailed UX documentation <Icon name="arrow" /></Link>
-                <Link href="/">Return to selected work</Link>
+                <Link href="/">Return to desktop</Link>
               </div>
             </section>
           </article>
@@ -715,7 +715,7 @@ export default function HarbingerV2CaseStudy() {
         <span><i /> Product case study</span>
         <span>Harbinger Motors</span>
         <span>3 decisions · 5-stage narrative · 1 confirmed QA correction</span>
-        <Link href="/">Return to portfolio</Link>
+        <Link href="/">Return to desktop</Link>
       </footer>
     </main>
   );
