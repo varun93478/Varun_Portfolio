@@ -32,6 +32,10 @@ type IconName =
   | "zoomIn"
   | "play"
   | "comment"
+  | "pointer"
+  | "puzzle"
+  | "panelLeft"
+  | "panelRight"
   | "reset";
 
 const projects: Record<ProjectKey, {
@@ -215,6 +219,10 @@ function WorkspaceIcon({ name, size = 18 }: { name: IconName; size?: number }) {
   if (name === "zoomIn") return <svg {...shared}><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5M7.5 10.5h6M10.5 7.5v6" /></svg>;
   if (name === "play") return <svg {...shared}><path d="m8 5 11 7-11 7z" /></svg>;
   if (name === "comment") return <svg {...shared}><path d="M4 5h16v11H9l-5 4z" /><path d="M8 9h8M8 12h5" /></svg>;
+  if (name === "pointer") return <svg {...shared}><path d="m5 3 13 9-6 1.5-3 6z" /></svg>;
+  if (name === "puzzle") return <svg {...shared}><path d="M9 4h3a2.5 2.5 0 1 1 5 0h3v5a2.5 2.5 0 1 0 0 5v6h-6a2.5 2.5 0 1 0-5 0H4v-5a2.5 2.5 0 1 1 0-5V4h5z" /></svg>;
+  if (name === "panelLeft") return <svg {...shared}><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M9 4v16" /></svg>;
+  if (name === "panelRight") return <svg {...shared}><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M15 4v16" /></svg>;
   return <svg {...shared}><path d="M5 8a8 8 0 1 1-1 7" /><path d="M5 3v5h5" /></svg>;
 }
 
@@ -273,12 +281,16 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
   const [isPanning, setIsPanning] = useState(false);
   const [presentation, setPresentation] = useState(false);
   const [noteOpen, setNoteOpen] = useState(false);
+  const [pluginsOpen, setPluginsOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
+  const [leftPanelOpen, setLeftPanelOpen] = useState(true);
+  const [rightPanelOpen, setRightPanelOpen] = useState(true);
   const [themeMode, setThemeMode] = useState<ThemeMode>("system");
   const [systemDark, setSystemDark] = useState(false);
   const [customAccent, setCustomAccent] = useState("#3155e7");
   const panOrigin = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
   const themePanelRef = useRef<HTMLDivElement>(null);
+  const dockRef = useRef<HTMLDivElement>(null);
   const canvasX = useMotionValue(0);
   const canvasY = useMotionValue(0);
   const prefersReducedMotion = useReducedMotion();
@@ -326,6 +338,17 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
     return () => window.removeEventListener("pointerdown", closeOnOutsideClick);
   }, [themeOpen]);
 
+  useEffect(() => {
+    if (!noteOpen && !pluginsOpen) return;
+    const closeDockPanels = (event: PointerEvent) => {
+      if (dockRef.current?.contains(event.target as Node)) return;
+      setNoteOpen(false);
+      setPluginsOpen(false);
+    };
+    window.addEventListener("pointerdown", closeDockPanels);
+    return () => window.removeEventListener("pointerdown", closeDockPanels);
+  }, [noteOpen, pluginsOpen]);
+
   const closeSplash = useCallback(() => {
     window.sessionStorage.setItem("varun-workspace-opened", "true");
     setSplashVisible(false);
@@ -347,6 +370,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
       if (page === "work" || page === "process" || page === "about" || page === "contact") {
         setActivePage(page);
         setNoteOpen(false);
+        setPluginsOpen(false);
         canvasX.set(0);
         canvasY.set(0);
         setZoom(92);
@@ -361,6 +385,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
   const selectPage = useCallback((page: WorkspacePage) => {
     setActivePage(page);
     setNoteOpen(false);
+    setPluginsOpen(false);
     canvasX.set(0);
     canvasY.set(0);
     setZoom(92);
@@ -408,6 +433,14 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
       const key = event.key.toLowerCase();
       if (key === "1" || key === "2" || key === "3" || key === "4" || key === "5") selectProject(projectKeys[Number(key) - 1]);
       if (key === "p") setPresentation((current) => !current);
+      if (key === "v") {
+        setNoteOpen(false);
+        setPluginsOpen(false);
+      }
+      if (key === "n") {
+        setNoteOpen((current) => !current);
+        setPluginsOpen(false);
+      }
       if (key === "w") selectPage("work");
       if (key === "a") selectPage("about");
       if (key === "c") selectPage("contact");
@@ -419,6 +452,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
         setPresentation(false);
         setThemeOpen(false);
         setNoteOpen(false);
+        setPluginsOpen(false);
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -491,13 +525,17 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
           <button className={styles.studioZoomValue} type="button" onClick={resetCanvas} aria-label="Reset canvas">{zoom}%</button>
           <i />
           <button type="button" onClick={() => setPresentation(true)} aria-label="Open presentation mode"><WorkspaceIcon name="play" /></button>
-          <button type="button" onClick={() => setNoteOpen((current) => !current)} aria-expanded={noteOpen} aria-pressed={noteOpen} aria-label="View design note"><WorkspaceIcon name="comment" /></button>
+          <button type="button" onClick={() => {
+            setNoteOpen((current) => !current);
+            setPluginsOpen(false);
+          }} aria-expanded={noteOpen} aria-pressed={noteOpen} aria-label="View design note"><WorkspaceIcon name="comment" /></button>
           <div className={styles.studioThemeControl} ref={themePanelRef}>
             <button
               type="button"
               onClick={() => {
                 setThemeOpen((current) => !current);
                 setNoteOpen(false);
+                setPluginsOpen(false);
               }}
               aria-expanded={themeOpen}
               aria-haspopup="dialog"
@@ -571,8 +609,8 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
         )}
       </header>
 
-      <div className={styles.studioWorkspace}>
-        <aside className={styles.studioLeft} aria-label="Portfolio pages and projects">
+      <div className={`${styles.studioWorkspace} ${!leftPanelOpen ? styles.studioWorkspaceLeftClosed : ""} ${!rightPanelOpen ? styles.studioWorkspaceRightClosed : ""}`}>
+        <aside className={styles.studioLeft} id="portfolio-layers-panel" aria-label="Portfolio pages and projects" aria-hidden={!leftPanelOpen}>
           <nav className={styles.studioPrimaryNav}>
             <button className={activePage === "work" ? styles.studioPrimaryActive : ""} type="button" aria-pressed={activePage === "work"} onClick={() => selectPage("work")}><WorkspaceIcon name="grid" /><span>Work</span></button>
             <button className={activePage === "process" ? styles.studioPrimaryActive : ""} type="button" aria-pressed={activePage === "process"} onClick={() => selectPage("process")}><WorkspaceIcon name="process" /><span>Process</span></button>
@@ -620,11 +658,6 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
             })}
           </div>
 
-          <div className={styles.studioLeftTools}>
-            <button type="button" onClick={() => selectPage("contact")} aria-label="Open contact page"><WorkspaceIcon name="mail" /></button>
-            <button type="button" onClick={() => selectPage("work")} aria-label="Open work"><WorkspaceIcon name="folder" /></button>
-            <button type="button" onClick={() => selectPage("process")} aria-label="Open process"><WorkspaceIcon name="layers" /></button>
-          </div>
         </aside>
 
         <nav className={styles.studioMobileNav} aria-label="Portfolio pages">
@@ -852,7 +885,7 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
           <p className={styles.studioCanvasHelp}>Drag empty space to pan · Ctrl/Cmd + scroll to zoom · Press P to present</p>
         </section>
 
-        <aside className={styles.studioInspector} aria-live="polite">
+        <aside className={styles.studioInspector} id="portfolio-inspector-panel" aria-live="polite" aria-hidden={!rightPanelOpen}>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={`${activePage}-${selectedProject}`}
@@ -896,6 +929,51 @@ export function StudioConcept({ comparisonMode = true }: { comparisonMode?: bool
           </AnimatePresence>
         </aside>
       </div>
+
+      {!presentation && (
+        <div className={styles.studioDockArea} ref={dockRef}>
+          {pluginsOpen && (
+            <aside className={styles.studioPluginPopover} role="dialog" aria-label="Workspace plugins">
+              <header>
+                <div><b>Workspace plugins</b><span>Useful portfolio actions</span></div>
+                <button type="button" onClick={() => setPluginsOpen(false)} aria-label="Close plugins">×</button>
+              </header>
+              <button type="button" onClick={() => {
+                selectProject("harbinger");
+                selectPage("work");
+                setZoom(100);
+                setPluginsOpen(false);
+              }}><WorkspaceIcon name="zoomIn" /><span><b>Recruiter quick scan</b><small>Focus the flagship case study</small></span></button>
+              <button type="button" onClick={() => {
+                setPluginsOpen(false);
+                setThemeOpen(true);
+              }}><WorkspaceIcon name="sliders" /><span><b>Appearance</b><small>Theme and accent controls</small></span></button>
+              <button type="button" onClick={() => {
+                setPluginsOpen(false);
+                setPresentation(true);
+              }}><WorkspaceIcon name="play" /><span><b>Presentation</b><small>Hide the workspace chrome</small></span></button>
+            </aside>
+          )}
+          <nav className={styles.studioToolDock} aria-label="Canvas tools">
+            <button className={styles.studioToolDockActive} type="button" aria-pressed="true" onClick={() => {
+              setNoteOpen(false);
+              setPluginsOpen(false);
+            }} title="Move canvas (V)"><WorkspaceIcon name="pointer" /><span>Move</span></button>
+            <button type="button" aria-pressed={noteOpen} aria-expanded={noteOpen} onClick={() => {
+              setNoteOpen((current) => !current);
+              setPluginsOpen(false);
+            }} title="Design note (N)"><WorkspaceIcon name="comment" /><span>Comment</span></button>
+            <button type="button" aria-pressed={pluginsOpen} aria-expanded={pluginsOpen} onClick={() => {
+              setPluginsOpen((current) => !current);
+              setNoteOpen(false);
+              setThemeOpen(false);
+            }} title="Workspace plugins"><WorkspaceIcon name="puzzle" /><span>Plugins</span></button>
+            <i aria-hidden="true" />
+            <button type="button" aria-pressed={leftPanelOpen} aria-expanded={leftPanelOpen} aria-controls="portfolio-layers-panel" onClick={() => setLeftPanelOpen((current) => !current)} title="Toggle layers panel"><WorkspaceIcon name="panelLeft" /><span>Layers</span></button>
+            <button className={styles.studioDockInspector} type="button" aria-pressed={rightPanelOpen} aria-expanded={rightPanelOpen} aria-controls="portfolio-inspector-panel" onClick={() => setRightPanelOpen((current) => !current)} title="Toggle inspector panel"><WorkspaceIcon name="panelRight" /><span>Inspect</span></button>
+          </nav>
+        </div>
+      )}
 
       <footer className={styles.studioStatusbar}>
         <span><i /> Portfolio canvas</span>
