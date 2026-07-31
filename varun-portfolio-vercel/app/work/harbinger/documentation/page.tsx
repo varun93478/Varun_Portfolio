@@ -81,8 +81,8 @@ export default function HarbingerDocumentation() {
     useActiveSection(documentIds, "product-model");
 
   return (
-    <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.documentationPage}`}>
-      <CaseFileHeader fileName="Harbinger / UX documentation">
+    <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.caseV2Page} ${styles.documentationPage}`}>
+      <CaseFileHeader fileName="Harbinger.fig">
           <Link href="/work/harbinger">Case study</Link>
           <span className={styles.caseViewActive}>UX documentation</span>
       </CaseFileHeader>
@@ -96,8 +96,12 @@ export default function HarbingerDocumentation() {
 
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="Harbinger documentation navigation">
+          <div className={styles.casePanelHeading}>
+            <strong>Contents</strong>
+            <span>Harbinger.fig</span>
+          </div>
           <nav className={styles.studioPrimaryNav}>
-            <Link href="/"><DocIcon name="home" /><span>Portfolio</span></Link>
+            <Link href="/"><DocIcon name="home" /><span>Desktop</span></Link>
           </nav>
           <div className={styles.studioProjectTree}>
             <p>Harbinger Motors</p>

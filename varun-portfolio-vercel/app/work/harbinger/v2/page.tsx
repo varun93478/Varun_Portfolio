@@ -174,7 +174,6 @@ export default function HarbingerV2CaseStudy() {
   const prefersReducedMotion = useReducedMotion();
   const { activeSection, selectSection } = useActiveSection(sectionIds, "overview");
   const [zoom, setZoom] = useState(100);
-  const [leftMode, setLeftMode] = useState<"chapters" | "layers">("chapters");
   const [presenting, setPresenting] = useState(false);
   const canvasRef = useRef<HTMLElement>(null);
   const documentRef = useRef<HTMLElement>(null);
@@ -237,9 +236,9 @@ export default function HarbingerV2CaseStudy() {
 
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="Case study navigation">
-          <div className={styles.casePanelTabs} role="tablist" aria-label="Navigation panel">
-            <button type="button" role="tab" aria-selected={leftMode === "chapters"} onClick={() => setLeftMode("chapters")}>Chapters</button>
-            <button type="button" role="tab" aria-selected={leftMode === "layers"} onClick={() => setLeftMode("layers")}>Layers</button>
+          <div className={styles.casePanelHeading}>
+            <strong>Contents</strong>
+            <span>Harbinger.fig</span>
           </div>
           <nav className={styles.studioPrimaryNav}>
             <Link href="/"><Icon name="home" /><span>Desktop</span></Link>
@@ -249,7 +248,7 @@ export default function HarbingerV2CaseStudy() {
             <a className={`${styles.caseViewBranch} ${styles.caseViewBranchActive}`} href="#overview">
               <Icon name="file" /><span>Case study</span><b><SystemIcon name="chevron-down" size={14} /></b>
             </a>
-            <div className={`${styles.caseSectionLinks} ${leftMode === "layers" ? styles.casePanelHidden : ""}`}>
+            <div className={styles.caseSectionLinks}>
               {sections.map(([id, label], index) => (
                 <a
                   className={activeSection === id ? styles.studioTreeActive : ""}
@@ -264,14 +263,6 @@ export default function HarbingerV2CaseStudy() {
                   <span>{String(index + 1).padStart(2, "0")}</span>{label}
                 </a>
               ))}
-            </div>
-            <div className={`${styles.caseLayerTree} ${leftMode === "chapters" ? styles.casePanelHidden : ""}`} aria-label="Case study layers">
-              <span><i />Hero investigation</span>
-              <span><i />Story spine</span>
-              <span><i />Configuration flow</span>
-              <span><i />Delivery ownership</span>
-              <span><i />PDI state system</span>
-              <span><i />Validation boundary</span>
             </div>
             <Link className={styles.caseViewBranch} href="/work/harbinger/documentation">
               <Icon name="folder" /><span>UX documentation</span><b><SystemIcon name="chevron-right" size={14} /></b>

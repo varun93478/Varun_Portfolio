@@ -397,6 +397,9 @@
 .casePanelTabs button{position:relative;min-width:0;min-height:46px;padding:0;border:0;background:transparent;color:#8f99a7;font:600 12px/1 var(--font-geist-sans),sans-serif;cursor:pointer}
 .casePanelTabs button[aria-selected="true"]{color:#fff}
 .casePanelTabs button[aria-selected="true"]::after{position:absolute;right:0;bottom:0;left:0;height:2px;border-radius:2px;background:#4c75ff;content:""}
+.casePanelHeading{display:flex;align-items:center;justify-content:space-between;min-height:46px;padding:0 18px;border-bottom:1px solid #313741}
+.casePanelHeading strong{color:inherit;font:650 12px/1 var(--font-geist-sans),sans-serif}
+.casePanelHeading span{color:#8f99a7;font:500 10px/1 var(--font-geist-sans),sans-serif}
 .casePanelHidden{display:none!important}
 .caseLayerTree{display:grid;gap:2px;margin-top:4px}
 .caseLayerTree span{display:flex;align-items:center;min-height:38px;padding:0 10px;border-radius:5px;font-size:12px}
@@ -557,6 +560,8 @@
 :global(html[data-portfolio-theme="light"]) .caseV2Page .caseFileBreadcrumb strong{color:var(--portfolio-accent,#3155e7)}
 :global(html[data-portfolio-theme="light"]) .caseV2Page .casePanelTabs button{color:#5c6673}
 :global(html[data-portfolio-theme="light"]) .caseV2Page .casePanelTabs button[aria-selected="true"]{color:#111722}
+:global(html[data-portfolio-theme="light"]) .caseV2Page .casePanelHeading{border-color:#d2d7de}
+:global(html[data-portfolio-theme="light"]) .caseV2Page .casePanelHeading span{color:#667180}
 :global(html[data-portfolio-theme="light"]) .caseV2Page .studioPrimaryNav a,:global(html[data-portfolio-theme="light"]) .caseV2Page .caseSectionLinks a,:global(html[data-portfolio-theme="light"]) .caseV2Page .caseLayerTree span,:global(html[data-portfolio-theme="light"]) .caseV2Page .studioInspector dt,:global(html[data-portfolio-theme="light"]) .caseV2Page .studioInspector dd{color:#38414d}
 :global(html[data-portfolio-theme="light"]) .caseV2Page .caseViewBranchActive{background:#e7e9ec;color:#111722}
 :global(html[data-portfolio-theme="light"]) .caseV2Page .caseLayerTree span:first-child{background:var(--portfolio-accent,#3155e7);color:#fff}
