@@ -50,9 +50,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="en" data-scroll-behavior="smooth" data-portfolio-theme="light" data-portfolio-theme-mode="light" style={{ colorScheme: "light" }} suppressHydrationWarning>
       <head>
         <meta name="codex-preview" content="development" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var m=localStorage.getItem('varun-portfolio-theme')||'light';var a=localStorage.getItem('varun-portfolio-accent')||'#3155e7';var d=m==='dark'||m==='custom'||(m==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.portfolioTheme=d?'dark':'light';document.documentElement.dataset.portfolioThemeMode=m;document.documentElement.style.setProperty('--portfolio-accent',a);document.documentElement.style.colorScheme=d?'dark':'light'}catch(e){}})()`,
+          }}
+        />
       </head>
       <body>{children}</body>
     </html>

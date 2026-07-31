@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { PortfolioLinks } from "../../../concepts/PortfolioLinks";
+import { CaseFileHeader } from "../../../concepts/CaseFileHeader";
 import styles from "../../../concepts/concepts.module.css";
 import {
   AnnotatedScreen,
@@ -222,14 +222,7 @@ export default function HarbingerV2CaseStudy() {
   return (
     <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.caseV2Page} ${presenting ? styles.studioPresentation : ""}`}>
       <a className={styles.caseSkipLink} href="#case-canvas">Skip to case study</a>
-      <header className={styles.studioToolbar}>
-        <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <nav className={styles.caseFileBreadcrumb} aria-label="File location">
-          <Link href="/">Desktop</Link>
-          <span aria-hidden="true">/</span>
-          <strong>Harbinger.fig</strong>
-        </nav>
-        <div className={styles.caseToolbarActions}>
+      <CaseFileHeader fileName="Harbinger.fig">
           <div className={styles.caseZoomControls} aria-label="Canvas zoom controls">
             <button type="button" onClick={() => changeZoom(zoom - 10)} disabled={zoom === 50} aria-label="Zoom out">−</button>
             <button type="button" className={styles.caseZoomValue} onClick={fitArtboard} aria-label={`Canvas zoom ${zoom} percent. Fit artboard`}>{zoom}%</button>
@@ -237,9 +230,7 @@ export default function HarbingerV2CaseStudy() {
           </div>
           <button className={styles.caseToolbarPresent} type="button" onClick={() => setPresenting(true)}>Present <kbd>P</kbd></button>
           <Link href="/work/harbinger/documentation">UX documentation</Link>
-          <PortfolioLinks />
-        </div>
-      </header>
+      </CaseFileHeader>
 
       <nav className={styles.caseMobileSectionNav} aria-label="Harbinger case study sections">
         <label htmlFor="harbinger-v2-section">Section</label>

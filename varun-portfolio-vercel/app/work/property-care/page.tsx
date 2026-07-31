@@ -3,8 +3,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { PortfolioLinks } from "../../concepts/PortfolioLinks";
-import { WorkspaceTabs } from "../../concepts/WorkspaceTabs";
+import { CaseFileHeader } from "../../concepts/CaseFileHeader";
 import styles from "../../concepts/concepts.module.css";
 import { ArtifactDisclosure, WireframeStrip } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
@@ -84,11 +83,7 @@ export default function PropertyCareCaseStudy() {
 
   return (
     <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.pcPage}`}>
-      <header className={styles.studioToolbar}>
-        <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <WorkspaceTabs />
-        <div className={styles.caseToolbarActions}><span>Case study</span><Link href="/">Desktop</Link><PortfolioLinks /></div>
-      </header>
+      <CaseFileHeader fileName="Property Care.fig"><span className={styles.caseViewActive}>Case study</span></CaseFileHeader>
 
       <nav className={styles.caseMobileSectionNav} aria-label="Property Care sections">
         <label htmlFor="property-care-section">Section</label>

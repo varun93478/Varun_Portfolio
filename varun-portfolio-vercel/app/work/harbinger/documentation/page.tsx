@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PortfolioLinks } from "../../../concepts/PortfolioLinks";
-import { WorkspaceTabs } from "../../../concepts/WorkspaceTabs";
+import { CaseFileHeader } from "../../../concepts/CaseFileHeader";
 import styles from "../../../concepts/concepts.module.css";
 import { useActiveSection } from "../../useActiveSection";
 
@@ -91,15 +90,10 @@ export default function HarbingerDocumentation() {
 
   return (
     <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.documentationPage}`}>
-      <header className={styles.studioToolbar}>
-        <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <WorkspaceTabs />
-        <div className={styles.caseToolbarActions}>
+      <CaseFileHeader fileName="Harbinger / UX documentation">
           <Link href="/work/harbinger">Case study</Link>
           <span className={styles.caseViewActive}>UX documentation</span>
-          <PortfolioLinks />
-        </div>
-      </header>
+      </CaseFileHeader>
 
       <nav className={styles.caseMobileSectionNav} aria-label="Harbinger UX documentation sections">
         <label htmlFor="harbinger-documentation-section">Section</label>

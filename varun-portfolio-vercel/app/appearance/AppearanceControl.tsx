@@ -23,7 +23,7 @@ function applyAppearance(mode: ThemeMode, accent: string, systemDark: boolean) {
 }
 
 export function AppearanceControl({ compact = false }: { compact?: boolean }) {
-  const [mode, setMode] = useState<ThemeMode>("system");
+  const [mode, setMode] = useState<ThemeMode>("light");
   const [accent, setAccent] = useState(accents[0]);
   const [systemDark, setSystemDark] = useState(false);
 
@@ -31,7 +31,7 @@ export function AppearanceControl({ compact = false }: { compact?: boolean }) {
     const query = window.matchMedia("(prefers-color-scheme: dark)");
     const storedMode = window.localStorage.getItem("varun-portfolio-theme") as ThemeMode | null;
     const storedAccent = window.localStorage.getItem("varun-portfolio-accent");
-    const nextMode = modes.some((item) => item.id === storedMode) ? storedMode! : "system";
+    const nextMode = modes.some((item) => item.id === storedMode) ? storedMode! : "light";
     const nextAccent = storedAccent && accents.includes(storedAccent) ? storedAccent : accents[0];
     const updateSystem = () => setSystemDark(query.matches);
     const frame = window.requestAnimationFrame(() => {
