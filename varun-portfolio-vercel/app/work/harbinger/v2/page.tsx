@@ -183,7 +183,6 @@ export default function HarbingerV2CaseStudy() {
   const { activeSection, selectSection } = useActiveSection(sectionIds, "overview");
   const [zoom, setZoom] = useState(100);
   const [leftMode, setLeftMode] = useState<"chapters" | "layers">("chapters");
-  const [activeTool, setActiveTool] = useState<"move" | "evidence" | "layers" | "inspect">("move");
   const [presenting, setPresenting] = useState(false);
   const canvasRef = useRef<HTMLElement>(null);
   const documentRef = useRef<HTMLElement>(null);
@@ -209,6 +208,9 @@ export default function HarbingerV2CaseStudy() {
       } else if (event.key === "0") {
         event.preventDefault();
         setZoom(100);
+      } else if (event.key.toLowerCase() === "p" && !presenting) {
+        event.preventDefault();
+        setPresenting(true);
       } else if (event.key === "Escape" && presenting) {
         setPresenting(false);
       }
@@ -233,7 +235,7 @@ export default function HarbingerV2CaseStudy() {
             <button type="button" className={styles.caseZoomValue} onClick={fitArtboard} aria-label={`Canvas zoom ${zoom} percent. Fit artboard`}>{zoom}%</button>
             <button type="button" onClick={() => changeZoom(zoom + 10)} disabled={zoom === 150} aria-label="Zoom in">+</button>
           </div>
-          <span className={styles.caseViewActive}>Case study</span>
+          <button className={styles.caseToolbarPresent} type="button" onClick={() => setPresenting(true)}>Present <kbd>P</kbd></button>
           <Link href="/work/harbinger/documentation">UX documentation</Link>
           <PortfolioLinks />
         </div>
@@ -782,13 +784,6 @@ export default function HarbingerV2CaseStudy() {
         </aside>
       </div>
 
-      <nav className={styles.caseFloatingTools} aria-label="Case study tools">
-        <button type="button" aria-pressed={activeTool === "move"} onClick={() => setActiveTool("move")}><span>↖</span><b>Move</b><kbd>V</kbd></button>
-        <button type="button" aria-pressed={activeTool === "evidence"} onClick={() => { setActiveTool("evidence"); selectSection("configuration"); }}><span>⌕</span><b>Evidence</b><kbd>E</kbd></button>
-        <button type="button" aria-pressed={activeTool === "layers"} onClick={() => { setActiveTool("layers"); setLeftMode("layers"); }}><span>▱</span><b>Layers</b><kbd>L</kbd></button>
-        <button type="button" aria-pressed={activeTool === "inspect"} onClick={() => setActiveTool("inspect")}><span>◫</span><b>Inspect</b><kbd>I</kbd></button>
-        <button type="button" aria-pressed={presenting} onClick={() => setPresenting(true)}><span>▷</span><b>Present</b><kbd>P</kbd></button>
-      </nav>
       <span className={styles.caseZoomAnnouncement} aria-live="polite">Canvas zoom {zoom}%</span>
       {presenting ? <button className={styles.caseExitPresentation} type="button" onClick={() => setPresenting(false)}>Exit presentation <kbd>Esc</kbd></button> : null}
       <footer className={styles.studioStatusbar}>
