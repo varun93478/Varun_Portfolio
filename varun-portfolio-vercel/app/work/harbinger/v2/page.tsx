@@ -3,8 +3,8 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { PortfolioLinks } from "../../../concepts/PortfolioLinks";
-import { WorkspaceTabs } from "../../../concepts/WorkspaceTabs";
 import styles from "../../../concepts/concepts.module.css";
 import {
   AnnotatedScreen,
@@ -181,13 +181,58 @@ function FigJamEvidence({
 export default function HarbingerV2CaseStudy() {
   const prefersReducedMotion = useReducedMotion();
   const { activeSection, selectSection } = useActiveSection(sectionIds, "overview");
+  const [zoom, setZoom] = useState(100);
+  const [leftMode, setLeftMode] = useState<"chapters" | "layers">("chapters");
+  const [activeTool, setActiveTool] = useState<"move" | "evidence" | "layers" | "inspect">("move");
+  const [presenting, setPresenting] = useState(false);
+  const canvasRef = useRef<HTMLElement>(null);
+  const documentRef = useRef<HTMLElement>(null);
+
+  const changeZoom = (value: number) => setZoom(Math.max(50, Math.min(150, value)));
+  const fitArtboard = () => {
+    const canvas = canvasRef.current;
+    const document = documentRef.current;
+    if (!canvas || !document) return;
+    changeZoom(Math.floor(((canvas.clientWidth - 48) / document.offsetWidth) * 100));
+  };
+
+  useEffect(() => {
+    const handleShortcut = (event: KeyboardEvent) => {
+      if (event.ctrlKey || event.metaKey || event.altKey) return;
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement) return;
+      if (event.key === "+" || event.key === "=") {
+        event.preventDefault();
+        setZoom((value) => Math.min(150, value + 10));
+      } else if (event.key === "-") {
+        event.preventDefault();
+        setZoom((value) => Math.max(50, value - 10));
+      } else if (event.key === "0") {
+        event.preventDefault();
+        setZoom(100);
+      } else if (event.key === "Escape" && presenting) {
+        setPresenting(false);
+      }
+    };
+    window.addEventListener("keydown", handleShortcut);
+    return () => window.removeEventListener("keydown", handleShortcut);
+  }, [presenting]);
 
   return (
-    <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.caseV2Page}`}>
+    <main className={`${styles.previewPage} ${styles.studioPage} ${styles.caseWorkspacePage} ${styles.caseV2Page} ${presenting ? styles.studioPresentation : ""}`}>
+      <a className={styles.caseSkipLink} href="#case-canvas">Skip to case study</a>
       <header className={styles.studioToolbar}>
         <Link className={styles.studioBrand} href="/">Varun J</Link>
-        <WorkspaceTabs />
+        <nav className={styles.caseFileBreadcrumb} aria-label="File location">
+          <Link href="/">Desktop</Link>
+          <span aria-hidden="true">/</span>
+          <strong>Harbinger.fig</strong>
+        </nav>
         <div className={styles.caseToolbarActions}>
+          <div className={styles.caseZoomControls} aria-label="Canvas zoom controls">
+            <button type="button" onClick={() => changeZoom(zoom - 10)} disabled={zoom === 50} aria-label="Zoom out">−</button>
+            <button type="button" className={styles.caseZoomValue} onClick={fitArtboard} aria-label={`Canvas zoom ${zoom} percent. Fit artboard`}>{zoom}%</button>
+            <button type="button" onClick={() => changeZoom(zoom + 10)} disabled={zoom === 150} aria-label="Zoom in">+</button>
+          </div>
           <span className={styles.caseViewActive}>Case study</span>
           <Link href="/work/harbinger/documentation">UX documentation</Link>
           <PortfolioLinks />
@@ -207,6 +252,10 @@ export default function HarbingerV2CaseStudy() {
 
       <div className={`${styles.studioWorkspace} ${styles.caseWorkspace}`}>
         <aside className={styles.studioLeft} aria-label="Case study navigation">
+          <div className={styles.casePanelTabs} role="tablist" aria-label="Navigation panel">
+            <button type="button" role="tab" aria-selected={leftMode === "chapters"} onClick={() => setLeftMode("chapters")}>Chapters</button>
+            <button type="button" role="tab" aria-selected={leftMode === "layers"} onClick={() => setLeftMode("layers")}>Layers</button>
+          </div>
           <nav className={styles.studioPrimaryNav}>
             <Link href="/"><Icon name="home" /><span>Desktop</span></Link>
           </nav>
@@ -215,7 +264,7 @@ export default function HarbingerV2CaseStudy() {
             <a className={`${styles.caseViewBranch} ${styles.caseViewBranchActive}`} href="#overview">
               <Icon name="file" /><span>Case study</span><b>⌄</b>
             </a>
-            <div className={styles.caseSectionLinks}>
+            <div className={`${styles.caseSectionLinks} ${leftMode === "layers" ? styles.casePanelHidden : ""}`}>
               {sections.map(([id, label], index) => (
                 <a
                   className={activeSection === id ? styles.studioTreeActive : ""}
@@ -231,6 +280,14 @@ export default function HarbingerV2CaseStudy() {
                 </a>
               ))}
             </div>
+            <div className={`${styles.caseLayerTree} ${leftMode === "chapters" ? styles.casePanelHidden : ""}`} aria-label="Case study layers">
+              <span><i />Hero investigation</span>
+              <span><i />Story spine</span>
+              <span><i />Configuration flow</span>
+              <span><i />Delivery ownership</span>
+              <span><i />PDI state system</span>
+              <span><i />Validation boundary</span>
+            </div>
             <Link className={styles.caseViewBranch} href="/work/harbinger/documentation">
               <Icon name="folder" /><span>UX documentation</span><b>›</b>
             </Link>
@@ -242,8 +299,8 @@ export default function HarbingerV2CaseStudy() {
           </div>
         </aside>
 
-        <section className={styles.caseStudyCanvas} aria-label="Harbinger Motors case study" data-case-scroll>
-          <article className={styles.caseStudyDocument}>
+        <section className={styles.caseStudyCanvas} id="case-canvas" ref={canvasRef} tabIndex={-1} aria-label="Harbinger Motors case study canvas" data-case-scroll>
+          <article className={styles.caseStudyDocument} ref={documentRef} style={{ zoom: zoom / 100 }}>
             <section className={`${styles.caseStudyHero} ${styles.caseV2Hero}`} id="overview">
               <div className={styles.caseV2HeroIntro}>
                 <div className={styles.caseStudyKicker}>
@@ -709,8 +766,31 @@ export default function HarbingerV2CaseStudy() {
             </section>
           </article>
         </section>
+
+        <aside className={`${styles.studioInspector} ${styles.caseInspector}`} aria-label="Selection inspector">
+          <div>
+            <header><h2>Harbinger.fig</h2><span className={styles.caseInspectorStatus}><i /> Selected</span></header>
+            <dl>
+              <div><dt>Role</dt><dd>Senior UI/UX Designer</dd></div>
+              <div><dt>Scope</dt><dd>HBR Portal + Dealer Portal</dd></div>
+              <div><dt>System lens</dt><dd>Roles · Rules · Data · Decisions</dd></div>
+              <div><dt>Decision</dt><dd>Expose dependencies before they become operational failures.</dd></div>
+              <div><dt>Validation boundary</dt><dd>Delivered design and one confirmed UI-QA correction. Broader outcome metrics remain unverified.</dd></div>
+            </dl>
+            <Link className={styles.studioInspectorAction} href="/work/harbinger/documentation">Open UX evidence</Link>
+          </div>
+        </aside>
       </div>
 
+      <nav className={styles.caseFloatingTools} aria-label="Case study tools">
+        <button type="button" aria-pressed={activeTool === "move"} onClick={() => setActiveTool("move")}><span>↖</span><b>Move</b><kbd>V</kbd></button>
+        <button type="button" aria-pressed={activeTool === "evidence"} onClick={() => { setActiveTool("evidence"); selectSection("configuration"); }}><span>⌕</span><b>Evidence</b><kbd>E</kbd></button>
+        <button type="button" aria-pressed={activeTool === "layers"} onClick={() => { setActiveTool("layers"); setLeftMode("layers"); }}><span>▱</span><b>Layers</b><kbd>L</kbd></button>
+        <button type="button" aria-pressed={activeTool === "inspect"} onClick={() => setActiveTool("inspect")}><span>◫</span><b>Inspect</b><kbd>I</kbd></button>
+        <button type="button" aria-pressed={presenting} onClick={() => setPresenting(true)}><span>▷</span><b>Present</b><kbd>P</kbd></button>
+      </nav>
+      <span className={styles.caseZoomAnnouncement} aria-live="polite">Canvas zoom {zoom}%</span>
+      {presenting ? <button className={styles.caseExitPresentation} type="button" onClick={() => setPresenting(false)}>Exit presentation <kbd>Esc</kbd></button> : null}
       <footer className={styles.studioStatusbar}>
         <span><i /> Product case study</span>
         <span>Harbinger Motors</span>
