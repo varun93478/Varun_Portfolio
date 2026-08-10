@@ -1,14 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AppearanceControl } from "../appearance/AppearanceControl";
 import { SystemIcon, type SystemIconName } from "../components/SystemIcon";
 import { DesktopSystemMap } from "./DesktopSystemMap";
-import { PaintApp } from "./PaintApp";
-import { SnakeGame } from "./SnakeGame";
 import styles from "./varun-os.module.css";
+
+const PaintApp = dynamic(() => import("./PaintApp").then((module) => module.PaintApp), { ssr: false });
+const SnakeGame = dynamic(() => import("./SnakeGame").then((module) => module.SnakeGame), { ssr: false });
 
 type UtilityId = "projects" | "report" | "notes" | "paint" | "snake" | "contact";
 type GlyphName = UtilityId | "home" | "resume" | "folder" | "fig";
@@ -70,6 +72,9 @@ const utilities: { id: UtilityId; title: string; subtitle: string; glyph: GlyphN
   { id: "contact", title: "Contact", subtitle: "Start a conversation", glyph: "contact" },
 ];
 
+const primaryUtilityIds: UtilityId[] = ["projects", "report", "contact"];
+const creativeUtilityIds: UtilityId[] = ["notes", "paint", "snake"];
+
 function Glyph({ name }: { name: GlyphName }) {
   const icons: Record<GlyphName, SystemIconName> = {
     home: "launcher",
@@ -109,47 +114,12 @@ function useCompactViewport() {
   return compact;
 }
 
-function BootScreen({ onComplete }: { onComplete: () => void }) {
-  const reducedMotion = useReducedMotion();
-  const [phase, setPhase] = useState(0);
-  const phases = ["Mapping roles", "Resolving rules", "Connecting evidence", "System ready"];
-
-  useEffect(() => {
-    if (reducedMotion) {
-      onComplete();
-      return;
-    }
-    const progress = window.setInterval(() => setPhase((value) => Math.min(value + 1, 3)), 400);
-    const finish = window.setTimeout(onComplete, 2050);
-    return () => {
-      window.clearInterval(progress);
-      window.clearTimeout(finish);
-    };
-  }, [onComplete, reducedMotion]);
-
-  return (
-    <motion.section className={styles.boot} aria-label="Varun OS is starting" exit={{ opacity: 0 }}>
-      <div className={styles.bootMap} aria-hidden="true"><i /><i /><i /><i /></div>
-      <motion.div className={styles.bootLogo} initial={{ opacity: 0, scale: 0.84 }} animate={{ opacity: 1, scale: 1 }}>
-        <span>VJ</span><i />
-      </motion.div>
-      <div className={styles.bootCopy}>
-        <p>VARUN OS / DESIGN DECISION SYSTEM</p>
-        <h1>Complexity is loading.<br />Clarity is next.</h1>
-        <div className={styles.bootStatus}><span>{phases[phase]}</span><b>{(phase + 1) * 25}%</b></div>
-        <div className={styles.bootProgress}><motion.i animate={{ width: `${(phase + 1) * 25}%` }} /></div>
-      </div>
-      <button type="button" className={styles.skipBoot} onClick={onComplete}>Skip intro <SystemIcon name="arrow-right" size={14} /></button>
-    </motion.section>
-  );
-}
-
 function ProjectFiles() {
   return (
     <section className={styles.projectZone} aria-labelledby="project-zone-title">
       <header>
-        <p id="project-zone-title">PROJECT FILES / DOUBLE-CLICK ENERGY, SINGLE-CLICK UX</p>
-        <span>Open a case study directly</span>
+        <p id="project-zone-title">SELECTED WORK / FIVE PRODUCT CASE STUDIES</p>
+        <span>Open the evidence directly</span>
       </header>
       <div className={styles.projectFiles}>
         {projects.map((project, index) => (
@@ -327,24 +297,8 @@ function AppWindow({ app, onClose }: { app: UtilityId; onClose: () => void }) {
 
 export function VarunOS() {
   const reducedMotion = useReducedMotion();
-  const [bootChecked, setBootChecked] = useState(false);
-  const [booting, setBooting] = useState(true);
   const [activeApp, setActiveApp] = useState<UtilityId | null>(null);
   const [launcherOpen, setLauncherOpen] = useState(false);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      const seen = window.sessionStorage.getItem("varun-os-booted") === "true";
-      if (seen || reducedMotion) setBooting(false);
-      setBootChecked(true);
-    }, 0);
-    return () => window.clearTimeout(timer);
-  }, [reducedMotion]);
-
-  const finishBoot = useCallback(() => {
-    window.sessionStorage.setItem("varun-os-booted", "true");
-    setBooting(false);
-  }, []);
 
   const openApp = useCallback((app: UtilityId) => {
     setActiveApp(app);
@@ -353,19 +307,14 @@ export function VarunOS() {
 
   const desktopTitle = useMemo(() => activeApp ? utilities.find((item) => item.id === activeApp)?.title : "Desktop", [activeApp]);
 
-  if (!bootChecked) return <main className={styles.os}><span className={styles.srOnly}>Complex Systems Product Designer</span></main>;
-
   return (
     <main className={styles.os}>
-      <AnimatePresence mode="wait">
-        {booting ? <BootScreen key="boot" onComplete={finishBoot} /> : (
-          <motion.section
-            key="desktop"
-            className={styles.desktop}
-            initial={reducedMotion ? false : { opacity: 0, scale: 1.01 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.45 }}
-          >
+      <motion.section
+        className={styles.desktop}
+        initial={reducedMotion ? false : { opacity: 0, scale: 1.01 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.32 }}
+      >
             <DesktopSystemMap />
             <header className={styles.osBar}>
               <button type="button" className={styles.osBrand} onClick={() => { setActiveApp(null); setLauncherOpen(false); }} aria-label="Show Varun OS desktop"><span>VJ</span><b>Varun OS</b></button>
@@ -381,16 +330,17 @@ export function VarunOS() {
               <p className={styles.heroLead}>Enterprise roles, rules, data and decisions—turned into workflows teams can trust.</p>
               <div className={styles.heroActions}>
                 <Link href="/work/harbinger">Open flagship case study <SystemIcon name="arrow-right" size={15} /></Link>
-                <button type="button" onClick={() => openApp("report")}>Open About Varun <SystemIcon name="external" size={15} /></button>
+                <a href="/VarunJ_Resume.pdf" target="_blank">Open résumé <SystemIcon name="external" size={15} /></a>
+                <button type="button" onClick={() => openApp("contact")}>Contact Varun <SystemIcon name="external" size={15} /></button>
               </div>
-              <dl><div><dt>01</dt><dd>Role logic</dd></div><div><dt>02</dt><dd>Workflow clarity</dd></div><div><dt>03</dt><dd>Operational states</dd></div></dl>
+              <dl><div><dt>05</dt><dd>Case studies</dd></div><div><dt>B2B</dt><dd>Enterprise systems</dd></div><div><dt>NOW</dt><dd>Open to roles</dd></div></dl>
             </section>
 
             <ProjectFiles />
 
             <nav className={styles.utilityColumn} aria-label="Desktop applications">
-              <p>UTILITIES</p>
-              {utilities.map((utility) => (
+              <p>RECRUITER SHORTCUTS</p>
+              {primaryUtilityIds.map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => (
                 <button type="button" key={utility.id} onClick={() => openApp(utility.id)}>
                   <Glyph name={utility.glyph} /><span><b>{utility.title}</b><small>{utility.subtitle}</small></span>
                 </button>
@@ -404,26 +354,26 @@ export function VarunOS() {
               {launcherOpen && (
                 <motion.aside className={styles.launcher} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}>
                   <header><span>VJ</span><div><b>Varun J</b><small>Enterprise product designer</small></div></header>
-                  <p>OPEN APP</p>
-                  <div>{utilities.map((utility) => <button type="button" key={utility.id} onClick={() => openApp(utility.id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>)}</div>
+                  <p>PORTFOLIO</p>
+                  <div>{primaryUtilityIds.map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => <button type="button" key={utility.id} onClick={() => openApp(utility.id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>)}</div>
+                  <p>EXPLORE THE OS</p>
+                  <div>{creativeUtilityIds.map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => <button type="button" key={utility.id} onClick={() => openApp(utility.id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>)}</div>
                   <footer><a href="/VarunJ_Resume.pdf" target="_blank">Résumé</a><a href="mailto:varunj93478@gmail.com">Email</a></footer>
                 </motion.aside>
               )}
             </AnimatePresence>
 
             <nav className={styles.dock} aria-label="Varun OS dock">
-              <button type="button" onClick={() => setLauncherOpen((value) => !value)} aria-pressed={launcherOpen}><Glyph name="home" /><span>Launcher</span></button>
-              {(["projects", "report", "notes", "paint", "snake"] as UtilityId[]).map((id) => {
+              <button type="button" onClick={() => setLauncherOpen((value) => !value)} aria-label="Launcher" aria-pressed={launcherOpen}><Glyph name="home" /><span>Launcher</span></button>
+              {(["projects", "report"] as UtilityId[]).map((id) => {
                 const utility = utilities.find((item) => item.id === id)!;
-                return <button type="button" key={id} className={activeApp === id ? styles.dockActive : ""} onClick={() => openApp(id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>;
+                return <button type="button" key={id} aria-label={utility.title} className={activeApp === id ? styles.dockActive : ""} onClick={() => openApp(id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>;
               })}
-              <button type="button" onClick={() => openApp("contact")} className={activeApp === "contact" ? styles.dockActive : ""}><Glyph name="contact" /><span>Contact</span></button>
+              <button type="button" onClick={() => openApp("contact")} aria-label="Contact" className={activeApp === "contact" ? styles.dockActive : ""}><Glyph name="contact" /><span>Contact</span></button>
             </nav>
 
-            <p className={styles.desktopHint}>Project files open focused Figma case studies · <kbd>Esc</kbd> closes an app</p>
-          </motion.section>
-        )}
-      </AnimatePresence>
+            <p className={styles.desktopHint}>Start with Harbinger for the flagship case study · <kbd>Esc</kbd> closes an app</p>
+      </motion.section>
     </main>
   );
 }
