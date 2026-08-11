@@ -882,7 +882,7 @@ export function StudioConcept({
                       <span className={styles.studioContactCopy}><b>LinkedIn</b><small>View profile and connect</small></span>
                       <span className={styles.studioContactArrow} aria-hidden="true">↗</span>
                     </a>
-                    <a href="/VarunJ_Resume.pdf" download="Varun-J-Resume.pdf">
+                    <a href="/VarunJ_Resume.pdf?v=2026-08" download="Varun-J-Resume.pdf">
                       <span className={styles.studioContactIcon} aria-hidden="true">CV</span>
                       <span className={styles.studioContactCopy}><b>Resume</b><small>Download the latest PDF</small></span>
                       <span className={styles.studioContactArrow} aria-hidden="true">↓</span>
