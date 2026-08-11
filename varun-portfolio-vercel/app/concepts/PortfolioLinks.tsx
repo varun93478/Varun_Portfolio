@@ -5,7 +5,7 @@ export function PortfolioLinks() {
     <>
       <AppearanceControl compact />
       <a href="/VarunJ_Resume.pdf" download="Varun-J-Resume.pdf">
-        Résumé
+        Resume
       </a>
       <a href="mailto:varunj93478@gmail.com">Contact</a>
     </>

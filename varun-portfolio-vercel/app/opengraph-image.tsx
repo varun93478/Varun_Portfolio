@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Varun J — Complex Systems Product Designer";
+export const alt = "Varun J — UI/UX Designer for enterprise B2B products";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -28,7 +28,7 @@ export default function OpenGraphImage() {
       <div style={{ position: "absolute", left: 48, top: 42, display: "flex", alignItems: "center", gap: 14 }}>
         <div style={{ width: 34, height: 34, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 6, background: "#3155e7", color: "white", fontSize: 15, fontWeight: 700 }}>V</div>
         <div style={{ display: "flex", fontSize: 16, fontWeight: 700 }}>VARUN J</div>
-        <div style={{ display: "flex", color: "#6d6f73", fontSize: 13 }}>COMPLEX SYSTEMS PRODUCT DESIGNER</div>
+        <div style={{ display: "flex", color: "#6d6f73", fontSize: 13 }}>UI/UX DESIGNER · ENTERPRISE B2B PRODUCTS</div>
       </div>
 
       <div style={{ position: "absolute", left: 64, top: 150, width: 650, display: "flex", flexDirection: "column" }}>

@@ -170,7 +170,7 @@ const workspacePages: Record<WorkspacePage, {
   },
   about: {
     title: "About Varun",
-    description: "Senior UI/UX Designer growing into a product designer focused on complex enterprise systems.",
+    description: "UI/UX Designer focused on complex enterprise systems and implementation-aware product work.",
     scope: "Enterprise UX + Product UI",
     status: "Bengaluru, India",
   },
@@ -239,7 +239,7 @@ function EditorialSystemHero({ accent, onQuickScan }: { accent: string; onQuickS
     <div className={styles.studioEditorialHero}>
       <div className={styles.studioEditorialTop}>
         <div className={styles.studioEditorialCopy}>
-          <span className={styles.studioEditorialRole}>Complex Systems Product Designer</span>
+          <span className={styles.studioEditorialRole}>UI/UX Designer · Enterprise B2B Products</span>
           <h1>
             <span>I make complex enterprise</span>
             <span>products easier to understand</span>
@@ -822,7 +822,7 @@ export function StudioConcept({
                         unoptimized
                         sizes="(max-width: 900px) 100vw, 280px"
                       />
-                      <figcaption>Senior UI/UX Designer · Bengaluru</figcaption>
+                      <figcaption>UI/UX Designer · Bengaluru</figcaption>
                     </figure>
                     <figure>
                       <Image
@@ -844,7 +844,7 @@ export function StudioConcept({
                     </figure>
                   </div>
                   <div>
-                    <p className={styles.studioDocumentLabel}>Senior UI/UX Designer</p>
+                    <p className={styles.studioDocumentLabel}>UI/UX Designer</p>
                     <h1>I enjoy making complex enterprise products easier to understand and use.</h1>
                     <p>I started with a strong focus on interface design. My work now goes deeper into workflows, business rules, roles, permissions, data structures and technical constraints.</p>
                     <p>I work closely with stakeholders and developers, document design decisions and review the product after implementation.</p>
@@ -884,7 +884,7 @@ export function StudioConcept({
                     </a>
                     <a href="/VarunJ_Resume.pdf" download="Varun-J-Resume.pdf">
                       <span className={styles.studioContactIcon} aria-hidden="true">CV</span>
-                      <span className={styles.studioContactCopy}><b>Résumé</b><small>Download the latest PDF</small></span>
+                      <span className={styles.studioContactCopy}><b>Resume</b><small>Download the latest PDF</small></span>
                       <span className={styles.studioContactArrow} aria-hidden="true">↓</span>
                     </a>
                   </div>
@@ -908,7 +908,7 @@ export function StudioConcept({
               {activePage === "work" ? (
                 <>
                   <dl>
-                    <div><dt>Role</dt><dd>Senior UI/UX Designer</dd></div>
+                    <div><dt>Role</dt><dd>UI/UX Designer</dd></div>
                     <div><dt>Scope</dt><dd>{selected.scope}</dd></div>
                     <div><dt>System lens</dt><dd>Roles · Rules · Data · Decisions</dd></div>
                     <div><dt>Status</dt><dd>{selected.status}</dd></div>

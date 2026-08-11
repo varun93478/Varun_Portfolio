@@ -158,7 +158,7 @@ function ProjectsApp() {
         <p>FAVORITES</p>
         <b><Glyph name="folder" /> Projects</b>
         <span><Glyph name="notes" /> UX artifacts</span>
-        <span><Glyph name="resume" /> Résumé</span>
+        <span><Glyph name="resume" /> Resume</span>
       </aside>
       <section>
         <header><div><Glyph name="home" /><span>Varun OS</span><i>/</i><b>Projects</b></div><small>5 files</small></header>
@@ -208,7 +208,7 @@ function ReportApp() {
         <article className={styles.reportAction}>
           <span>04 / NEXT ACTION</span>
           <h3>Need the concise version?</h3>
-          <div><a href="/VarunJ_Resume.pdf" target="_blank">Open résumé <SystemIcon name="external" size={14} /></a><a href="mailto:varunj93478@gmail.com">Email Varun <SystemIcon name="external" size={14} /></a></div>
+          <div><a href="/VarunJ_Resume.pdf" target="_blank">Open resume <SystemIcon name="external" size={14} /></a><a href="mailto:varunj93478@gmail.com">Email Varun <SystemIcon name="external" size={14} /></a></div>
         </article>
       </section>
     </div>
@@ -325,12 +325,12 @@ export function VarunOS() {
             </header>
 
             <section className={styles.hero}>
-              <p><i /> COMPLEX SYSTEMS PRODUCT DESIGNER</p>
+              <p><i /> UI/UX DESIGNER · ENTERPRISE B2B PRODUCTS</p>
               <h1>I design clarity<br />into complex systems.</h1>
               <p className={styles.heroLead}>Enterprise roles, rules, data and decisions—turned into workflows teams can trust.</p>
               <div className={styles.heroActions}>
                 <Link href="/work/harbinger">Open flagship case study <SystemIcon name="arrow-right" size={15} /></Link>
-                <a href="/VarunJ_Resume.pdf" target="_blank">Open résumé <SystemIcon name="external" size={15} /></a>
+                <a href="/VarunJ_Resume.pdf" target="_blank">Open resume <SystemIcon name="external" size={15} /></a>
                 <button type="button" onClick={() => openApp("contact")}>Contact Varun <SystemIcon name="external" size={15} /></button>
               </div>
               <dl><div><dt>05</dt><dd>Case studies</dd></div><div><dt>B2B</dt><dd>Enterprise systems</dd></div><div><dt>NOW</dt><dd>Open to roles</dd></div></dl>
@@ -345,7 +345,7 @@ export function VarunOS() {
                   <Glyph name={utility.glyph} /><span><b>{utility.title}</b><small>{utility.subtitle}</small></span>
                 </button>
               ))}
-              <a href="/VarunJ_Resume.pdf" target="_blank"><Glyph name="resume" /><span><b>Résumé.pdf</b><small>Open document</small></span></a>
+              <a href="/VarunJ_Resume.pdf" target="_blank"><Glyph name="resume" /><span><b>Resume.pdf</b><small>Open document</small></span></a>
             </nav>
 
             <AnimatePresence>{activeApp && <AppWindow key={activeApp} app={activeApp} onClose={() => setActiveApp(null)} />}</AnimatePresence>
@@ -358,7 +358,7 @@ export function VarunOS() {
                   <div>{primaryUtilityIds.map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => <button type="button" key={utility.id} onClick={() => openApp(utility.id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>)}</div>
                   <p>EXPLORE THE OS</p>
                   <div>{creativeUtilityIds.map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => <button type="button" key={utility.id} onClick={() => openApp(utility.id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>)}</div>
-                  <footer><a href="/VarunJ_Resume.pdf" target="_blank">Résumé</a><a href="mailto:varunj93478@gmail.com">Email</a></footer>
+                  <footer><a href="/VarunJ_Resume.pdf" target="_blank">Resume</a><a href="mailto:varunj93478@gmail.com">Email</a></footer>
                 </motion.aside>
               )}
             </AnimatePresence>

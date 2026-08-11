@@ -94,8 +94,8 @@ function EditorialConcept() {
           transition={{ duration: 0.55 }}
         >
           <div className={styles.editorialCopy}>
-            <p>Complex Systems Product Designer</p>
-            <h1>Complex Systems<br />Product Designer</h1>
+            <p>UI/UX Designer · Enterprise B2B Products</p>
+            <h1>Enterprise UI/UX<br />Designer</h1>
             <div className={styles.editorialIntro}>
               <h2>I design clear, scalable experiences for complex enterprise products.</h2>
               <p>My work focuses on workflows, roles, permissions, data-heavy interfaces, and business-critical systems.</p>
@@ -149,7 +149,7 @@ function ConsoleConcept() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <p><i /> Complex Systems Product Designer <span /></p>
+          <p><i /> UI/UX Designer · Enterprise B2B Products <span /></p>
           <h1>I design clear, scalable experiences for complex enterprise products.</h1>
           <h2>My work focuses on workflows, roles, permissions, data-heavy interfaces, and business-critical systems.</h2>
           <PreviewActions inverse />
@@ -202,7 +202,7 @@ function AtlasConcept() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55 }}
         >
-          <p>Complex Systems Product Designer</p>
+          <p>UI/UX Designer · Enterprise B2B Products</p>
           <h1>I design clear, scalable experiences for complex enterprise products.</h1>
           <h2>My work focuses on workflows, roles, permissions, data-heavy interfaces, and business-critical systems.</h2>
           <PreviewActions inverse />

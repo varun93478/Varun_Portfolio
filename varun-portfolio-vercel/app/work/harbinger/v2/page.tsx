@@ -429,7 +429,7 @@ export default function HarbingerV2CaseStudy() {
               </div>
 
               <dl className={styles.harbingerHeroSummary}>
-                <div><dt>Role</dt><dd>Senior UI/UX Designer</dd></div>
+                <div><dt>Role</dt><dd>UI/UX Designer</dd></div>
                 <div><dt>Portals</dt><dd>HBR Portal + Dealer Portal</dd></div>
               </dl>
             </section>
