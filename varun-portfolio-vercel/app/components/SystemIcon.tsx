@@ -3,6 +3,7 @@ import {
   ArrowDown,
   ArrowLeft,
   ArrowUp,
+  BriefcaseBusiness,
   Building2,
   Code2,
   ChevronDown,
@@ -38,7 +39,7 @@ export type SystemIconName =
   | "building" | "code" | "contact" | "database" | "external" | "figma" | "file"
   | "folder" | "game" | "home" | "launcher" | "maximize"
   | "mobile" | "monitor" | "minus" | "notes" | "paint" | "plus" | "report" | "resume"
-  | "responsive" | "sync" | "truck" | "users";
+  | "responsive" | "sync" | "truck" | "users" | "work";
 
 const iconMap: Record<SystemIconName, LucideIcon> = {
   "arrow-down": ArrowDown,
@@ -48,6 +49,7 @@ const iconMap: Record<SystemIconName, LucideIcon> = {
   "chevron-down": ChevronDown,
   "chevron-right": ChevronRight,
   building: Building2,
+  work: BriefcaseBusiness,
   code: Code2,
   close: X,
   contact: Mail,

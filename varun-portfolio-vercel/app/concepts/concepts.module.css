@@ -2178,8 +2178,8 @@
 @media(max-width:900px){
   .caseV2Page .studioToolbar{background:rgba(23,27,33,.97);border-bottom-color:#313741}
   .caseV2Page .studioBrand{color:#fff}
-  .caseV2Page .caseFileBreadcrumb{display:none}
-  .caseV2Page .caseToolbarActions{grid-row:1;grid-column:2}
+  .caseWorkspacePage .caseFileBreadcrumb{display:none}
+  .caseWorkspacePage .caseToolbarActions{grid-row:1;grid-column:2}
   .caseToolbarActions>a,.caseToolbarActions>span{display:none}
   .caseToolbarPresent{display:none}
   .caseToolbarActions{padding-right:8px}

@@ -13,7 +13,7 @@ const PaintApp = dynamic(() => import("./PaintApp").then((module) => module.Pain
 const SnakeGame = dynamic(() => import("./SnakeGame").then((module) => module.SnakeGame), { ssr: false });
 
 type UtilityId = "projects" | "report" | "notes" | "paint" | "snake" | "contact";
-type GlyphName = UtilityId | "home" | "resume" | "folder" | "fig";
+type GlyphName = UtilityId | "home" | "resume" | "folder" | "fig" | "work";
 
 const projects = [
   {
@@ -87,6 +87,7 @@ function Glyph({ name }: { name: GlyphName }) {
     snake: "game",
     contact: "contact",
     resume: "resume",
+    work: "work",
   };
   return <span className={`${styles.glyph} ${styles[`glyph_${name}`]}`} aria-hidden="true"><SystemIcon name={icons[name]} size={17} /></span>;
 }
@@ -233,6 +234,17 @@ function NotesApp() {
 }
 
 function ContactApp() {
+  const freelanceSubject = encodeURIComponent("Freelance project enquiry");
+  const freelanceBody = encodeURIComponent(`Project / business:
+
+What I need help with:
+
+Existing design or website:
+
+Expected deliverable:
+
+Target date:`);
+  const freelanceMailto = `mailto:varunj93478@gmail.com?subject=${freelanceSubject}&body=${freelanceBody}`;
   const links = [
     ["Email", "varunj93478@gmail.com", "mailto:varunj93478@gmail.com"],
     ["LinkedIn", "Connect with Varun", "https://www.linkedin.com/in/varunj96/"],
@@ -240,9 +252,25 @@ function ContactApp() {
   ];
   return (
     <div className={styles.contact}>
-      <p><i /> AVAILABLE FOR PRODUCT DESIGN OPPORTUNITIES</p>
-      <h2>Let’s make a difficult<br />product feel obvious.</h2>
-      <div>{links.map(([label, value, href]) => <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer"><span>{label}</span><b>{value}</b><SystemIcon name="external" size={15} /></a>)}</div>
+      <p><i /> AVAILABLE FOR ROLES AND FOCUSED PROJECTS</p>
+      <h2>Let&apos;s make a difficult<br />product feel obvious.</h2>
+      <section className={styles.contactIntents}>
+        <article>
+          <span>Hiring / full-time roles</span>
+          <h3>Looking for a UI/UX Designer?</h3>
+          <p>Use the same direct recruiter contact path. No service selection is required.</p>
+          <div>{links.slice(0, 2).map(([label, value, href]) => <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer"><span>{label}</span><b>{value}</b><SystemIcon name="external" size={15} /></a>)}</div>
+        </article>
+        <article>
+          <span>Freelance / project work</span>
+          <h3>Have something you need help with?</h3>
+          <p>Send me a short description of the work. A screenshot, Figma link, current website, or requirement is enough to start the conversation.</p>
+          <div>
+            <a href={freelanceMailto}><span>Email</span><b>Start a project</b><SystemIcon name="external" size={15} /></a>
+            <a href={links[2][2]} target="_blank" rel="noreferrer"><span>WhatsApp</span><b>{links[2][1]}</b><SystemIcon name="external" size={15} /></a>
+          </div>
+        </article>
+      </section>
     </div>
   );
 }
@@ -339,8 +367,14 @@ export function VarunOS() {
             <ProjectFiles />
 
             <nav className={styles.utilityColumn} aria-label="Desktop applications">
-              <p>RECRUITER SHORTCUTS</p>
-              {primaryUtilityIds.map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => (
+              <p>DESKTOP</p>
+              {primaryUtilityIds.slice(0, 1).map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => (
+                <button type="button" key={utility.id} onClick={() => openApp(utility.id)}>
+                  <Glyph name={utility.glyph} /><span><b>{utility.title}</b><small>{utility.subtitle}</small></span>
+                </button>
+              ))}
+              <Link href="/work-with-me"><Glyph name="work" /><span><b>Work With Me</b><small>Quick design help and product UX</small></span></Link>
+              {primaryUtilityIds.slice(1).map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => (
                 <button type="button" key={utility.id} onClick={() => openApp(utility.id)}>
                   <Glyph name={utility.glyph} /><span><b>{utility.title}</b><small>{utility.subtitle}</small></span>
                 </button>
@@ -353,9 +387,9 @@ export function VarunOS() {
             <AnimatePresence>
               {launcherOpen && (
                 <motion.aside className={styles.launcher} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}>
-                  <header><span>VJ</span><div><b>Varun J</b><small>Enterprise product designer</small></div></header>
+                  <header><span>VJ</span><div><b>Varun J</b><small>UI/UX Designer</small></div></header>
                   <p>PORTFOLIO</p>
-                  <div>{primaryUtilityIds.map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => <button type="button" key={utility.id} onClick={() => openApp(utility.id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>)}</div>
+                  <div>{primaryUtilityIds.slice(0, 1).map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => <button type="button" key={utility.id} onClick={() => openApp(utility.id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>)}<Link href="/work-with-me"><Glyph name="work" /><span>Work With Me</span></Link>{primaryUtilityIds.slice(1).map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => <button type="button" key={utility.id} onClick={() => openApp(utility.id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>)}</div>
                   <p>EXPLORE THE OS</p>
                   <div>{creativeUtilityIds.map((id) => utilities.find((utility) => utility.id === id)!).map((utility) => <button type="button" key={utility.id} onClick={() => openApp(utility.id)}><Glyph name={utility.glyph} /><span>{utility.title}</span></button>)}</div>
                   <footer><a href="/VarunJ_Resume.pdf?v=2026-08" target="_blank">Resume</a><a href="mailto:varunj93478@gmail.com">Email</a></footer>

@@ -18,6 +18,7 @@ const routes = new Map([
   ["/work/property-care", "Connecting property discovery"],
   ["/work/hcm-cafe", "Designing clear operational workspaces"],
   ["/concepts", "Compare all four live concepts"],
+  ["/work-with-me", "I take on focused design work"],
 ]);
 
 let nextProcess;
@@ -153,4 +154,12 @@ test("case studies use consistent project labels and global contact actions", as
     const { html } = await renderRoute(route);
     assert.ok(html.includes("Product case study"), `${route} should use the shared case-study label`);
   }
+});
+
+test("freelance conversion path keeps work and hiring actions available", async () => {
+  const { html } = await renderRoute("/work-with-me");
+  for (const label of ["Start a project", "View my work", "Discuss a quick task", "Discuss a website", "Discuss a product", "More quick design help", "Relevant work", "How a project starts", "Hiring or full-time roles"]) {
+    assert.ok(html.includes(label), `/work-with-me should include ${label}`);
+  }
+  assert.ok(html.includes("Freelance%20project%20enquiry"), "Freelance email should include a project enquiry subject");
 });
