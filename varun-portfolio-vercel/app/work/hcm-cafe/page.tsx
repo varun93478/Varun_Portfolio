@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { CaseFileHeader } from "../../concepts/CaseFileHeader";
 import { SystemIcon } from "../../components/SystemIcon";
 import styles from "../../concepts/concepts.module.css";
-import { ArtifactDisclosure, InformationArchitecture } from "../case-study-story";
+import { ArtifactDisclosure, CaseEvidence, CaseProjectFooter, InformationArchitecture } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
 
 const chapters = [
@@ -22,52 +22,6 @@ const chapters = [
 ] as const;
 
 const chapterIds = chapters.map(([id]) => id);
-
-type EvidenceItem = {
-  src: string;
-  alt: string;
-  label: string;
-  format?: "web" | "mobile";
-};
-
-function Evidence({
-  title,
-  note,
-  images,
-  mobile = false,
-  tone = "hr",
-}: {
-  title: string;
-  note: string;
-  images: EvidenceItem[];
-  mobile?: boolean;
-  tone?: "hr" | "vms";
-}) {
-  return (
-    <figure className={`${styles.hcmEvidence} ${mobile ? styles.hcmEvidenceMobile : ""} ${tone === "vms" ? styles.hcmEvidenceVms : ""}`}>
-      <header>
-        <span>Product evidence</span>
-        <b>{title}</b>
-      </header>
-      <div>
-        {images.map((image) => (
-          <a
-            href={image.src}
-            target="_blank"
-            rel="noreferrer"
-            data-format={image.format ?? "web"}
-            aria-label={`${image.label}. Open full-size image in a new tab.`}
-            key={image.src}
-          >
-            <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
-            <span>{image.label}</span>
-          </a>
-        ))}
-      </div>
-      <figcaption>{note}</figcaption>
-    </figure>
-  );
-}
 
 const visitorRoles = [
   ["Visitor", "Participate", "Confirms details, presents the pass and completes the visit"],
@@ -177,7 +131,7 @@ export default function HcmCafeCaseStudy() {
                 <i>→</i>
                 <div><span>03</span><b>Workspace</b><p>Role-relevant dashboard widgets and actions</p></div>
               </div>
-              <Evidence
+              <CaseEvidence
                 title="Configuration and employee dashboard"
                 note="Real HR product screens. Configuration defines the available modules, while the dashboard brings daily employee actions into one place."
                 images={[
@@ -198,7 +152,7 @@ export default function HcmCafeCaseStudy() {
                 <div><span>Reason</span><p>Managers need to understand the exception before approving, rejecting or requesting a correction.</p></div>
                 <div><span>Trade-off</span><p>The screens remain data-heavy, so hierarchy and status consistency carry more value than decorative simplification.</p></div>
               </div>
-              <Evidence
+              <CaseEvidence
                 title="Attendance exceptions and leave decisions"
                 note="Real HR screens showing overview, regularisation and leave approval. The interface keeps employee context close to the decision."
                 images={[
@@ -228,7 +182,7 @@ export default function HcmCafeCaseStudy() {
                 <i>→</i>
                 <div><span>05</span><b>Check out</b><p>The visit is completed and logged</p></div>
               </div>
-              <Evidence
+              <CaseEvidence
                 mobile
                 tone="vms"
                 title="Host invitation and visitor pass"
@@ -304,7 +258,7 @@ export default function HcmCafeCaseStudy() {
                 <i>then</i>
                 <div><span>Operational record</span><b>Guests, assets and status</b><p>Complete check-in with the required context.</p></div>
               </div>
-              <Evidence
+              <CaseEvidence
                 mobile
                 tone="vms"
                 title="Security verification and visit completion"
@@ -316,7 +270,7 @@ export default function HcmCafeCaseStudy() {
                   { src: "/hcm-assets/vms-security-checkout-mobile.png", alt: "Visitor detail used for check-out", label: "Check-out record", format: "mobile" },
                 ]}
               />
-              <Evidence
+              <CaseEvidence
                 tone="vms"
                 title="Administrative control and communication tracking"
                 note="Real web screens. Company and Super Admin dashboards summarise activity, while the tracker records SMS and WhatsApp usage."
@@ -346,7 +300,7 @@ export default function HcmCafeCaseStudy() {
                 <div><span>What I would validate next</span><h3>Exceptions and real-world front-desk pressure</h3><p>I would test attendance corrections, leave decisions, failed QR scans, walk-in visitors, multiple guests and asset reconciliation with the people handling those tasks.</p></div>
               </div>
               <div className={styles.caseOutcomeBoundary}><b>Outcome boundary</b><p>Formal usability findings, product adoption and business metrics were not available for this case study. The documented outcome is the design coverage and the operational logic visible in the product files.</p></div>
-              <footer className={styles.pcNextProject}><span>Desktop</span><Link href="/">Return to Varun OS <SystemIcon name="arrow-right" size={14} /></Link></footer>
+              <CaseProjectFooter href="/" title="Return to Varun OS" label="Desktop" />
             </motion.section>
           </article>
         </section>

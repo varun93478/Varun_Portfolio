@@ -602,7 +602,7 @@ export default function HarbingerV2CaseStudy() {
                 <div><span>What I would improve next</span><p>I would define the product model, event tracking and success measures before high-fidelity design. This would create a clearer baseline for comparing each release with the previous workflow.</p></div>
                 <div><span>What this project changed in my approach</span><p>I now treat enterprise screens as connected decisions. Roles, business rules, data sources, states and ownership need to be clear before the interface can be considered complete.</p></div>
               </div>
-              <div className={styles.caseV2FinalActions}><Link href="/work/harbinger/documentation">Explore detailed UX documentation <Icon name="arrow" /></Link><Link href="/">Return to desktop</Link></div>
+              <div className={styles.caseV2FinalActions}><Link href="/work/harbinger/documentation">Explore detailed UX documentation <Icon name="arrow" /></Link><Link href="/work/aadivara">Next: Aadivara</Link></div>
             </section>
           </article>
         </section>

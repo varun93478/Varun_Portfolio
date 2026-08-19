@@ -1,12 +1,10 @@
 "use client";
-/* eslint-disable @next/next/no-img-element -- Product evidence must keep its original screenshot pixels. */
-
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { CaseFileHeader } from "../../concepts/CaseFileHeader";
 import { SystemIcon } from "../../components/SystemIcon";
 import styles from "../../concepts/concepts.module.css";
-import { ArtifactDisclosure, FlowComparison, StateCoverageMatrix } from "../case-study-story";
+import { ArtifactDisclosure, CaseEvidence, CaseProjectFooter, FlowComparison, StateCoverageMatrix } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
 
 const chapters = [
@@ -27,39 +25,6 @@ const roles = [
   ["Partner", "Web", "Organisation and user management"],
   ["Volunteer", "Offline web", "Check-in, assistance and slip printing"],
 ];
-
-function Evidence({
-  title,
-  note,
-  images,
-  mobile = false,
-}: {
-  title: string;
-  note: string;
-  images: { src: string; alt: string; label: string }[];
-  mobile?: boolean;
-}) {
-  return (
-    <figure className={`${styles.aadEvidence} ${mobile ? styles.aadEvidenceMobile : ""}`}>
-      <header><span>Product evidence</span><b>{title}</b></header>
-      <div>
-        {images.map((image) => (
-          <a
-            href={image.src}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={`${image.label}. Open full-size image in a new tab.`}
-            key={image.src}
-          >
-            <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
-            <span>{image.label}</span>
-          </a>
-        ))}
-      </div>
-      <figcaption>{note}</figcaption>
-    </figure>
-  );
-}
 
 export default function AadivaraCaseStudy() {
   const reducedMotion = useReducedMotion();
@@ -146,7 +111,7 @@ export default function AadivaraCaseStudy() {
                 <div><span>Why</span><p>Reduce cognitive load while still collecting information required for relevant job matching.</p></div>
                 <div><span>Accessibility</span><p>Readable hierarchy, clear labels and touch-friendly actions; shipped behaviour should be verified screen by screen.</p></div>
               </div>
-              <Evidence mobile title="Candidate registration and profile" note="Real mobile designs from the project. Personal information is shown only as representative interface content." images={[
+              <CaseEvidence mobile title="Candidate registration and profile" note="Real mobile designs from the project. Personal information is shown only as representative interface content." images={[
                 { src: "/aadivara-assets/candidate-create-account.png", alt: "Aadivara candidate create-account screen", label: "Create account" },
                 { src: "/aadivara-assets/candidate-disability.png", alt: "Aadivara disability details screen", label: "Disability details" },
                 { src: "/aadivara-assets/candidate-home.png", alt: "Aadivara candidate home screen", label: "Candidate home" },
@@ -163,7 +128,7 @@ export default function AadivaraCaseStudy() {
                 <div><b>Event day</b><span>Queue + check-in</span></div><i>→</i>
                 <div><b>Outcome</b><span>Selected / Rejected</span></div>
               </div>
-              <Evidence title="Admin and employer-facing records" note="Real project screens. The wider room-mapping and outcome logic is documented as part of the operational model, without claiming unverified production states." images={[
+              <CaseEvidence title="Admin and employer-facing records" note="Real project screens. The wider room-mapping and outcome logic is documented as part of the operational model, without claiming unverified production states." images={[
                 { src: "/aadivara-assets/admin-job-list.png", alt: "Aadivara Admin job list", label: "Admin job management" },
                 { src: "/aadivara-assets/employer-dashboard.png", alt: "Aadivara employer dashboard", label: "Employer dashboard" },
               ]} />
@@ -175,7 +140,7 @@ export default function AadivaraCaseStudy() {
                 <p>Employers create and manage jobs, review candidates and progress the interview queue. The interface supports the operational difference between a candidate being interviewed and the employer waiting for the next person.</p>
                 <p>Final Selected or Rejected outcomes remain Admin-owned. This avoids blurring role ownership between interview operations and the event’s official candidate record.</p>
               </div>
-              <Evidence title="Employer job workflow" note="Real web screens showing employer job management. Queue behaviour is described from the confirmed product workflow." images={[
+              <CaseEvidence title="Employer job workflow" note="Real web screens showing employer job management. Queue behaviour is described from the confirmed product workflow." images={[
                 { src: "/aadivara-assets/employer-job-list.png", alt: "Aadivara employer job list", label: "Job list" },
                 { src: "/aadivara-assets/employer-job-detail.png", alt: "Aadivara employer job details", label: "Job details" },
               ]} />
@@ -207,14 +172,14 @@ export default function AadivaraCaseStudy() {
                   { state: "Recovered", cue: "Sync complete", purpose: "Closes the loop when connectivity returns.", tone: "positive" },
                 ]} />
               </ArtifactDisclosure>
-              <Evidence title="Volunteer offline flow" note="Real design board showing the offline-capable volunteer journey and printed-slip workflow." images={[
+              <CaseEvidence title="Volunteer offline flow" note="Real design board showing the offline-capable volunteer journey and printed-slip workflow." images={[
                 { src: "/aadivara-assets/volunteer-flow.png", alt: "Aadivara volunteer offline check-in flow", label: "Offline check-in and slip printing" },
               ]} />
             </motion.section>
 
             <motion.section className={styles.caseStudySection} id="reflection" {...reveal}>
               <div className={styles.caseSectionHeading}><span>05</span><div><p>System layer</p><h2>Partner management supports the network behind the event.</h2></div></div>
-              <Evidence title="Partner organisation management" note="Real web screens showing employee and sub-organisation management." images={[
+              <CaseEvidence title="Partner organisation management" note="Real web screens showing employee and sub-organisation management." images={[
                 { src: "/aadivara-assets/partner-employees.png", alt: "Partner employee management", label: "Employee management" },
                 { src: "/aadivara-assets/partner-suborgs.png", alt: "Partner sub-organisation management", label: "Sub-organisations" },
               ]} />
@@ -223,7 +188,7 @@ export default function AadivaraCaseStudy() {
                 <div><span>What I would improve next</span><h3>Validate accessibility and offline recovery in the field</h3><p>I would run screen-reader, keyboard and event-day usability testing, then measure completion, check-in time, sync failures and manual recovery.</p></div>
               </div>
               <div className={styles.caseOutcomeBoundary}><b>Outcome boundary</b><p>No adoption or efficiency metrics were available for this case study. The portfolio separates delivered design work from the improvements that should be measured next.</p></div>
-              <footer className={styles.aadNextProject}><span>Previous project</span><Link href="/work/harbinger">Harbinger Motors <SystemIcon name="arrow-right" size={14} /></Link></footer>
+              <CaseProjectFooter href="/work/inventfunds" title="InventFunds" />
             </motion.section>
           </article>
         </section>

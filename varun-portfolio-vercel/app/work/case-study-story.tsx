@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element -- Case-study evidence must preserve the original screenshot pixels. */
 
 import type { ReactNode } from "react";
+import Link from "next/link";
+import { SystemIcon } from "../components/SystemIcon";
 import styles from "../concepts/concepts.module.css";
 
 export const reconstructionLabel = "Portfolio reconstruction based on delivered design.";
@@ -16,6 +18,56 @@ export type StateCoverageItem = {
   purpose: string;
   tone?: "neutral" | "progress" | "positive" | "warning" | "restricted";
 };
+
+export type CaseEvidenceImage = {
+  src: string;
+  alt: string;
+  label: string;
+  format?: "web" | "mobile";
+};
+
+export function CaseEvidence({
+  title,
+  note,
+  images,
+  mobile = false,
+  tone = "default",
+}: {
+  title: string;
+  note: string;
+  images: CaseEvidenceImage[];
+  mobile?: boolean;
+  tone?: "default" | "vms";
+}) {
+  const layout = mobile ? "mobile" : images.length === 1 ? "single" : images.length === 2 ? "two-up" : "gallery";
+
+  return (
+    <figure className={styles.caseProductEvidence} data-layout={layout} data-tone={tone}>
+      <header><span>Product evidence</span><b>{title}</b></header>
+      <div>
+        {images.map((image) => {
+          const format = image.format ?? (image.src.includes("/mobile-") ? "mobile" : "web");
+          return (
+            <a href={image.src} target="_blank" rel="noreferrer" data-format={format} aria-label={`${image.label}. Open full-size image in a new tab.`} key={image.src}>
+              <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
+              <span>{image.label}<small>Open full size</small></span>
+            </a>
+          );
+        })}
+      </div>
+      <figcaption>{note}</figcaption>
+    </figure>
+  );
+}
+
+export function CaseProjectFooter({ href, title, label = "Next project" }: { href: string; title: string; label?: string }) {
+  return (
+    <footer className={styles.caseProjectFooter}>
+      <span>{label}</span>
+      <Link href={href}>{title}<SystemIcon name="arrow-right" size={14} /></Link>
+    </footer>
+  );
+}
 
 export function CaseStorySpine({ stages }: { stages: NarrativeStage[] }) {
   return (

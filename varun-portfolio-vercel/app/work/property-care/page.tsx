@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { CaseFileHeader } from "../../concepts/CaseFileHeader";
 import { SystemIcon } from "../../components/SystemIcon";
 import styles from "../../concepts/concepts.module.css";
-import { ArtifactDisclosure, WireframeStrip } from "../case-study-story";
+import { ArtifactDisclosure, CaseEvidence, CaseProjectFooter, WireframeStrip } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
 
 const chapters = [
@@ -21,50 +21,6 @@ const chapters = [
 ] as const;
 
 const chapterIds = chapters.map(([id]) => id);
-
-type EvidenceItem = {
-  src: string;
-  alt: string;
-  label: string;
-  format?: "web" | "mobile";
-};
-
-function Evidence({
-  title,
-  note,
-  images,
-  mobile = false,
-}: {
-  title: string;
-  note: string;
-  images: EvidenceItem[];
-  mobile?: boolean;
-}) {
-  return (
-    <figure className={`${styles.pcEvidence} ${mobile ? styles.pcEvidenceMobile : ""}`}>
-      <header>
-        <span>Product evidence</span>
-        <b>{title}</b>
-      </header>
-      <div>
-        {images.map((image) => (
-          <a
-            href={image.src}
-            target="_blank"
-            rel="noreferrer"
-            data-format={image.format ?? "web"}
-            aria-label={`${image.label}. Open full-size image in a new tab.`}
-            key={image.src}
-          >
-            <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
-            <span>{image.label}</span>
-          </a>
-        ))}
-      </div>
-      <figcaption>{note}</figcaption>
-    </figure>
-  );
-}
 
 const roles = [
   ["Property seeker", "Discover", "Search, compare, save and enquire about properties"],
@@ -181,7 +137,7 @@ export default function PropertyCareCaseStudy() {
                 <i>→</i>
                 <div><span>04</span><b>Admin review</b><p>Approve, reject or keep the account on hold</p></div>
               </div>
-              <Evidence
+              <CaseEvidence
                 title="Franchise setup and review"
                 note="Real Phase 2 screens. The flow separates onboarding input from the admin review queue."
                 images={[
@@ -214,7 +170,7 @@ export default function PropertyCareCaseStudy() {
                   { title: "Task-based steps", note: "Groups type, location, specifications, amenities and media around recognizable decisions.", blocks: ["heading", "status", "copy", "field", "action"] },
                 ]} />
               </ArtifactDisclosure>
-              <Evidence
+              <CaseEvidence
                 title="Property posting flow"
                 note="Real screens from the eight-step property posting flow. Full-size images open in a separate tab."
                 images={[
@@ -235,7 +191,7 @@ export default function PropertyCareCaseStudy() {
                 <i>+</i>
                 <div><span>Follow-up</span><b>Contact and urgency</b><p>Who to contact and when</p></div>
               </div>
-              <Evidence
+              <CaseEvidence
                 title="Post a requirement"
                 note="Real requirement screens showing the split between property criteria and contact information."
                 images={[
@@ -251,7 +207,7 @@ export default function PropertyCareCaseStudy() {
                 <p>The discovery experience combines map context, filters and listing results. Users can move from an area-level view to property details without losing the criteria used to find it.</p>
                 <p>The detail screen brings images, specifications, pricing, contact context and the enquiry action together. Favourites provide a lighter commitment before a user is ready to contact someone.</p>
               </div>
-              <Evidence
+              <CaseEvidence
                 title="Search and property detail"
                 note="Real web screens. Search, map context, property detail and enquiry actions remain part of one connected task."
                 images={[
@@ -269,7 +225,7 @@ export default function PropertyCareCaseStudy() {
                 <div><span>Visible record</span><b>Published</b><p>The property is available through the discovery experience.</p></div>
                 <div><span>Confirmation</span><b>Posted</b><p>The user receives a clear completion message after submission.</p></div>
               </div>
-              <Evidence
+              <CaseEvidence
                 mobile
                 title="Mobile property states"
                 note="Real mobile screens. Long details remain available without shrinking the interface into unreadable thumbnails."
@@ -293,7 +249,7 @@ export default function PropertyCareCaseStudy() {
                 <div><span>What I would validate next</span><h3>Where users pause in the longest forms</h3><p>I would test onboarding and property posting separately, then review completion, validation and return-to-draft behaviour with real users.</p></div>
               </div>
               <div className={styles.caseOutcomeBoundary}><b>Outcome boundary</b><p>Verified usability results, adoption metrics and implementation outcomes were not available for this case study. The page documents the Phase 2 design work and the next validation steps without inventing impact.</p></div>
-              <footer className={styles.pcNextProject}><span>Next project</span><Link href="/work/hcm-cafe">HCM Café <SystemIcon name="arrow-right" size={14} /></Link></footer>
+              <CaseProjectFooter href="/work/hcm-cafe" title="HCM Café" />
             </motion.section>
           </article>
         </section>

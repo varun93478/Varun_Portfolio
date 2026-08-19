@@ -1,14 +1,17 @@
 import assert from "node:assert/strict";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { access } from "node:fs/promises";
+import { createServer } from "node:net";
 import test from "node:test";
 
 const developmentPreviewMeta =
   /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
 
 const routes = new Map([
-  ["/", "Complex Systems Product Designer"],
-  ["/work/harbinger", "The interface looked simple"],
-  ["/work/harbinger/v2", "The interface looked simple"],
+  ["/", "I design clarity"],
+  ["/work/harbinger", "Designing three connected workflows"],
+  ["/work/harbinger/v2", "Designing three connected workflows"],
   ["/work/harbinger/documentation", "Roles, rules, workflows and product decisions"],
   ["/work/aadivara", "Connecting accessible candidate journeys"],
   ["/work/inventfunds", "Connecting people who build ideas"],
@@ -17,33 +20,52 @@ const routes = new Map([
   ["/concepts", "Compare all four live concepts"],
 ]);
 
-let workerPromise;
+let nextProcess;
+let baseUrl;
 
-function loadWorker() {
-  if (!workerPromise) {
-    const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-    workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-    workerPromise = import(workerUrl.href).then(({ default: worker }) => worker);
-  }
-  return workerPromise;
+function getAvailablePort() {
+  return new Promise((resolve, reject) => {
+    const server = createServer();
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
+      const address = server.address();
+      const port = typeof address === "object" && address ? address.port : 0;
+      server.close((error) => error ? reject(error) : resolve(port));
+    });
+  });
 }
 
+async function waitForServer(url) {
+  const deadline = Date.now() + 15_000;
+  while (Date.now() < deadline) {
+    if (nextProcess?.exitCode !== null) throw new Error(`Next server exited with code ${nextProcess?.exitCode}`);
+    try {
+      const response = await fetch(url);
+      if (response.ok) return;
+    } catch {}
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  throw new Error("Timed out waiting for the Next production server");
+}
+
+test.before(async () => {
+  const port = await getAvailablePort();
+  baseUrl = `http://127.0.0.1:${port}`;
+  const nextBin = fileURLToPath(new URL("../node_modules/next/dist/bin/next", import.meta.url));
+  nextProcess = spawn(process.execPath, [nextBin, "start", "-p", String(port)], {
+    cwd: fileURLToPath(new URL("..", import.meta.url)),
+    stdio: "ignore",
+    windowsHide: true,
+  });
+  await waitForServer(baseUrl);
+});
+
+test.after(() => {
+  nextProcess?.kill();
+});
+
 async function renderRoute(route) {
-  const worker = await loadWorker();
-  const response = await worker.fetch(
-    new Request(`http://localhost${route}`, {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
+  const response = await fetch(`${baseUrl}${route}`, { headers: { accept: "text/html" } });
 
   return { response, html: await response.text() };
 }
@@ -104,6 +126,12 @@ test("all internal page links, section targets and public images resolve", async
   }
 
   for (const assetPath of assetLinks) {
+    if (assetPath.startsWith("/_next/")) {
+      const response = await fetch(`${baseUrl}${assetPath}`);
+      assert.equal(response.status, 200, `Generated asset ${assetPath} should resolve`);
+      continue;
+    }
+
     const localAsset = new URL(`../public${assetPath}`, import.meta.url);
     await assert.doesNotReject(
       access(localAsset),
@@ -118,7 +146,7 @@ test("case studies use consistent project labels and global contact actions", as
   for (const route of caseRoutes) {
     const { html } = await renderRoute(route);
     assert.ok(html.includes("Contact"), `${route} should provide a Contact action`);
-    assert.ok(html.includes("Résumé"), `${route} should provide a résumé download`);
+    assert.ok(html.includes("Resume"), `${route} should provide a resume download`);
   }
 
   for (const route of caseRoutes.filter((route) => !route.endsWith("/documentation"))) {

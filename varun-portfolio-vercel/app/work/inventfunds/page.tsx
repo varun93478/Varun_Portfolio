@@ -1,12 +1,10 @@
 "use client";
-/* eslint-disable @next/next/no-img-element -- Product evidence must keep its original screenshot pixels. */
-
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { CaseFileHeader } from "../../concepts/CaseFileHeader";
 import { SystemIcon } from "../../components/SystemIcon";
 import styles from "../../concepts/concepts.module.css";
-import { ArtifactDisclosure, StateCoverageMatrix } from "../case-study-story";
+import { ArtifactDisclosure, CaseEvidence, CaseProjectFooter, StateCoverageMatrix } from "../case-study-story";
 import { useActiveSection } from "../useActiveSection";
 
 const chapters = [
@@ -26,49 +24,6 @@ const roles = [
   ["Funder", "Evaluate", "Discover projects, review details and structure investment decisions"],
   ["Fixer", "Contribute", "Build a specialist profile, find opportunities and collaborate securely"],
 ];
-
-type EvidenceItem = {
-  src: string;
-  alt: string;
-  label: string;
-};
-
-function Evidence({
-  title,
-  note,
-  images,
-  mobile = false,
-}: {
-  title: string;
-  note: string;
-  images: EvidenceItem[];
-  mobile?: boolean;
-}) {
-  return (
-    <figure className={`${styles.invEvidence} ${mobile ? styles.invEvidenceMobile : ""}`}>
-      <header>
-        <span>Product evidence</span>
-        <b>{title}</b>
-      </header>
-      <div>
-        {images.map((image) => (
-          <a
-            href={image.src}
-            target="_blank"
-            rel="noreferrer"
-            data-format={image.src.includes("/mobile-") ? "mobile" : "web"}
-            aria-label={`${image.label}. Open full-size image in a new tab.`}
-            key={image.src}
-          >
-            <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
-            <span>{image.label}</span>
-          </a>
-        ))}
-      </div>
-      <figcaption>{note}</figcaption>
-    </figure>
-  );
-}
 
 export default function InventFundsCaseStudy() {
   const reducedMotion = useReducedMotion();
@@ -144,7 +99,7 @@ export default function InventFundsCaseStudy() {
                   <div key={role}><span>{action}</span><b>{role}</b><p>{task}</p></div>
                 ))}
               </div>
-              <Evidence
+              <CaseEvidence
                 title="Funder dashboard"
                 note="Real interface from the project. Financial values and user details shown in the screen are representative."
                 images={[
@@ -164,7 +119,7 @@ export default function InventFundsCaseStudy() {
                 <div><span>Role layer</span><b>Different decisions</b><p>Each dashboard prioritises the next action for that role.</p></div>
                 <div><span>Trust layer</span><b>NDA and permissions</b><p>Access changes as collaboration becomes formal.</p></div>
               </div>
-              <Evidence
+              <CaseEvidence
                 mobile
                 title="Role selection and Fixer profile"
                 note="Real mobile screens showing how the product establishes a role before collecting role-specific information."
@@ -187,7 +142,7 @@ export default function InventFundsCaseStudy() {
                 <i>→</i>
                 <div><span>04</span><b>Agree</b><p>Terms before collaboration</p></div>
               </div>
-              <Evidence
+              <CaseEvidence
                 title="Founder collaboration setup"
                 note="Real web screens showing permission assignment and collaboration terms."
                 images={[
@@ -203,7 +158,7 @@ export default function InventFundsCaseStudy() {
                 <p>Funders browse projects, open detailed records and move through a guided evaluation process. The interface keeps project information, people and financial decisions connected instead of spreading them across unrelated screens.</p>
                 <p>The investment flow divides a complex decision into clear steps. Funders can review participants, define contribution details and confirm the structure before moving forward.</p>
               </div>
-              <Evidence
+              <CaseEvidence
                 title="Discovery and project evaluation"
                 note="Real web screens showing project discovery, detail review and the structured investment process."
                 images={[
@@ -223,7 +178,7 @@ export default function InventFundsCaseStudy() {
                 <div><span>Reason</span><p>Structured skills support clearer project discovery and help Founders understand why a Fixer may be relevant.</p></div>
                 <div><span>Trade-off</span><p>Detailed onboarding improves matching context, but it increases the effort required before the profile feels complete.</p></div>
               </div>
-              <Evidence
+              <CaseEvidence
                 mobile
                 title="Fixer dashboard and discovery"
                 note="Real mobile screens showing the Fixer workspace and opportunity discovery."
@@ -260,7 +215,7 @@ export default function InventFundsCaseStudy() {
                   { state: "Error", cue: "Document unavailable", purpose: "Protects sensitive access and provides a recovery action.", tone: "warning" },
                 ]} />
               </ArtifactDisclosure>
-              <Evidence
+              <CaseEvidence
                 title="NDA and collaboration communication"
                 note="Real web and mobile screens. The case study focuses on visibility and state design rather than legal document content."
                 images={[
@@ -283,7 +238,7 @@ export default function InventFundsCaseStudy() {
                 <div><span>What I would improve next</span><h3>Validate the longest decisions with real users</h3><p>I would test Founder setup, Funder evaluation and Fixer onboarding separately, then measure where users pause, leave or need support.</p></div>
               </div>
               <div className={styles.caseOutcomeBoundary}><b>Outcome boundary</b><p>Formal usability results, adoption metrics and investment outcomes were not available. This case study documents the delivered design work and the next validation steps without inventing business impact.</p></div>
-              <footer className={styles.invNextProject}><span>Explore another project</span><Link href="/work/aadivara">Aadivara <SystemIcon name="arrow-right" size={14} /></Link></footer>
+              <CaseProjectFooter href="/work/property-care" title="Property Care" />
             </motion.section>
           </article>
         </section>
