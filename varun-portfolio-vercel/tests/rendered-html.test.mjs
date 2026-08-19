@@ -158,8 +158,12 @@ test("case studies use consistent project labels and global contact actions", as
 
 test("freelance conversion path keeps work and hiring actions available", async () => {
   const { html } = await renderRoute("/work-with-me");
-  for (const label of ["Start a project", "View my work", "Discuss a quick task", "Discuss a website", "Discuss a product", "More quick design help", "Relevant work", "How a project starts", "Hiring or full-time roles"]) {
+  for (const label of ["Start a project", "View my work", "Discuss a quick task", "Discuss a website", "Discuss a product", "More quick design help", "Relevant work", "View all projects", "How a project starts", "Hiring or full-time roles"]) {
     assert.ok(html.includes(label), `/work-with-me should include ${label}`);
   }
+  const proofRoutes = new Set([...html.matchAll(/href="(\/work\/(?:harbinger|inventfunds|aadivara))"/g)].map((match) => match[1]));
+  assert.equal(proofRoutes.size, 3, "Relevant work should link to three unique case studies");
+  assert.ok(!html.includes('href="/work/property-care"'), "Property Care should not appear in Relevant work");
+  assert.ok(!html.includes('href="/work/hcm-cafe"'), "HCM Café should not appear in Relevant work");
   assert.ok(html.includes("Freelance%20project%20enquiry"), "Freelance email should include a project enquiry subject");
 });

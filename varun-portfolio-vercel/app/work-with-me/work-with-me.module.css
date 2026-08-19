@@ -6,3 +6,22 @@
 :global(html[data-portfolio-theme="dark"]) .page{background:#14171b;color:#eef0f3;--studio-bg:#14171b;--studio-surface:#20252b;--studio-chrome:#191d22;--studio-line:#373e47;--studio-text:#eef0f3;--studio-muted:#a5adb7;--studio-hover:#2a3037}:global(html[data-portfolio-theme="dark"]) .intro,:global(html[data-portfolio-theme="dark"]) .sectionHeader p,:global(html[data-portfolio-theme="dark"]) .services>article>p,:global(html[data-portfolio-theme="dark"]) .services small,:global(html[data-portfolio-theme="dark"]) .quickSection p,:global(html[data-portfolio-theme="dark"]) .projects p,:global(html[data-portfolio-theme="dark"]) .process p{color:#aeb5bd}:global(html[data-portfolio-theme="dark"]) .hero aside,:global(html[data-portfolio-theme="dark"]) .services,:global(html[data-portfolio-theme="dark"]) .quickSection details,:global(html[data-portfolio-theme="dark"]) .process{background:#20252b}:global(html[data-portfolio-theme="dark"]) .services li{color:#d8dce1}:global(html[data-portfolio-theme="dark"]) .projects>a:hover,:global(html[data-portfolio-theme="dark"]) .projects>a:focus-visible{background:#20252b}:global(html[data-portfolio-theme="dark"]) .actions a:not(:first-child){background:#20252b;color:#eef0f3;border-color:#4a535e}
 .quickSection details:not([open])>div{display:none}
 .quickSection summary:focus-visible{outline:2px solid var(--studio-blue);outline-offset:3px}
+
+/* Compact proof section */
+.sectionHeader{display:block}
+.projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--studio-line);background:#fff}
+.projects>a{min-height:230px;padding:24px;display:flex;flex-direction:column;align-items:stretch;gap:0;border-right:1px solid var(--studio-line);border-bottom:0}
+.projects>a:last-child{border-right:0}
+.projects>a>header{display:flex;align-items:center;justify-content:space-between;color:var(--studio-blue)}
+.projects>a>header span{font:700 10px var(--font-geist-mono);letter-spacing:.06em}
+.projects h3{margin:32px 0 12px;font-size:24px}
+.projects p{margin:0;font-size:12px;line-height:1.55}
+.projects>a>b{margin-top:auto;padding-top:24px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--studio-line);color:var(--studio-blue);font-size:12px}
+.projects>a:hover,.projects>a:focus-visible{padding:24px;background:#fafaf8;translate:0 -2px}
+.allProjects{width:max-content;margin-top:18px;display:flex;align-items:center;gap:9px;color:var(--studio-blue);font-size:11px;font-weight:700}
+.allProjects:hover,.allProjects:focus-visible{gap:13px}
+.processSection{padding-top:64px}
+@media(max-width:900px){.projects{grid-template-columns:1fr}.projects>a{min-height:190px;border-right:0;border-bottom:1px solid var(--studio-line)}.projects>a:last-child{border-bottom:0}}
+@media(max-width:620px){.projects>a,.projects>a:hover,.projects>a:focus-visible{min-height:185px;padding:22px}.projects h3{margin-top:28px}}
+@media(prefers-reduced-motion:reduce){.projects>a:hover,.projects>a:focus-visible{translate:0}.allProjects:hover,.allProjects:focus-visible{gap:9px}}
+:global(html[data-portfolio-theme="dark"]) .projects{background:#20252b}:global(html[data-portfolio-theme="dark"]) .projects>a:hover,:global(html[data-portfolio-theme="dark"]) .projects>a:focus-visible{background:#272d34}
