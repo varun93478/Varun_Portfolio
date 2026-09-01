@@ -430,6 +430,7 @@ export default function HarbingerV2CaseStudy() {
 
               <dl className={styles.harbingerHeroSummary}>
                 <div><dt>Role</dt><dd>UI/UX Designer</dd></div>
+                <div><dt>Duration</dt><dd>2025 to 2026</dd></div>
                 <div><dt>Portals</dt><dd>HBR Portal + Dealer Portal</dd></div>
               </dl>
             </section>
@@ -438,10 +439,10 @@ export default function HarbingerV2CaseStudy() {
               <div className={styles.harbingerOverview}>
                 <div className={styles.harbingerOverviewHeading}><span>Project overview</span><h2>One vehicle record across configuration, delivery and inspection.</h2></div>
                 <dl>
-                  <div className={styles.harbingerContribution}><dt>Contribution</dt><dd>Workflow structure, high-fidelity UI, states, business-rule clarity, developer handoff, deployed UI review and retrospective UX documentation</dd></div>
-                  <div className={styles.harbingerContribution}><dt>Focus</dt><dd>Roles, business rules, states, workflows and UI delivery</dd></div>
+                  <div className={styles.harbingerOverviewMeta}><dt>Contribution</dt><dd>Workflow structure, high-fidelity UI, states, business-rule clarity, developer handoff, deployed UI review and retrospective UX documentation</dd></div>
+                  <div className={styles.harbingerOverviewMeta}><dt>Focus</dt><dd>Roles, business rules, states, workflows and UI delivery</dd></div>
+                  <div className={styles.harbingerOverviewMeta}><dt>Scope boundary</dt><dd>Backend rules, production data, integrations and final permission enforcement remained with the core product and development teams.</dd></div>
                 </dl>
-                <div className={styles.harbingerScopeBoundary}><span>Scope boundary</span><p>I worked on workflow structure, UI, states, business-rule clarity, developer handoff and deployed UI review. Backend rules, production data, integrations and final permission enforcement remained with the core product and development teams.</p></div>
                 <div className={styles.harbingerConstraints}><span>Working constraints</span><ul>{constraints.map((constraint) => <li key={constraint}>{constraint}</li>)}</ul></div>
                 <p className={styles.caseEvidenceDisclosure}>Product screens use representative information and remove confidential customer data.</p>
               </div>
